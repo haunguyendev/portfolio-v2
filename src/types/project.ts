@@ -16,4 +16,6 @@ export interface Project {
   role?: string
   teamSize?: string
   impact?: string
+  startDate?: string
+  endDate?: string
 }

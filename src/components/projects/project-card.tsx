@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Github, ExternalLink, User, Users, TrendingUp } from 'lucide-react'
+import { Github, ExternalLink, User, Users, TrendingUp, Calendar } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { Project } from '@/types'
 
@@ -55,6 +55,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 <TrendingUp className="size-3" aria-hidden="true" />
                 <span className="sr-only">Impact: </span>
                 {project.impact}
+              </span>
+            )}
+            {project.startDate && (
+              <span className="inline-flex items-center gap-1">
+                <Calendar className="size-3" aria-hidden="true" />
+                <span className="sr-only">Duration: </span>
+                {project.startDate}
+                {project.endDate ? ` — ${project.endDate}` : ' — Now'}
               </span>
             )}
           </div>

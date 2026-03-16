@@ -13,7 +13,8 @@
     },
     "role": "Full-stack Developer",
     "teamSize": "Solo",
-    "impact": "Personal branding & job search"
+    "impact": "Personal branding & job search",
+    "startDate": "Mar 2026"
   },
   {
     "id": "task-management-app",
@@ -29,7 +30,9 @@
     },
     "role": "Full-stack Developer",
     "teamSize": "3 members",
-    "impact": "500+ active users"
+    "impact": "500+ active users",
+    "startDate": "Jan 2026",
+    "endDate": "Feb 2026"
   },
   {
     "id": "ecommerce-api",
@@ -44,7 +47,9 @@
     },
     "role": "Backend Developer",
     "teamSize": "2 members",
-    "impact": "Handles 1K+ orders/month"
+    "impact": "Handles 1K+ orders/month",
+    "startDate": "Oct 2025",
+    "endDate": "Dec 2025"
   },
   {
     "id": "weather-dashboard",
@@ -60,7 +65,8 @@
     },
     "role": "Frontend Developer",
     "teamSize": "Solo",
-    "impact": "Real-time weather data visualization"
+    "impact": "Real-time weather data visualization",
+    "startDate": "Aug 2025"
   },
   {
     "id": "cli-productivity-tool",
@@ -75,6 +81,8 @@
     },
     "role": "Developer",
     "teamSize": "Solo",
-    "impact": "Automates 10+ dev workflows"
+    "impact": "Automates 10+ dev workflows",
+    "startDate": "Jun 2025",
+    "endDate": "Jul 2025"
   }
 ]
