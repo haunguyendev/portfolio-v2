@@ -1,8 +1,15 @@
+'use client'
+
+import dynamic from 'next/dynamic'
 import { Navigation } from '@/components/layout/navigation'
 import { MobileNav } from '@/components/layout/mobile-nav'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
-import { CommandMenu } from '@/components/layout/command-menu'
 import { Logo } from '@/components/layout/logo'
+
+const CommandMenu = dynamic(
+  () => import('@/components/layout/command-menu').then(m => ({ default: m.CommandMenu })),
+  { ssr: false, loading: () => <button className="h-9 w-9 rounded-md border border-border" /> }
+)
 
 export function Header() {
   return (

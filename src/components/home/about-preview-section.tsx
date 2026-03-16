@@ -1,6 +1,13 @@
+'use client'
+
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ArrowRight, Briefcase, FolderGit2, Layers } from 'lucide-react'
-import { TechStackTabs } from '@/components/home/tech-stack-tabs'
+
+const TechStackTabs = dynamic(
+  () => import('@/components/home/tech-stack-tabs').then(m => ({ default: m.TechStackTabs })),
+  { ssr: false, loading: () => <div className="h-40 animate-pulse rounded-lg bg-muted" /> }
+)
 
 const STATS = [
   { icon: Briefcase, value: '1+', label: 'Year Exp' },

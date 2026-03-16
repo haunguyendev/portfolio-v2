@@ -1,6 +1,13 @@
+'use client'
+
 // Skills section reusing TechStackTabs from home + soft skills badges
+import dynamic from 'next/dynamic'
 import { Badge } from '@/components/ui/badge'
-import { TechStackTabs } from '@/components/home/tech-stack-tabs'
+
+const TechStackTabs = dynamic(
+  () => import('@/components/home/tech-stack-tabs').then(m => ({ default: m.TechStackTabs })),
+  { ssr: false, loading: () => <div className="h-40 animate-pulse rounded-lg bg-muted" /> }
+)
 
 const SOFT_SKILLS = [
   'Communication',

@@ -29,8 +29,9 @@ import {
   SiGooglegemini,
 } from 'react-icons/si'
 import { BrainCircuit, Scissors, Film } from 'lucide-react'
-import type { IconType } from 'react-icons'
 import type { LucideIcon } from 'lucide-react'
+
+type IconType = React.ComponentType<{ className?: string }>
 
 type TechItem = {
   name: string
