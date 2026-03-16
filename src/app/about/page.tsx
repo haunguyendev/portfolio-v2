@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AnimatedPageTitle } from '@/components/ui/animated-page-title'
 import { BioSection } from '@/components/about/bio-section'
 import { GitHubStatsSection } from '@/components/about/github-stats-section'
 import { SkillsSection } from '@/components/about/skills-section'
@@ -14,9 +15,9 @@ export default function AboutPage() {
   return (
     <div className="section-spacing">
       <div className="container-main">
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8 md:mb-12">
+        <AnimatedPageTitle className="text-3xl md:text-4xl font-bold text-foreground mb-8 md:mb-12">
           About
-        </h1>
+        </AnimatedPageTitle>
 
         <BioSection />
         <GitHubStatsSection />

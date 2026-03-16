@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AnimatedPageTitle } from '@/components/ui/animated-page-title'
 import { getProjects, getAllTechnologies } from '@/lib/content'
 import { ProjectsPageContent } from './projects-page-content'
 
@@ -17,9 +18,9 @@ export default function ProjectsPage() {
       <div className="container-main">
         {/* Page header */}
         <div className="mb-10">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <AnimatedPageTitle className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Projects
-          </h1>
+          </AnimatedPageTitle>
           <p className="mt-3 max-w-2xl text-muted-foreground">
             Things I have built — side projects, open source contributions, and
             professional work. Filter by technology to find what interests you.

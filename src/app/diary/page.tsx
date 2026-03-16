@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AnimatedPageTitle } from '@/components/ui/animated-page-title'
 import { BookHeart } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -15,9 +16,9 @@ export default function DiaryPage() {
             <BookHeart className="h-8 w-8 text-muted-foreground" />
           </div>
 
-          <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">
+          <AnimatedPageTitle className="mb-3 text-3xl font-bold text-foreground md:text-4xl">
             Diary
-          </h1>
+          </AnimatedPageTitle>
 
           <p className="mb-2 max-w-md text-base text-muted-foreground">
             Coming soon! A space for my personal reflections, emotions, and
