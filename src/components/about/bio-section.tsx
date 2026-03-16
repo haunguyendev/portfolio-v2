@@ -24,9 +24,10 @@ export function BioSection() {
         <div className="flex justify-center md:justify-start">
           <div className="relative size-40 overflow-hidden rounded-full border-2 border-border">
             <Image
-              src="/images/hero/kane-avatar.png"
+              src="/images/hero/kane-avatar.jpg"
               alt="Kane Nguyen's profile photo"
               fill
+              priority
               className="object-cover"
               sizes="160px"
             />
