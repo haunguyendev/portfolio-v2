@@ -5,11 +5,11 @@
   },
   {
     "category": "Backend",
-    "items": ["Node.js", "Express", "PostgreSQL", "REST APIs", "Python"]
+    "items": ["Node.js", "Express", "PostgreSQL", "MySQL", "SQL Server", "REST APIs", "Python"]
   },
   {
     "category": "Tools & DevOps",
-    "items": ["Git", "GitHub", "Docker", "Vercel", "VS Code", "Linux"]
+    "items": ["Git", "GitHub", "Docker", "Vercel", "Cloudflare", "VS Code", "Linux", "macOS"]
   },
   {
     "category": "Other",

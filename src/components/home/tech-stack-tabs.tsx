@@ -15,12 +15,15 @@ import {
   SiDotnet,
   SiNestjs,
   SiRedis,
+  SiMysql,
   SiGit,
   SiGithub,
   SiGitlab,
   SiVercel,
+  SiCloudflare,
   SiKubernetes,
   SiLinux,
+  SiApple,
   SiFigma,
   SiDavinciresolve,
   SiCanva,
@@ -28,7 +31,7 @@ import {
   SiOpenai,
   SiGooglegemini,
 } from 'react-icons/si'
-import { BrainCircuit, Scissors, Film } from 'lucide-react'
+import { BrainCircuit, Scissors, Film, Database } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 type IconType = React.ComponentType<{ className?: string }>
@@ -63,6 +66,8 @@ const CATEGORIES: TechCategory[] = [
       { name: 'Express', icon: SiExpress, color: 'text-foreground' },
       { name: 'PostgreSQL', icon: SiPostgresql, color: 'text-[#4169E1]' },
       { name: 'Prisma', icon: SiPrisma, color: 'text-foreground' },
+      { name: 'MySQL', icon: SiMysql, color: 'text-[#4479A1]' },
+      { name: 'SQL Server', icon: Database, color: 'text-[#CC2927]' },
       { name: 'Redis', icon: SiRedis, color: 'text-[#DC382D]' },
       { name: 'Docker', icon: SiDocker, color: 'text-[#2496ED]' },
     ],
@@ -74,8 +79,10 @@ const CATEGORIES: TechCategory[] = [
       { name: 'GitHub', icon: SiGithub, color: 'text-foreground' },
       { name: 'GitLab', icon: SiGitlab, color: 'text-[#FC6D26]' },
       { name: 'Vercel', icon: SiVercel, color: 'text-foreground' },
+      { name: 'Cloudflare', icon: SiCloudflare, color: 'text-[#F38020]' },
       { name: 'Kubernetes', icon: SiKubernetes, color: 'text-[#326CE5]' },
       { name: 'Linux', icon: SiLinux, color: 'text-foreground' },
+      { name: 'macOS', icon: SiApple, color: 'text-foreground' },
       { name: 'Figma', icon: SiFigma, color: 'text-[#F24E1E]' },
     ],
   },
