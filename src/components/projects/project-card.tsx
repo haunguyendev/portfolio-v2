@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Github, ExternalLink } from 'lucide-react'
+import { Github, ExternalLink, User, Users, TrendingUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { Project } from '@/types'
 
@@ -32,6 +32,33 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
           {project.description}
         </p>
+
+        {/* Project metadata: role, team size, impact */}
+        {(project.role || project.teamSize || project.impact) && (
+          <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+            {project.role && (
+              <span className="inline-flex items-center gap-1">
+                <User className="size-3" aria-hidden="true" />
+                <span className="sr-only">Role: </span>
+                {project.role}
+              </span>
+            )}
+            {project.teamSize && (
+              <span className="inline-flex items-center gap-1">
+                <Users className="size-3" aria-hidden="true" />
+                <span className="sr-only">Team: </span>
+                {project.teamSize}
+              </span>
+            )}
+            {project.impact && (
+              <span className="inline-flex items-center gap-1">
+                <TrendingUp className="size-3" aria-hidden="true" />
+                <span className="sr-only">Impact: </span>
+                {project.impact}
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Tech badges */}
         <div className="flex flex-wrap gap-1.5">

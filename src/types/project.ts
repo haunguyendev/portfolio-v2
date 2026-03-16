@@ -13,4 +13,7 @@ export interface Project {
   technologies: string[]
   featured: boolean
   links: ProjectLink
+  role?: string
+  teamSize?: string
+  impact?: string
 }

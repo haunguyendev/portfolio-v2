@@ -10,7 +10,10 @@
     "links": {
       "github": "https://github.com/kanenguyen/portfolio-v2",
       "demo": "https://kanenguyen.dev"
-    }
+    },
+    "role": "Full-stack Developer",
+    "teamSize": "Solo",
+    "impact": "Personal branding & job search"
   },
   {
     "id": "task-management-app",
@@ -23,7 +26,10 @@
     "links": {
       "github": "https://github.com/kanenguyen/task-app",
       "demo": "https://task-app.example.com"
-    }
+    },
+    "role": "Full-stack Developer",
+    "teamSize": "3 members",
+    "impact": "500+ active users"
   },
   {
     "id": "ecommerce-api",
@@ -35,7 +41,10 @@
     "featured": true,
     "links": {
       "github": "https://github.com/kanenguyen/ecommerce-api"
-    }
+    },
+    "role": "Backend Developer",
+    "teamSize": "2 members",
+    "impact": "Handles 1K+ orders/month"
   },
   {
     "id": "weather-dashboard",
@@ -48,7 +57,10 @@
     "links": {
       "github": "https://github.com/kanenguyen/weather-dashboard",
       "demo": "https://weather.example.com"
-    }
+    },
+    "role": "Frontend Developer",
+    "teamSize": "Solo",
+    "impact": "Real-time weather data visualization"
   },
   {
     "id": "cli-productivity-tool",
@@ -60,6 +72,9 @@
     "featured": false,
     "links": {
       "github": "https://github.com/kanenguyen/cli-tool"
-    }
+    },
+    "role": "Developer",
+    "teamSize": "Solo",
+    "impact": "Automates 10+ dev workflows"
   }
 ]
