@@ -12,6 +12,8 @@ export const NAV_LINKS = [
 
 export const SOCIAL_LINKS = {
   github: 'https://github.com/kanenguyen',
-  linkedin: 'https://linkedin.com/in/kanenguyen',
-  email: 'mailto:kane@example.com',
+  linkedin: 'https://www.linkedin.com/in/h%E1%BA%ADu-nguy%E1%BB%85n-6b1576229/',
+  facebook: 'https://www.facebook.com/nguyen.trung.hau.778410/',
+  email: 'mailto:haunt150603@gmail.com',
+  zalo: 'https://zalo.me/0969313263',
 } as const
