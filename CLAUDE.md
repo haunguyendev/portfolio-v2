@@ -83,6 +83,14 @@ Activate these skills as needed during development:
 - **Phase 3:** Polish — SEO, dark mode, performance, responsive fine-tuning.
 - **Phase 4:** CMS — Headless CMS, admin dashboard, analytics (future).
 
+## Post-Implementation Protocol
+After each `/ck:cook` completes a plan/phase:
+1. **Update docs** — Sync `docs/` files to reflect current state (architecture, roadmap progress, code standards changes)
+2. **Track bugs via GitHub Issues** — Use `gh issue create` for any known bugs or TODOs discovered during implementation
+3. **Update roadmap** — Mark completed tasks in `docs/project-roadmap.md`, update phase status
+4. **Label issues** — Use labels: `bug`, `enhancement`, `phase-1`, `phase-2`, etc. via `gh issue create --label "bug,phase-1"`
+5. **Link issues to plan** — Reference plan phase in issue body for traceability
+
 ## Rules
 - YAGNI / KISS / DRY — no over-engineering
 - Ship portfolio first, blog later
