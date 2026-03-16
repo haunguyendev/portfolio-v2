@@ -7,14 +7,14 @@ export function SkillsSection() {
 
   return (
     <section className="mb-12 md:mb-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 mb-6">
+      <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
         Skills
       </h2>
 
       <div className="space-y-6">
         {skillGroups.map((group) => (
           <div key={group.category}>
-            <h3 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
               {group.category}
             </h3>
             <div className="flex flex-wrap gap-2">

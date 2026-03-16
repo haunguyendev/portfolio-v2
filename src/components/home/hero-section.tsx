@@ -10,19 +10,19 @@ export function HeroSection() {
           {/* Left: Text content */}
           <div className="order-2 flex flex-col gap-6 md:order-1">
             <div className="flex flex-col gap-2">
-              <span className="text-sm font-medium uppercase tracking-widest text-zinc-400">
+              <span className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
                 Hi, I&apos;m
               </span>
-              <h1 className="text-5xl font-bold tracking-tight text-zinc-900 lg:text-6xl">
+              <h1 className="text-5xl font-bold tracking-tight text-foreground lg:text-6xl">
                 Kane{' '}
                 <span className="gradient-text">Nguyen</span>
               </h1>
-              <p className="text-xl font-medium text-zinc-500">
+              <p className="text-xl font-medium text-muted-foreground">
                 Software Engineer
               </p>
             </div>
 
-            <p className="max-w-md leading-relaxed text-zinc-600">
+            <p className="max-w-md leading-relaxed text-muted-foreground">
               I build web applications with a focus on performance and user
               experience. Passionate about clean code, modern tooling, and
               shipping products people love.

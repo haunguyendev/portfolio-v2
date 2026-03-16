@@ -10,11 +10,11 @@ export default function NotFound() {
             404
           </p>
 
-          <h1 className="mb-3 text-2xl font-bold text-zinc-900 md:text-3xl">
+          <h1 className="mb-3 text-2xl font-bold text-foreground md:text-3xl">
             Page Not Found
           </h1>
 
-          <p className="mb-8 max-w-md text-base text-zinc-500">
+          <p className="mb-8 max-w-md text-base text-muted-foreground">
             The page you&apos;re looking for doesn&apos;t exist or has been
             moved. Let&apos;s get you back on track.
           </p>

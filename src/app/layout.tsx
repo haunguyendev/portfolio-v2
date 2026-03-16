@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { ThemeProvider } from '@/components/layout/theme-provider'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -23,14 +24,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} flex min-h-screen flex-col`}>
-        {/* Gradient accent bar */}
-        <div className="h-1 gradient-accent" aria-hidden="true" />
+        <ThemeProvider>
+          {/* Gradient accent bar */}
+          <div className="h-1 gradient-accent" aria-hidden="true" />
 
-        <Header />
+          <Header />
 
-        <main className="flex-1">{children}</main>
+          <main className="flex-1">{children}</main>
 
-        <Footer />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -9,7 +9,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
   if (projects.length === 0) {
     return (
       <div className="flex min-h-48 items-center justify-center">
-        <p className="text-zinc-500">No projects found matching this filter.</p>
+        <p className="text-muted-foreground">No projects found matching this filter.</p>
       </div>
     )
   }

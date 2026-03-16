@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <div className="section-spacing">
       <div className="container-main">
-        <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-8 md:mb-12">
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8 md:mb-12">
           About
         </h1>
 

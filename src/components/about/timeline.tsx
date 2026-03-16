@@ -7,7 +7,7 @@ export function Timeline() {
 
   return (
     <section className="mb-12 md:mb-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 mb-6">
+      <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
         Experience
       </h2>
 

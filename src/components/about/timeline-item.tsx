@@ -17,14 +17,14 @@ export function TimelineItem({ experience, isLast = false }: TimelineItemProps) 
       )}
 
       {/* Timeline dot */}
-      <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-zinc-300 bg-white" />
+      <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-border bg-background" />
 
       {/* Content */}
       <div>
-        <h3 className="text-lg font-semibold text-zinc-900">{role}</h3>
-        <p className="text-sm text-zinc-500 mt-0.5">{duration}</p>
-        <p className="text-base text-zinc-700 mt-1 font-medium">{company}</p>
-        <p className="text-base text-zinc-600 leading-relaxed mt-2">
+        <h3 className="text-lg font-semibold text-foreground">{role}</h3>
+        <p className="text-sm text-muted-foreground mt-0.5">{duration}</p>
+        <p className="text-base text-foreground mt-1 font-medium">{company}</p>
+        <p className="text-base text-muted-foreground leading-relaxed mt-2">
           {description}
         </p>
 
@@ -36,7 +36,7 @@ export function TimelineItem({ experience, isLast = false }: TimelineItemProps) 
                   className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-400"
                   aria-hidden="true"
                 />
-                <span className="text-sm text-zinc-600 leading-relaxed">
+                <span className="text-sm text-muted-foreground leading-relaxed">
                   {highlight}
                 </span>
               </li>

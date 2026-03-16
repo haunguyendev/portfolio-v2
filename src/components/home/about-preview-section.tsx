@@ -6,11 +6,11 @@ export function AboutPreviewSection() {
     <section className="section-spacing">
       <div className="container-main">
         <div className="max-w-2xl">
-          <h2 className="mb-6 text-2xl font-bold text-zinc-900 md:text-3xl">
+          <h2 className="mb-6 text-2xl font-bold text-foreground md:text-3xl">
             About Me
           </h2>
 
-          <div className="flex flex-col gap-4 leading-relaxed text-zinc-600">
+          <div className="flex flex-col gap-4 leading-relaxed text-muted-foreground">
             <p>
               I&apos;m a Software Engineer with 1 year of experience building
               modern web applications. I thrive on turning ideas into polished

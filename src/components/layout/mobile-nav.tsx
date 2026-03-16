@@ -24,7 +24,7 @@ export function MobileNav() {
     <div className="md:hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-zinc-700 hover:text-zinc-900"
+        className="p-2 text-foreground hover:text-foreground"
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={isOpen}
       >
@@ -32,7 +32,7 @@ export function MobileNav() {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 left-0 border-b border-zinc-200 bg-white shadow-sm">
+        <div className="absolute top-full right-0 left-0 border-b border-border bg-background shadow-sm">
           <nav className="container-main flex flex-col gap-3 py-4">
             {NAV_LINKS.map((link) => (
               <Link
@@ -41,7 +41,7 @@ export function MobileNav() {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   'py-2 text-sm font-medium transition-colors',
-                  pathname === link.href ? 'text-zinc-900' : 'text-zinc-500',
+                  pathname === link.href ? 'text-foreground' : 'text-muted-foreground',
                 )}
               >
                 {link.label}

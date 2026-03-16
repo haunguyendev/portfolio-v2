@@ -24,11 +24,11 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             <AlertTriangle className="h-8 w-8 text-red-500" />
           </div>
 
-          <h1 className="mb-3 text-2xl font-bold text-zinc-900 md:text-3xl">
+          <h1 className="mb-3 text-2xl font-bold text-foreground md:text-3xl">
             Something Went Wrong
           </h1>
 
-          <p className="mb-8 max-w-md text-base text-zinc-500">
+          <p className="mb-8 max-w-md text-base text-muted-foreground">
             An unexpected error occurred. Please try again or navigate back to
             the home page.
           </p>

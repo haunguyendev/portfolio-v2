@@ -7,16 +7,16 @@ export function FeaturedProjectsSection() {
   const projects = getFeaturedProjects()
 
   return (
-    <section className="section-spacing bg-zinc-50">
+    <section className="section-spacing bg-muted">
       <div className="container-main">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-zinc-900 md:text-3xl">
+          <h2 className="text-2xl font-bold text-foreground md:text-3xl">
             Featured Projects
           </h2>
           <Link
             href="/projects"
-            className="hidden items-center gap-1.5 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 sm:inline-flex"
+            className="hidden items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
           >
             View All
             <ArrowRight className="size-4" />
@@ -34,7 +34,7 @@ export function FeaturedProjectsSection() {
         <div className="mt-8 flex justify-center sm:hidden">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             View All Projects
             <ArrowRight className="size-4" />

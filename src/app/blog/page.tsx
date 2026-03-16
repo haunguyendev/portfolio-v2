@@ -11,19 +11,19 @@ export default function BlogPage() {
     <div className="section-spacing">
       <div className="container-main">
         <div className="flex flex-col items-center justify-center py-16 text-center md:py-24">
-          <div className="mb-6 rounded-full bg-zinc-100 p-4">
-            <PenLine className="h-8 w-8 text-zinc-400" />
+          <div className="mb-6 rounded-full bg-muted p-4">
+            <PenLine className="h-8 w-8 text-muted-foreground" />
           </div>
 
-          <h1 className="mb-3 text-3xl font-bold text-zinc-900 md:text-4xl">
+          <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">
             Blog
           </h1>
 
-          <p className="mb-2 max-w-md text-base text-zinc-500">
+          <p className="mb-2 max-w-md text-base text-muted-foreground">
             Coming soon! I&apos;m working on sharing my thoughts on web
             development, software engineering, and the tools I use every day.
           </p>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             Stay tuned for articles and tutorials.
           </p>
         </div>

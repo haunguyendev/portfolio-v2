@@ -18,8 +18,8 @@ export function Navigation() {
           key={link.href}
           href={link.href}
           className={cn(
-            'text-sm font-medium transition-colors hover:text-zinc-900',
-            pathname === link.href ? 'text-zinc-900' : 'text-zinc-500',
+            'text-sm font-medium transition-colors hover:text-foreground',
+            pathname === link.href ? 'text-foreground' : 'text-muted-foreground',
           )}
         >
           {link.label}
