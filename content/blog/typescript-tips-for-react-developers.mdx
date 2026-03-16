@@ -1,0 +1,91 @@
+---
+title: "5 TypeScript Tips Every React Developer Should Know"
+slug: typescript-tips-for-react-developers
+description: "Practical TypeScript patterns that make React development safer and more productive."
+date: 2026-03-14
+tags: [typescript, react, tips]
+published: true
+---
+
+## 1. Generic Components
+
+Create reusable components that maintain type safety across different data types:
+
+```typescript
+interface ListProps<T> {
+  items: T[]
+  renderItem: (item: T) => React.ReactNode
+  keyExtractor: (item: T) => string
+}
+
+function List<T>({ items, renderItem, keyExtractor }: ListProps<T>) {
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={keyExtractor(item)}>{renderItem(item)}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+## 2. Discriminated Unions for Props
+
+Use discriminated unions to handle component variants cleanly:
+
+```typescript
+type ButtonProps =
+  | { variant: 'link'; href: string; onClick?: never }
+  | { variant: 'button'; onClick: () => void; href?: never }
+
+function ActionButton(props: ButtonProps) {
+  if (props.variant === 'link') {
+    return <a href={props.href}>Click me</a>
+  }
+  return <button onClick={props.onClick}>Click me</button>
+}
+```
+
+TypeScript will ensure you never pass `onClick` to a link variant or `href` to a button variant.
+
+## 3. The `satisfies` Operator
+
+Validate object shapes without widening the type:
+
+```typescript
+const ROUTES = {
+  home: '/',
+  blog: '/blog',
+  about: '/about',
+} satisfies Record<string, string>
+
+// ROUTES.home is typed as '/' (literal), not string
+```
+
+## 4. Const Assertions for Config
+
+Lock down configuration objects to their literal types:
+
+```typescript
+const NAV_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog' },
+] as const
+
+// Each item is readonly with literal types
+type NavLink = (typeof NAV_LINKS)[number]
+```
+
+## 5. Utility Types for Props
+
+Extract and transform component prop types:
+
+```typescript
+// Extract props from an existing component
+type CardProps = React.ComponentProps<typeof Card>
+
+// Make all props optional except 'id'
+type PartialCard = Partial<CardProps> & Pick<CardProps, 'id'>
+```
+
+These patterns have saved me hours of debugging and made my React code significantly more maintainable.

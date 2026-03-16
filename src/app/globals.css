@@ -148,4 +148,26 @@
   .section-spacing {
     @apply py-12 md:py-16;
   }
+
+  /* Prose styling for MDX content */
+  .prose {
+    @apply text-foreground leading-7;
+  }
+  .prose h1 { @apply text-3xl font-bold mt-8 mb-4; }
+  .prose h2 { @apply text-2xl font-semibold mt-8 mb-3 border-b border-border pb-2; }
+  .prose h3 { @apply text-xl font-semibold mt-6 mb-2; }
+  .prose h4 { @apply text-lg font-semibold mt-4 mb-2; }
+  .prose p { @apply mb-4; }
+  .prose ul { @apply mb-4 list-disc pl-6 space-y-1; }
+  .prose ol { @apply mb-4 list-decimal pl-6 space-y-1; }
+  .prose li { @apply leading-7; }
+  .prose a { @apply text-foreground underline underline-offset-4 hover:text-muted-foreground transition-colors; }
+  .prose strong { @apply font-semibold; }
+  .prose code:not(pre code) { @apply rounded bg-muted px-1.5 py-0.5 text-sm font-mono; }
+  .prose hr { @apply my-8 border-border; }
+
+  /* Diary-specific softer prose */
+  .diary-prose .prose blockquote {
+    @apply border-l-orange-300 bg-orange-50/50;
+  }
 }

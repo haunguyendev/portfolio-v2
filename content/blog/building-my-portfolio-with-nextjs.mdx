@@ -1,0 +1,60 @@
+---
+title: "Building My Portfolio with Next.js 16 and Tailwind CSS"
+slug: building-my-portfolio-with-nextjs
+description: "A deep dive into how I built this portfolio site using Next.js 16, Tailwind CSS, and shadcn/ui."
+date: 2026-03-16
+tags: [nextjs, tailwindcss, react, portfolio]
+published: true
+---
+
+## Why Next.js 16?
+
+When I decided to rebuild my portfolio, Next.js 16 was the obvious choice. With **Turbopack** as the default bundler and improved App Router support, the developer experience is significantly better than previous versions.
+
+> The best framework is the one that gets out of your way and lets you ship.
+
+## Project Structure
+
+I kept things simple with a clean separation of concerns:
+
+```typescript
+// src/lib/content.ts — centralized data access
+export function getProjects(): Project[] {
+  return projects
+}
+
+export function getBlogs() {
+  return blogs
+    .filter((b) => b.published)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+}
+```
+
+Each component stays under 200 lines, and content lives in data files rather than being hardcoded in JSX.
+
+## shadcn/ui Setup
+
+Instead of building every component from scratch, I used **shadcn/ui** for the design system. It gives you ownership of the code while providing polished, accessible components.
+
+```bash
+npx shadcn@latest add card badge button
+```
+
+The beauty of shadcn/ui is that components live in your codebase — you can customize everything without fighting a library's API.
+
+## Key Technical Decisions
+
+- **Tailwind CSS v4** — utility-first styling with the new CSS-based config
+- **Framer Motion** — subtle page transitions and hover effects
+- **Velite** — MDX processing with Zod schemas for type-safe content
+- **Vercel** — zero-config deployment with automatic previews
+
+## What I Learned
+
+Building this portfolio taught me that **constraints are features**. By limiting myself to light mode, simple animations, and static content, I shipped faster and with a more focused design.
+
+The gradient accents (orange → red → blue) add just enough personality without overwhelming the editorial minimalist style.
+
+## What's Next
+
+Phase 2 brings the blog and diary system you're reading right now. Phase 3 will add dark mode, SEO optimizations, and performance tuning.
