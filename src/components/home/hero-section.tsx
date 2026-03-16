@@ -2,10 +2,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { TypewriterHeading } from '@/components/ui/typewriter-heading'
+import { RotatingText } from '@/components/ui/rotating-text'
 
 const NAMES = [
   [{ text: 'Kane ' }, { text: 'Nguyen', className: 'gradient-text' }],
   [{ text: 'Trung Hau ' }, { text: 'Nguyen', className: 'gradient-text' }],
+]
+
+const TITLES = [
+  { text: 'Software Engineer', className: 'text-orange-500 drop-shadow-[0_0_12px_rgba(249,115,22,0.5)]' },
+  { text: 'Web Developer', className: 'text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]' },
+  { text: 'Problem Solver', className: 'text-blue-500 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]' },
 ]
 
 export function HeroSection() {
@@ -23,9 +30,10 @@ export function HeroSection() {
                 names={NAMES}
                 className="text-5xl font-bold tracking-tight text-foreground lg:text-6xl"
               />
-              <p className="text-xl font-medium text-muted-foreground">
-                Software Engineer
-              </p>
+              <RotatingText
+                items={TITLES}
+                className="text-xl font-medium"
+              />
             </div>
 
             <p className="max-w-md leading-relaxed text-muted-foreground">
@@ -33,6 +41,10 @@ export function HeroSection() {
               experience. Passionate about clean code, modern tooling, and
               shipping products people love.
             </p>
+
+            <span className="text-xs text-muted-foreground">
+              Ho Chi Minh City, Vietnam &middot; GMT+7
+            </span>
 
             <div className="flex flex-wrap gap-3">
               <Link
