@@ -1,0 +1,25 @@
+[
+  {
+    "company": "Company Name",
+    "role": "Software Engineer",
+    "duration": "Mar 2025 - Present",
+    "description": "Full-stack development for web applications serving thousands of users.",
+    "highlights": [
+      "Built and maintained React-based frontend features improving user engagement by 20%",
+      "Developed RESTful APIs with Node.js and PostgreSQL for core business logic",
+      "Collaborated with cross-functional teams using Agile methodology",
+      "Implemented automated testing pipelines reducing production bugs by 30%"
+    ]
+  },
+  {
+    "company": "University / Bootcamp",
+    "role": "Computer Science Student",
+    "duration": "2021 - 2024",
+    "description": "Bachelor's degree in Computer Science with focus on software engineering.",
+    "highlights": [
+      "Graduated with honors",
+      "Completed capstone project: full-stack web application",
+      "Relevant coursework: Data Structures, Algorithms, Web Development, Databases"
+    ]
+  }
+]

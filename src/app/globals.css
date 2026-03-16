@@ -121,9 +121,31 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-zinc-700 antialiased;
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  .gradient-accent {
+    background: linear-gradient(to right, #f97316, #ef4444, #3b82f6);
+  }
+
+  .gradient-text {
+    background: linear-gradient(to right, #f97316, #ef4444, #3b82f6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .container-main {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-spacing {
+    @apply py-12 md:py-16;
   }
 }

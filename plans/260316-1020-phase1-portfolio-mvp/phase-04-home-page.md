@@ -11,7 +11,7 @@
 | Field | Value |
 |-------|-------|
 | Priority | HIGH |
-| Status | Pending |
+| Status | Complete |
 | Effort | ~4h |
 | Depends On | Phase 2 (layout), Phase 3 (content/types) |
 | Description | Build the home page with 3 sections: Split Hero (text left, photo right), Featured Projects grid (3-4 cards), About Preview (short bio + CTA to About page) |
@@ -362,18 +362,18 @@ Clean composition — each section is self-contained.
 
 ## Todo List
 
-- [ ] 4.1 Create `src/components/projects/project-card.tsx` (shared component)
-- [ ] 4.2 Create `src/components/home/hero-section.tsx` (split layout, gradient text, CTA buttons)
-- [ ] 4.3 Create `src/components/home/featured-projects-section.tsx` (grid of featured ProjectCards)
-- [ ] 4.4 Create `src/components/home/about-preview-section.tsx` (bio teaser + CTA)
-- [ ] 4.5 Replace `src/app/page.tsx` with composed sections
-- [ ] 4.6 Add placeholder hero image to `public/images/hero/kane-photo.jpg`
-- [ ] 4.7 Test hero: gradient text renders, photo displays, CTA buttons link correctly
-- [ ] 4.8 Test featured projects: 3 cards render from JSON data
-- [ ] 4.9 Test about preview: text displays, CTA links to /about
-- [ ] 4.10 Test responsive: mobile stacks hero vertically, grid goes single-column
-- [ ] 4.11 Test with missing project images — should show zinc-100 fallback bg
-- [ ] 4.12 Verify `pnpm build` succeeds
+- [x] 4.1 Create `src/components/projects/project-card.tsx` (shared component)
+- [x] 4.2 Create `src/components/home/hero-section.tsx` (split layout, gradient text, CTA buttons)
+- [x] 4.3 Create `src/components/home/featured-projects-section.tsx` (grid of featured ProjectCards)
+- [x] 4.4 Create `src/components/home/about-preview-section.tsx` (bio teaser + CTA)
+- [x] 4.5 Replace `src/app/page.tsx` with composed sections
+- [x] 4.6 Add placeholder hero image to `public/images/hero/kane-photo.jpg`
+- [x] 4.7 Test hero: gradient text renders, photo displays, CTA buttons link correctly
+- [x] 4.8 Test featured projects: 3 cards render from JSON data
+- [x] 4.9 Test about preview: text displays, CTA links to /about
+- [x] 4.10 Test responsive: mobile stacks hero vertically, grid goes single-column
+- [x] 4.11 Test with missing project images — should show zinc-100 fallback bg
+- [x] 4.12 Verify `pnpm build` succeeds
 
 ## Success Criteria
 

@@ -1,12 +1,13 @@
 ---
 title: "Phase 1: Portfolio MVP"
-description: "Full implementation plan for Kane Nguyen's portfolio — Home, Projects, About, Blog placeholder with Next.js 15 + Tailwind + shadcn/ui"
-status: pending
+description: "Full implementation plan for Kane Nguyen's portfolio — Home, Projects, About, Blog placeholder with Next.js 16 + Tailwind CSS v4 + Base UI"
+status: complete
 priority: P1
 effort: "2-3 weeks"
 branch: main
 tags: [portfolio, mvp, next.js, tailwind, shadcn-ui, phase-1]
 created: 2026-03-16
+completed: 2026-03-16
 ---
 
 # Phase 1: Portfolio MVP — Implementation Plan
@@ -19,11 +20,11 @@ Greenfield Next.js 15 portfolio site. 4 pages (Home, Projects, About, Blog place
 
 | Layer | Tech |
 |-------|------|
-| Framework | Next.js 15 (App Router) |
+| Framework | Next.js 16.1.6 (App Router) |
 | Language | TypeScript (strict) |
-| Styling | Tailwind CSS + shadcn/ui |
+| Styling | Tailwind CSS v4.2.1 + Base UI |
 | Icons | lucide-react |
-| Content | JSON data files |
+| Content | JSON data files (SSG) |
 | Deploy | Vercel |
 | Pkg Manager | pnpm |
 
@@ -31,14 +32,14 @@ Greenfield Next.js 15 portfolio site. 4 pages (Home, Projects, About, Blog place
 
 | # | Phase | File | Status | Effort |
 |---|-------|------|--------|--------|
-| 1 | Project Setup & Configuration | [phase-01-setup-and-configuration.md](./phase-01-setup-and-configuration.md) | Pending | 2h |
-| 2 | Layout Components | [phase-02-layout-components.md](./phase-02-layout-components.md) | Pending | 3h |
-| 3 | Content Data & Types | [phase-03-content-data-and-types.md](./phase-03-content-data-and-types.md) | Pending | 2h |
-| 4 | Home Page | [phase-04-home-page.md](./phase-04-home-page.md) | Pending | 4h |
-| 5 | Projects Page | [phase-05-projects-page.md](./phase-05-projects-page.md) | Pending | 3h |
-| 6 | About Page | [phase-06-about-page.md](./phase-06-about-page.md) | Pending | 3h |
-| 7 | Blog Placeholder & Error Pages | [phase-07-blog-and-error-pages.md](./phase-07-blog-and-error-pages.md) | Pending | 1.5h |
-| 8 | Deployment | [phase-08-deployment.md](./phase-08-deployment.md) | Pending | 1.5h |
+| 1 | Project Setup & Configuration | [phase-01-setup-and-configuration.md](./phase-01-setup-and-configuration.md) | Complete | 2h |
+| 2 | Layout Components | [phase-02-layout-components.md](./phase-02-layout-components.md) | Complete | 3h |
+| 3 | Content Data & Types | [phase-03-content-data-and-types.md](./phase-03-content-data-and-types.md) | Complete | 2h |
+| 4 | Home Page | [phase-04-home-page.md](./phase-04-home-page.md) | Complete | 4h |
+| 5 | Projects Page | [phase-05-projects-page.md](./phase-05-projects-page.md) | Complete | 3h |
+| 6 | About Page | [phase-06-about-page.md](./phase-06-about-page.md) | Complete | 3h |
+| 7 | Blog Placeholder & Error Pages | [phase-07-blog-and-error-pages.md](./phase-07-blog-and-error-pages.md) | Complete | 1.5h |
+| 8 | Deployment | [phase-08-deployment.md](./phase-08-deployment.md) | Complete | 1.5h |
 
 **Total estimated effort:** ~20h across 2-3 weeks
 

@@ -33,50 +33,41 @@ porfolio_v2/
 │   ├── app/
 │   │   ├── layout.tsx (root layout, header + footer)
 │   │   ├── page.tsx (home page)
-│   │   ├── not-found.tsx
-│   │   ├── error.tsx
+│   │   ├── globals.css (global styles, Tailwind directives)
+│   │   ├── favicon.ico
+│   │   ├── not-found.tsx (404 error page)
+│   │   ├── error.tsx (error boundary)
 │   │   ├── projects/
 │   │   │   ├── page.tsx (projects list page)
-│   │   │   └── [slug]/
-│   │   │       └── page.tsx (project detail page — future)
+│   │   │   └── projects-page-content.tsx (client wrapper with filter state)
 │   │   ├── about/
 │   │   │   └── page.tsx (about page)
 │   │   └── blog/
-│   │       └── page.tsx (blog placeholder page)
+│   │       └── page.tsx (blog placeholder — "coming soon")
 │   │
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── header.tsx
-│   │   │   ├── footer.tsx
-│   │   │   ├── navigation.tsx
-│   │   │   └── mobile-nav.tsx
+│   │   │   ├── header.tsx (sticky header with logo, nav, mobile-nav)
+│   │   │   ├── footer.tsx (social links, copyright)
+│   │   │   ├── navigation.tsx (desktop nav with active state)
+│   │   │   └── mobile-nav.tsx (hamburger menu, client component)
 │   │   ├── home/
-│   │   │   ├── hero-section.tsx
-│   │   │   ├── featured-projects-section.tsx
-│   │   │   ├── about-preview-section.tsx
-│   │   │   └── cta-section.tsx
+│   │   │   ├── hero-section.tsx (split hero: text left, photo right)
+│   │   │   ├── featured-projects-section.tsx (featured projects grid)
+│   │   │   └── about-preview-section.tsx (bio teaser + CTA)
 │   │   ├── projects/
-│   │   │   ├── project-card.tsx
-│   │   │   ├── project-grid.tsx
-│   │   │   ├── project-filter.tsx
-│   │   │   └── tech-badge.tsx
+│   │   │   ├── project-card.tsx (project item: title, tech, links)
+│   │   │   ├── project-grid.tsx (responsive grid layout)
+│   │   │   └── project-filter.tsx (tech tag filters, client component)
 │   │   ├── about/
-│   │   │   ├── bio-section.tsx
-│   │   │   ├── skills-section.tsx
-│   │   │   ├── skill-badge.tsx
-│   │   │   └── timeline.tsx
-│   │   │       └── timeline-item.tsx
-│   │   ├── common/
-│   │   │   ├── section-title.tsx
-│   │   │   ├── gradient-text.tsx
-│   │   │   ├── external-link.tsx
-│   │   │   └── error-fallback.tsx
-│   │   └── ui/ (shadcn/ui components)
+│   │   │   ├── bio-section.tsx (biography paragraphs)
+│   │   │   ├── skills-section.tsx (grouped skill badges)
+│   │   │   ├── timeline.tsx (experience timeline container)
+│   │   │   └── timeline-item.tsx (single timeline entry)
+│   │   └── ui/ (Base UI components via shadcn/ui)
 │   │       ├── button.tsx
 │   │       ├── card.tsx
-│   │       ├── badge.tsx
-│   │       ├── input.tsx
-│   │       └── ... (others as needed)
+│   │       └── badge.tsx
 │   │
 │   ├── content/
 │   │   ├── projects.json (project data — seed)
@@ -86,23 +77,16 @@ porfolio_v2/
 │   │       └── [slug].mdx
 │   │
 │   ├── lib/
-│   │   ├── utils.ts (helper functions, cn() for Tailwind merge)
-│   │   ├── constants.ts (site constants, URLs, etc.)
-│   │   ├── types.ts (alternative: shared types go here)
-│   │   └── api-client.ts (future — API requests)
+│   │   ├── utils.ts (cn() for Tailwind class merging, clsx + tailwind-merge)
+│   │   ├── constants.ts (site constants: nav links, social links, URLs)
+│   │   └── content.ts (content helper functions: getProjects, getFeaturedProjects, etc.)
 │   │
 │   ├── types/
-│   │   ├── project.ts
-│   │   ├── experience.ts
-│   │   ├── skill.ts
-│   │   └── blog.ts (future)
+│   │   ├── project.ts (Project, ProjectLink interfaces)
+│   │   ├── experience.ts (Experience interface)
+│   │   ├── skill.ts (SkillGroup interface)
+│   │   └── index.ts (barrel export of all types)
 │   │
-│   ├── styles/
-│   │   ├── globals.css (Tailwind directives + global styles)
-│   │   └── theme.css (CSS variables for gradients — optional)
-│   │
-│   └── hooks/ (future)
-│       └── use-mobile.ts
 │
 ├── public/
 │   ├── favicon.ico

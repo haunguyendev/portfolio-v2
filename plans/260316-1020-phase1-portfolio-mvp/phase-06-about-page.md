@@ -10,7 +10,7 @@
 | Field | Value |
 |-------|-------|
 | Priority | HIGH |
-| Status | Pending |
+| Status | Complete |
 | Effort | ~3h |
 | Depends On | Phase 2 (layout), Phase 3 (content/types) |
 | Description | Build About page with 3 sections: Bio (full biography), Skills (badges grouped by category), Experience Timeline (vertical timeline with work history) |
@@ -298,19 +298,19 @@ export default function AboutPage() {
 
 ## Todo List
 
-- [ ] 6.1 Create `src/components/about/bio-section.tsx` (biography paragraphs)
-- [ ] 6.2 Create `src/components/about/skills-section.tsx` (grouped badges from skills.json)
-- [ ] 6.3 Create `src/components/about/timeline-item.tsx` (single experience entry with dot/line)
-- [ ] 6.4 Create `src/components/about/timeline.tsx` (timeline container, maps experience.json)
-- [ ] 6.5 Create `src/app/about/page.tsx` (compose sections)
-- [ ] 6.6 Test: bio text renders with proper spacing and max-width
-- [ ] 6.7 Test: skills badges grouped by category, all badges from skills.json present
-- [ ] 6.8 Test: timeline renders with vertical line, dots, all experience entries
-- [ ] 6.9 Test: last timeline item has no connecting line below
-- [ ] 6.10 Test: responsive — badges wrap on mobile, timeline stacks properly
-- [ ] 6.11 Test: heading hierarchy (h1 > h2 > h3) is correct
-- [ ] 6.12 Verify page title "About | Kane Nguyen" in browser tab
-- [ ] 6.13 Verify `pnpm build` succeeds
+- [x] 6.1 Create `src/components/about/bio-section.tsx` (biography paragraphs)
+- [x] 6.2 Create `src/components/about/skills-section.tsx` (grouped badges from skills.json)
+- [x] 6.3 Create `src/components/about/timeline-item.tsx` (single experience entry with dot/line)
+- [x] 6.4 Create `src/components/about/timeline.tsx` (timeline container, maps experience.json)
+- [x] 6.5 Create `src/app/about/page.tsx` (compose sections)
+- [x] 6.6 Test: bio text renders with proper spacing and max-width
+- [x] 6.7 Test: skills badges grouped by category, all badges from skills.json present
+- [x] 6.8 Test: timeline renders with vertical line, dots, all experience entries
+- [x] 6.9 Test: last timeline item has no connecting line below
+- [x] 6.10 Test: responsive — badges wrap on mobile, timeline stacks properly
+- [x] 6.11 Test: heading hierarchy (h1 > h2 > h3) is correct
+- [x] 6.12 Verify page title "About | Kane Nguyen" in browser tab
+- [x] 6.13 Verify `pnpm build` succeeds
 
 ## Success Criteria
 

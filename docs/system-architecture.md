@@ -27,11 +27,13 @@
 ```
 
 **Key Points:**
-- Next.js App Router for pages and routing
-- Static generation (SSG) for static pages (Home, Projects, About, Blog)
-- Content from local JSON files (Phase 1) → Database (Phase 4)
-- No server logic in Phase 1 (changes in Phase 4 with API routes)
-- Vercel handles deployment, caching, CDN
+- **Next.js 16.1.6** App Router for pages and routing
+- **Static generation (SSG)** for all pages in Phase 1 (Home, Projects, About, Blog)
+- **Content from local JSON files** (Phase 1) → PostgreSQL Database (Phase 4)
+- **No server logic** in Phase 1 (API routes added in Phase 4 for comments, likes, views)
+- **Vercel** handles deployment, caching, CDN, and serverless functions
+- **TypeScript strict mode** for type safety
+- **Tailwind CSS v4.2.1** with Base UI components (not Radix)
 
 ## Data Flow (Phase 1)
 

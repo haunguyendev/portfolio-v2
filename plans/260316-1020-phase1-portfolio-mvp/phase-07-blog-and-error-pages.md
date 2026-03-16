@@ -10,7 +10,7 @@
 | Field | Value |
 |-------|-------|
 | Priority | HIGH |
-| Status | Pending |
+| Status | Complete |
 | Effort | ~1.5h |
 | Depends On | Phase 2 (layout) |
 | Description | Build Blog "Coming soon" placeholder page, 404 not-found page, and error boundary page. Final responsive testing and polish pass. |
@@ -238,18 +238,18 @@ After all pages built, do a comprehensive responsive pass:
 
 ## Todo List
 
-- [ ] 7.1 Create `src/app/blog/page.tsx` (coming soon placeholder)
-- [ ] 7.2 Create `src/app/not-found.tsx` (404 page with gradient 404 text)
-- [ ] 7.3 Create `src/app/error.tsx` (error boundary with retry + home link)
-- [ ] 7.4 Test blog page: renders with icon, heading, coming soon message
-- [ ] 7.5 Test 404: navigate to `/nonexistent-route`, see 404 page
-- [ ] 7.6 Test error page: verify it renders (can force error in dev for testing)
-- [ ] 7.7 Run full responsive test on all pages at 375px, 768px, 1024px
-- [ ] 7.8 Verify all nav links work and show active state
-- [ ] 7.9 Verify footer sticks to bottom on short pages (Blog, 404)
-- [ ] 7.10 Check for horizontal scrollbar at all breakpoints
-- [ ] 7.11 Keyboard navigation audit: tab through all pages
-- [ ] 7.12 Verify `pnpm build` succeeds with all pages
+- [x] 7.1 Create `src/app/blog/page.tsx` (coming soon placeholder)
+- [x] 7.2 Create `src/app/not-found.tsx` (404 page with gradient 404 text)
+- [x] 7.3 Create `src/app/error.tsx` (error boundary with retry + home link)
+- [x] 7.4 Test blog page: renders with icon, heading, coming soon message
+- [x] 7.5 Test 404: navigate to `/nonexistent-route`, see 404 page
+- [x] 7.6 Test error page: verify it renders (can force error in dev for testing)
+- [x] 7.7 Run full responsive test on all pages at 375px, 768px, 1024px
+- [x] 7.8 Verify all nav links work and show active state
+- [x] 7.9 Verify footer sticks to bottom on short pages (Blog, 404)
+- [x] 7.10 Check for horizontal scrollbar at all breakpoints
+- [x] 7.11 Keyboard navigation audit: tab through all pages
+- [x] 7.12 Verify `pnpm build` succeeds with all pages
 
 ## Success Criteria
 

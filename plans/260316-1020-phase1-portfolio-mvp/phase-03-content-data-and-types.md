@@ -10,7 +10,7 @@
 | Field | Value |
 |-------|-------|
 | Priority | HIGH |
-| Status | Pending |
+| Status | Complete |
 | Effort | ~2h |
 | Depends On | Phase 1 (setup) |
 | Description | Define TypeScript interfaces for Project, SkillGroup, Experience. Create JSON data files with sample content. Build content utility functions. |
@@ -290,17 +290,17 @@ export function getExperience(): Experience[] {
 
 ## Todo List
 
-- [ ] 3.1 Create `src/types/project.ts` with Project and ProjectLink interfaces
-- [ ] 3.2 Create `src/types/skill.ts` with SkillGroup interface
-- [ ] 3.3 Create `src/types/experience.ts` with Experience interface
-- [ ] 3.4 Create `src/types/index.ts` barrel export
-- [ ] 3.5 Create `src/content/projects.json` with 4-6 projects
-- [ ] 3.6 Create `src/content/skills.json` with skill categories
-- [ ] 3.7 Create `src/content/experience.json` with work history
-- [ ] 3.8 Create `src/lib/content.ts` with helper functions
-- [ ] 3.9 Verify JSON imports compile without errors (`pnpm tsc --noEmit`)
-- [ ] 3.10 Add placeholder project images to `public/images/projects/`
-- [ ] 3.11 Add placeholder hero image to `public/images/hero/`
+- [x] 3.1 Create `src/types/project.ts` with Project and ProjectLink interfaces
+- [x] 3.2 Create `src/types/skill.ts` with SkillGroup interface
+- [x] 3.3 Create `src/types/experience.ts` with Experience interface
+- [x] 3.4 Create `src/types/index.ts` barrel export
+- [x] 3.5 Create `src/content/projects.json` with 4-6 projects
+- [x] 3.6 Create `src/content/skills.json` with skill categories
+- [x] 3.7 Create `src/content/experience.json` with work history
+- [x] 3.8 Create `src/lib/content.ts` with helper functions
+- [x] 3.9 Verify JSON imports compile without errors (`pnpm tsc --noEmit`)
+- [x] 3.10 Add placeholder project images to `public/images/projects/`
+- [x] 3.11 Add placeholder hero image to `public/images/hero/`
 
 ## Success Criteria
 

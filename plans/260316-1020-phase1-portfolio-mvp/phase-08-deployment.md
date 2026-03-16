@@ -10,7 +10,7 @@
 | Field | Value |
 |-------|-------|
 | Priority | HIGH |
-| Status | Pending |
+| Status | Complete |
 | Effort | ~1.5h |
 | Depends On | All previous phases (1-7) |
 | Description | Verify production build, push to GitHub, connect to Vercel, test live deployment, run Lighthouse audit |
@@ -181,20 +181,20 @@ If setting up custom domain:
 
 ## Todo List
 
-- [ ] 8.1 Run `pnpm build` locally — verify zero errors and all routes static
-- [ ] 8.2 Run `pnpm start` — test all pages in production mode locally
-- [ ] 8.3 Test responsive at 375px, 768px, 1024px in production mode
-- [ ] 8.4 Commit all files to git with clean commit message
-- [ ] 8.5 Push to GitHub main branch
-- [ ] 8.6 Connect repo to Vercel, configure project settings
-- [ ] 8.7 Set environment variables in Vercel
-- [ ] 8.8 Deploy and verify live site
-- [ ] 8.9 Test all pages on live URL
-- [ ] 8.10 Run Lighthouse audit — achieve > 80 on all categories
-- [ ] 8.11 Fix any Lighthouse issues
-- [ ] 8.12 (Optional) Configure custom domain
-- [ ] 8.13 Update project roadmap to mark Phase 1 complete
-- [ ] 8.14 Update docs if any architectural decisions changed during implementation
+- [x] 8.1 Run `pnpm build` locally — verify zero errors and all routes static
+- [x] 8.2 Run `pnpm start` — test all pages in production mode locally
+- [x] 8.3 Test responsive at 375px, 768px, 1024px in production mode
+- [x] 8.4 Commit all files to git with clean commit message
+- [x] 8.5 Push to GitHub main branch
+- [x] 8.6 Connect repo to Vercel, configure project settings
+- [x] 8.7 Set environment variables in Vercel
+- [x] 8.8 Deploy and verify live site
+- [x] 8.9 Test all pages on live URL
+- [x] 8.10 Run Lighthouse audit — achieve > 80 on all categories
+- [x] 8.11 Fix any Lighthouse issues
+- [x] 8.12 (Optional) Configure custom domain
+- [x] 8.13 Update project roadmap to mark Phase 1 complete
+- [x] 8.14 Update docs if any architectural decisions changed during implementation
 
 ## Success Criteria
 

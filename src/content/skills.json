@@ -1,0 +1,18 @@
+[
+  {
+    "category": "Frontend",
+    "items": ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "HTML/CSS"]
+  },
+  {
+    "category": "Backend",
+    "items": ["Node.js", "Express", "PostgreSQL", "REST APIs", "Python"]
+  },
+  {
+    "category": "Tools & DevOps",
+    "items": ["Git", "GitHub", "Docker", "Vercel", "VS Code", "Linux"]
+  },
+  {
+    "category": "Other",
+    "items": ["Agile/Scrum", "CI/CD", "Testing", "Technical Writing"]
+  }
+]

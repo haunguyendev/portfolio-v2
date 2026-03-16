@@ -11,7 +11,7 @@
 | Field | Value |
 |-------|-------|
 | Priority | HIGH |
-| Status | Pending |
+| Status | Complete |
 | Effort | ~3h |
 | Depends On | Phase 2 (layout), Phase 3 (content/types), Phase 4 (ProjectCard) |
 | Description | Full project listing page with tech tag filtering. Reuses ProjectCard from Phase 4. Adds ProjectGrid container and ProjectFilter (client component for tag toggle). |
@@ -280,18 +280,18 @@ export function ProjectsPageContent({
 
 ## Todo List
 
-- [ ] 5.1 Create `src/components/projects/project-grid.tsx` (grid layout + empty state)
-- [ ] 5.2 Create `src/components/projects/project-filter.tsx` (tech tag badges, click to filter)
-- [ ] 5.3 Create `src/app/projects/projects-page-content.tsx` (client wrapper with filter state)
-- [ ] 5.4 Create `src/app/projects/page.tsx` (server page, metadata, data fetching)
-- [ ] 5.5 Test: all projects display in grid by default
-- [ ] 5.6 Test: clicking a tech tag filters projects to only those with that tech
-- [ ] 5.7 Test: clicking "All" resets filter and shows all projects
-- [ ] 5.8 Test: empty state message shows when filter has no matches
-- [ ] 5.9 Test: responsive grid — 1 col mobile, 2 col tablet, 3 col desktop
-- [ ] 5.10 Test: keyboard accessibility — tab to filter badges, Enter to select
-- [ ] 5.11 Verify page title "Projects | Kane Nguyen" in browser tab
-- [ ] 5.12 Verify `pnpm build` succeeds
+- [x] 5.1 Create `src/components/projects/project-grid.tsx` (grid layout + empty state)
+- [x] 5.2 Create `src/components/projects/project-filter.tsx` (tech tag badges, click to filter)
+- [x] 5.3 Create `src/app/projects/projects-page-content.tsx` (client wrapper with filter state)
+- [x] 5.4 Create `src/app/projects/page.tsx` (server page, metadata, data fetching)
+- [x] 5.5 Test: all projects display in grid by default
+- [x] 5.6 Test: clicking a tech tag filters projects to only those with that tech
+- [x] 5.7 Test: clicking "All" resets filter and shows all projects
+- [x] 5.8 Test: empty state message shows when filter has no matches
+- [x] 5.9 Test: responsive grid — 1 col mobile, 2 col tablet, 3 col desktop
+- [x] 5.10 Test: keyboard accessibility — tab to filter badges, Enter to select
+- [x] 5.11 Verify page title "Projects | Kane Nguyen" in browser tab
+- [x] 5.12 Verify `pnpm build` succeeds
 
 ## Success Criteria
 

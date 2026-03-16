@@ -11,9 +11,9 @@
 | Field | Value |
 |-------|-------|
 | Priority | HIGH |
-| Status | Pending |
+| Status | Complete |
 | Effort | ~2h |
-| Description | Initialize Next.js 15 project, configure TypeScript strict mode, install Tailwind + shadcn/ui, set up directory structure, ESLint + Prettier |
+| Description | Initialize Next.js 16 project, configure TypeScript strict mode, install Tailwind CSS v4 + Base UI, set up directory structure, ESLint + Prettier |
 
 ## Key Insights
 
@@ -306,22 +306,22 @@ pnpm build
 
 ## Todo List
 
-- [ ] 1.1 Back up existing files (README.md, .gitignore, docs/, CLAUDE.md)
-- [ ] 1.2 Run `create-next-app` to scaffold project
-- [ ] 1.3 Restore backed-up files, merge .gitignore
-- [ ] 1.4 Configure TypeScript strict mode in tsconfig.json
-- [ ] 1.5 Initialize shadcn/ui (`shadcn init`)
-- [ ] 1.6 Install shadcn/ui components (button, card, badge)
-- [ ] 1.7 Install lucide-react
-- [ ] 1.8 Configure next.config.ts (minimal)
-- [ ] 1.9 Set up globals.css with gradient utility classes
-- [ ] 1.10 Create directory structure (components/, content/, types/, public/images/)
-- [ ] 1.11 Create `src/lib/constants.ts` with nav links and social links
-- [ ] 1.12 Create `.env.example`
-- [ ] 1.13 Configure Prettier + install plugin
-- [ ] 1.14 Verify: `pnpm tsc --noEmit` passes
-- [ ] 1.15 Verify: `pnpm dev` serves localhost:3000
-- [ ] 1.16 Verify: `pnpm build` succeeds
+- [x] 1.1 Back up existing files (README.md, .gitignore, docs/, CLAUDE.md)
+- [x] 1.2 Run `create-next-app` to scaffold project
+- [x] 1.3 Restore backed-up files, merge .gitignore
+- [x] 1.4 Configure TypeScript strict mode in tsconfig.json
+- [x] 1.5 Initialize shadcn/ui (`shadcn init`)
+- [x] 1.6 Install shadcn/ui components (button, card, badge)
+- [x] 1.7 Install lucide-react
+- [x] 1.8 Configure next.config.ts (minimal)
+- [x] 1.9 Set up globals.css with gradient utility classes
+- [x] 1.10 Create directory structure (components/, content/, types/, public/images/)
+- [x] 1.11 Create `src/lib/constants.ts` with nav links and social links
+- [x] 1.12 Create `.env.example`
+- [x] 1.13 Configure Prettier + install plugin
+- [x] 1.14 Verify: `pnpm tsc --noEmit` passes
+- [x] 1.15 Verify: `pnpm dev` serves localhost:3000
+- [x] 1.16 Verify: `pnpm build` succeeds
 
 ## Success Criteria
 

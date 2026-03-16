@@ -11,7 +11,7 @@
 | Field | Value |
 |-------|-------|
 | Priority | HIGH |
-| Status | Pending |
+| Status | Complete |
 | Effort | ~3h |
 | Depends On | Phase 1 (setup complete) |
 | Description | Build Header (sticky, responsive, gradient accent), Footer (social links, copyright), Navigation, mobile nav, and root layout composing them |
@@ -323,17 +323,17 @@ export default function RootLayout({
 
 ## Todo List
 
-- [ ] 2.1 Create `src/components/layout/navigation.tsx` (make client component with `usePathname`)
-- [ ] 2.2 Create `src/components/layout/mobile-nav.tsx` (client component with hamburger toggle)
-- [ ] 2.3 Create `src/components/layout/header.tsx` (sticky, logo + nav + mobile-nav)
-- [ ] 2.4 Create `src/components/layout/footer.tsx` (social links + copyright)
-- [ ] 2.5 Update `src/app/layout.tsx` (root layout composing Header + main + Footer)
-- [ ] 2.6 Verify gradient accent bar renders at top of page
-- [ ] 2.7 Test desktop navigation — all 4 links visible, active state works
-- [ ] 2.8 Test mobile navigation — hamburger opens/closes, links navigate correctly
-- [ ] 2.9 Test sticky header on scroll
-- [ ] 2.10 Test keyboard navigation (tab through links, enter to activate)
-- [ ] 2.11 Verify `pnpm build` succeeds
+- [x] 2.1 Create `src/components/layout/navigation.tsx` (make client component with `usePathname`)
+- [x] 2.2 Create `src/components/layout/mobile-nav.tsx` (client component with hamburger toggle)
+- [x] 2.3 Create `src/components/layout/header.tsx` (sticky, logo + nav + mobile-nav)
+- [x] 2.4 Create `src/components/layout/footer.tsx` (social links + copyright)
+- [x] 2.5 Update `src/app/layout.tsx` (root layout composing Header + main + Footer)
+- [x] 2.6 Verify gradient accent bar renders at top of page
+- [x] 2.7 Test desktop navigation — all 4 links visible, active state works
+- [x] 2.8 Test mobile navigation — hamburger opens/closes, links navigate correctly
+- [x] 2.9 Test sticky header on scroll
+- [x] 2.10 Test keyboard navigation (tab through links, enter to activate)
+- [x] 2.11 Verify `pnpm build` succeeds
 
 ## Success Criteria
 
