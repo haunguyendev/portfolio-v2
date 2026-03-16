@@ -1,6 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { TypewriterHeading } from '@/components/ui/typewriter-heading'
+
+const NAMES = [
+  [{ text: 'Kane ' }, { text: 'Nguyen', className: 'gradient-text' }],
+  [{ text: 'Trung Hau ' }, { text: 'Nguyen', className: 'gradient-text' }],
+]
 
 export function HeroSection() {
   return (
@@ -13,10 +19,10 @@ export function HeroSection() {
               <span className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
                 Hi, I&apos;m
               </span>
-              <h1 className="text-5xl font-bold tracking-tight text-foreground lg:text-6xl">
-                Kane{' '}
-                <span className="gradient-text">Nguyen</span>
-              </h1>
+              <TypewriterHeading
+                names={NAMES}
+                className="text-5xl font-bold tracking-tight text-foreground lg:text-6xl"
+              />
               <p className="text-xl font-medium text-muted-foreground">
                 Software Engineer
               </p>
