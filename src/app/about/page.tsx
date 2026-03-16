@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { BioSection } from '@/components/about/bio-section'
+import { GitHubStatsSection } from '@/components/about/github-stats-section'
 import { SkillsSection } from '@/components/about/skills-section'
 import { Timeline } from '@/components/about/timeline'
 
@@ -18,6 +19,7 @@ export default function AboutPage() {
         </h1>
 
         <BioSection />
+        <GitHubStatsSection />
         <SkillsSection />
         <Timeline />
       </div>

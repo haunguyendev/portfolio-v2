@@ -8,7 +8,7 @@
     "technologies": ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui"],
     "featured": true,
     "links": {
-      "github": "https://github.com/kanenguyen/portfolio-v2",
+      "github": "https://github.com/haunguyendev/portfolio-v2",
       "demo": "https://kanenguyen.dev"
     },
     "category": "Personal",
@@ -26,7 +26,7 @@
     "technologies": ["React", "Node.js", "PostgreSQL", "WebSocket"],
     "featured": true,
     "links": {
-      "github": "https://github.com/kanenguyen/task-app",
+      "github": "https://github.com/haunguyendev/task-app",
       "demo": "https://task-app.example.com"
     },
     "category": "Personal",
@@ -45,7 +45,7 @@
     "technologies": ["Node.js", "Express", "PostgreSQL", "Stripe"],
     "featured": true,
     "links": {
-      "github": "https://github.com/kanenguyen/ecommerce-api"
+      "github": "https://github.com/haunguyendev/ecommerce-api"
     },
     "category": "Personal",
     "role": "Backend Developer",
@@ -63,7 +63,7 @@
     "technologies": ["React", "TypeScript", "Chart.js", "OpenWeatherMap API"],
     "featured": false,
     "links": {
-      "github": "https://github.com/kanenguyen/weather-dashboard",
+      "github": "https://github.com/haunguyendev/weather-dashboard",
       "demo": "https://weather.example.com"
     },
     "category": "Personal",
@@ -81,7 +81,7 @@
     "technologies": ["Node.js", "TypeScript", "Commander.js"],
     "featured": false,
     "links": {
-      "github": "https://github.com/kanenguyen/cli-tool"
+      "github": "https://github.com/haunguyendev/cli-tool"
     },
     "category": "Personal",
     "role": "Developer",

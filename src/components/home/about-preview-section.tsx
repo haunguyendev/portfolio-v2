@@ -11,7 +11,7 @@ const TechStackTabs = dynamic(
 
 const STATS = [
   { icon: Briefcase, value: '1yr', label: 'Shipping Production Code' },
-  { icon: FolderGit2, value: '5', label: 'Production Apps' },
+  { icon: FolderGit2, value: '9', label: 'Production Apps' },
   { icon: Layers, value: '10+', label: 'Tools in My Stack' },
 ]
 
