@@ -87,6 +87,7 @@ export function BioSection() {
           </div>
         </div>
       </div>
+
     </section>
   )
 }
