@@ -43,10 +43,11 @@ export function BioSection() {
           </p>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            I build modern web apps with React, Next.js, and TypeScript.
-            With 1 year of professional experience, I focus on shipping clean,
-            maintainable code that solves real problems. Currently open to
-            new opportunities where I can grow and contribute.
+            I build web apps with React, Next.js, and TypeScript — 1 year in
+            and still enjoying the steep parts of the learning curve. I leave
+            work at work, do nothing productive in my free time, and find
+            comfort in both the boring and the difficult. Currently open to
+            new opportunities.
           </p>
 
           {/* Social links */}

@@ -60,7 +60,7 @@ porfolio_v2/
 │   │   │   ├── project-grid.tsx (responsive grid layout)
 │   │   │   └── project-filter.tsx (tech tag filters, client component)
 │   │   ├── about/
-│   │   │   ├── bio-section.tsx (biography paragraphs)
+│   │   │   ├── bio-section.tsx (2-column hero: profile photo, bio, social links, resume download CTA)
 │   │   │   ├── skills-section.tsx (grouped skill badges)
 │   │   │   ├── timeline.tsx (experience timeline container)
 │   │   │   └── timeline-item.tsx (single timeline entry)
@@ -91,6 +91,7 @@ porfolio_v2/
 ├── public/
 │   ├── favicon.ico
 │   ├── og-image.png
+│   ├── resume.pdf (downloadable resume)
 │   ├── images/
 │   │   ├── hero/
 │   │   │   └── kane-photo.jpg
