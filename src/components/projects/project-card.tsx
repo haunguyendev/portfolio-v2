@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Github, ExternalLink, User, Users, TrendingUp, Calendar } from 'lucide-react'
+import { Github, ExternalLink, User, Users, TrendingUp, Calendar, Briefcase, Heart, Handshake } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { Project } from '@/types'
 
@@ -25,9 +25,22 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
       {/* Content */}
       <div className="flex flex-1 flex-col gap-3 p-4 md:p-6">
-        <h3 className="text-base font-semibold text-foreground transition-colors group-hover:text-muted-foreground">
-          {project.title}
-        </h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-base font-semibold text-foreground transition-colors group-hover:text-muted-foreground">
+            {project.title}
+          </h3>
+          {project.category && (
+            <Badge
+              variant={project.category === 'Company' ? 'default' : 'outline'}
+              className="text-[10px] px-1.5 py-0"
+            >
+              {project.category === 'Company' && <Briefcase className="mr-1 size-2.5" />}
+              {project.category === 'Personal' && <Heart className="mr-1 size-2.5" />}
+              {project.category === 'Freelance' && <Handshake className="mr-1 size-2.5" />}
+              {project.category}
+            </Badge>
+          )}
+        </div>
 
         <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
           {project.description}

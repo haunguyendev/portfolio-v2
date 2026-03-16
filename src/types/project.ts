@@ -13,6 +13,7 @@ export interface Project {
   technologies: string[]
   featured: boolean
   links: ProjectLink
+  category?: 'Personal' | 'Company' | 'Freelance'
   role?: string
   teamSize?: string
   impact?: string
