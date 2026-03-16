@@ -1,9 +1,9 @@
 [
   {
-    "company": "Company Name",
-    "role": "Software Engineer",
+    "company": "Promete Technology",
+    "role": "Fullstack Developer",
     "duration": "Mar 2025 - Present",
-    "description": "Full-stack development for web applications serving thousands of users.",
+    "description": "Full-stack development for web applications at a technology company specializing in software solutions and e-commerce platforms.",
     "highlights": [
       "Built and maintained React-based frontend features improving user engagement by 20%",
       "Developed RESTful APIs with Node.js and PostgreSQL for core business logic",
@@ -12,9 +12,20 @@
     ]
   },
   {
-    "company": "University / Bootcamp",
+    "company": "FPT Software",
+    "role": "Backend Developer Intern (.NET)",
+    "duration": "2022",
+    "description": "Backend development internship at one of Vietnam's largest IT outsourcing companies.",
+    "highlights": [
+      "Developed backend services using .NET framework",
+      "Gained hands-on experience with enterprise-level software development practices",
+      "Collaborated with senior engineers on production codebases"
+    ]
+  },
+  {
+    "company": "FPT University",
     "role": "Computer Science Student",
-    "duration": "2021 - 2024",
+    "duration": "2020 - 2024",
     "description": "Bachelor's degree in Computer Science with focus on software engineering.",
     "highlights": [
       "Graduated with honors",
