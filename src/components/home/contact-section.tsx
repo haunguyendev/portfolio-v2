@@ -54,8 +54,9 @@ export function ContactSection() {
           {/* Right: Contact info */}
           <div className="flex flex-col gap-6">
             <p className="text-muted-foreground">
-              I&apos;m open to freelance projects, collaborations, and full-time
-              opportunities. Feel free to reach out!
+              I&apos;m looking for full-stack or frontend roles at product
+              companies. Also open to freelance projects — feel free to reach
+              out!
             </p>
 
             {/* Contact method cards */}

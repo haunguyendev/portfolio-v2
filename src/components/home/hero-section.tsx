@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Download } from 'lucide-react'
 import { TypewriterHeading } from '@/components/ui/typewriter-heading'
 import { RotatingText } from '@/components/ui/rotating-text'
 
@@ -37,9 +37,9 @@ export function HeroSection() {
             </div>
 
             <p className="max-w-md leading-relaxed text-muted-foreground">
-              I build web applications with a focus on performance and user
-              experience. Passionate about clean code, modern tooling, and
-              shipping products people love.
+              Built full-stack web apps serving 500+ users — from real-time
+              task management to e-commerce APIs processing 1K+ orders/month.
+              Currently open to new opportunities.
             </p>
 
             <span className="text-xs text-muted-foreground">
@@ -54,12 +54,14 @@ export function HeroSection() {
                 View Projects
                 <ArrowRight className="size-4" />
               </Link>
-              <Link
-                href="/about"
-                className="inline-flex items-center rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
+              <a
+                href="/resume.pdf"
+                download
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
               >
-                About Me
-              </Link>
+                <Download className="size-4" />
+                Resume
+              </a>
             </div>
           </div>
 

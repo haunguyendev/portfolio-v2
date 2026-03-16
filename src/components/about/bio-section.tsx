@@ -44,11 +44,13 @@ export function BioSection() {
           </p>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            I build web apps with React, Next.js, and TypeScript — 1 year in
-            and still enjoying the steep parts of the learning curve. I leave
-            work at work, do nothing productive in my free time, and find
-            comfort in both the boring and the difficult. Currently open to
-            new opportunities.
+            I build web apps with React, Next.js, and TypeScript. In my first
+            year as a Software Engineer, I shipped features that improved user
+            engagement by 20%, built REST APIs for e-commerce, and set up
+            CI/CD pipelines that cut production bugs by 30%. I value clean
+            boundaries between work and life — it keeps my code sharp and my
+            thinking fresh. Currently looking for a full-stack or frontend role
+            where I can grow with a strong engineering team.
           </p>
 
           {/* Social links */}

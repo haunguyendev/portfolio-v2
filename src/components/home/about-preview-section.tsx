@@ -10,9 +10,9 @@ const TechStackTabs = dynamic(
 )
 
 const STATS = [
-  { icon: Briefcase, value: '1+', label: 'Year Exp' },
-  { icon: FolderGit2, value: '5+', label: 'Projects' },
-  { icon: Layers, value: '10+', label: 'Technologies' },
+  { icon: Briefcase, value: '1yr', label: 'Shipping Production Code' },
+  { icon: FolderGit2, value: '5', label: 'Production Apps' },
+  { icon: Layers, value: '10+', label: 'Tools in My Stack' },
 ]
 
 
@@ -29,15 +29,14 @@ export function AboutPreviewSection() {
             </h2>
             <div className="flex flex-col gap-4 leading-relaxed text-muted-foreground">
               <p>
-                I&apos;m a Software Engineer with 1 year of experience building
-                modern web applications. I thrive on turning ideas into polished
-                products — from architecting scalable backends to crafting
-                pixel-perfect UIs.
+                Built 5 production apps across full-stack — from real-time task
+                management (500+ users) to e-commerce APIs handling 1K+
+                orders/month. I pick up new stacks fast and ship clean, tested
+                code.
               </p>
               <p>
-                When I&apos;m not writing code, you&apos;ll find me exploring new
-                technologies, contributing to open source, or writing about
-                software engineering on my blog.
+                Looking for a full-stack or frontend role where I can grow with
+                a strong engineering team. Currently based in Ho Chi Minh City.
               </p>
             </div>
             <div className="mt-6">
