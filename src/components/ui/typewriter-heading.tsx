@@ -32,9 +32,12 @@ export function TypewriterHeading({
   pauseAfterDelete = 700,
   className,
 }: TypewriterHeadingProps) {
+  const [mounted, setMounted] = useState(false)
   const [nameIndex, setNameIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)
   const [phase, setPhase] = useState<Phase>('typing')
+
+  useEffect(() => setMounted(true), [])
 
   const currentSegments = names[nameIndex]
   const totalChars = currentSegments.reduce((sum, seg) => sum + seg.text.length, 0)
@@ -102,6 +105,17 @@ export function TypewriterHeading({
         </span>
       )
     })
+  }
+
+  // Render static first name on server to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <h1 className={`${className} whitespace-nowrap`}>
+        {names[0].map((seg, i) => (
+          <span key={i} className={seg.className}>{seg.text}</span>
+        ))}
+      </h1>
+    )
   }
 
   return (

@@ -20,17 +20,32 @@ export function RotatingText({
   interval = 3000,
   className,
 }: RotatingTextProps) {
+  const [mounted, setMounted] = useState(false)
   const [index, setIndex] = useState(0)
 
+  useEffect(() => setMounted(true), [])
+
   useEffect(() => {
+    if (!mounted) return
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % items.length)
     }, interval)
 
     return () => clearInterval(timer)
-  }, [items.length, interval])
+  }, [mounted, items.length, interval])
 
   const current = items[index]
+
+  // Render static first item on server to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <div className={`relative overflow-hidden ${className}`}>
+        <span className={`block ${items[0].className ?? ''}`}>
+          {items[0].text}
+        </span>
+      </div>
+    )
+  }
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
