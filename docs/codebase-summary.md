@@ -124,30 +124,32 @@ Reusable React components organized by feature/domain.
 
 **Layout Components** (`layout/`):
 - `header.tsx` (client) — Sticky header with logo, nav, theme toggle, command menu
-- `logo.tsx` — SVG logo link to home
-- `navigation.tsx` (client) — Desktop nav with active state detection
-- `mobile-nav.tsx` (client) — Hamburger menu overlay (mobile-only)
-- `theme-toggle.tsx` (client) — Light/dark/system theme switcher
+- `logo.tsx` — SVG logo link to home (switches logo-light/logo-dark)
+- `navigation.tsx` (client) — Desktop nav with active state detection (Home, Projects, About, Diary, Blog)
+- `mobile-nav.tsx` (client) — Hamburger menu overlay (mobile-only) with Escape key handler
+- `theme-toggle.tsx` (client) — Light/dark/system theme switcher via Dropdown
 - `theme-provider.tsx` — Next-themes wrapper
-- `command-menu.tsx` (client, lazy) — ⌘K command palette
+- `command-menu.tsx` (client, lazy) — ⌘K command palette (lazy-loaded for performance)
 - `footer.tsx` — Multi-column footer with nav, socials, copyright
 
 **Home Components** (`home/`):
-- `hero-section.tsx` — Split layout: TypewriterHeading + RotatingText (left), photo (right)
-- `featured-projects-section.tsx` — 3-col grid of featured projects
+- `hero-section.tsx` — Split layout: TypewriterHeading + RotatingText (left), personal photo (right)
+- `featured-projects-section.tsx` — 3-col grid of featured projects with category badges
 - `about-preview-section.tsx` — Bento grid: bio, stats, TechStackTabs (lazy)
-- `tech-stack-tabs.tsx` (client, lazy) — 5 tech category tabs with icons, Framer Motion
+- `tech-stack-tabs.tsx` (client, lazy) — 5 tech category tabs with icons, Framer Motion, lazy-loaded
 - `animated-cta-card.tsx` (client) — Gradient orbs, particles, resume download (Framer Motion)
-- `contact-section.tsx` — 2-col: AnimatedCtaCard + contact methods
+- `contact-section.tsx` — 2-col: AnimatedCtaCard + contact methods (email, social links)
 - `latest-blog-section.tsx` — Blog placeholder ("Coming soon")
 
 **Projects Components** (`projects/`):
-- `project-card.tsx` — Project item: image, title, desc, metadata, tech badges, links
+- `project-card.tsx` — Project item: image, title, desc, category badge, tech badges, links, role, impact
 - `project-grid.tsx` — Responsive 3-col grid or empty state
-- `project-filter.tsx` (client) — Tech tag filtering buttons
+- `project-filter.tsx` (client) — Tech tag filtering buttons with type="button" attributes
 
 **About Components** (`about/`):
-- `bio-section.tsx` — Profile photo + bio + socials + resume button
+- `bio-section.tsx` — Profile photo + bio + socials (GitHub, LinkedIn, Twitter) + resume button
+- `github-stats-section.tsx` (client) — Live GitHub API fetch: repos count, followers, contribution graph
+- `life-source-code.tsx` (client) — Animated terminal showing code + lifestyle philosophy (char-by-char typing, infinite loop)
 - `skills-section.tsx` (client) — TechStackTabs (lazy) + soft skills badges
 - `timeline.tsx` — Experience timeline container
 - `timeline-item.tsx` — Single timeline entry (dot, connector, role/highlights)
@@ -160,31 +162,45 @@ Reusable React components organized by feature/domain.
 - `dropdown-menu.tsx` — Menu compound component from @base-ui/react
 - `typewriter-heading.tsx` (client) — Custom typewriter effect with Framer Motion cursor (hydration-safe)
 - `rotating-text.tsx` (client) — Custom rotating text with Framer Motion (hydration-safe)
+- `animated-page-title.tsx` (client) — Page title animation (fade + slide-up transition) on route change
 
 ### `/src/content`
 Static data files (JSON initially, MDX in Phase 2+).
 
-**projects.json** — 5 projects (3 featured) with extended metadata:
+**projects.json** — 6 projects (3 featured, categorized) with extended metadata:
 ```typescript
 // Each project includes:
-id, title, description, longDescription, image, technologies[], featured,
-links{github?, demo?, blog?}, role?, teamSize?, impact?, startDate?, endDate?
+id, title, description, longDescription, image, technologies[], featured, category,
+categoryLabel, links{github?, demo?, blog?}, role, teamSize, impact, startDate, endDate
+
+// Categories: "personal", "company", "freelance"
+// Example:
+// - 2 Company projects (Promete Technology: CRM Platform, Inventory System)
+// - 2 Freelance projects (Restaurant Website, Dental Clinic Booking)
+// - 2 Personal projects (Portfolio v2, Weather Dashboard)
 ```
 
-**skills.json** — Skills grouped by category:
+**skills.json** — Skills grouped by 5 categories:
 ```typescript
 [
   { category: "Frontend", items: [...] },
   { category: "Backend", items: [...] },
   { category: "Tools & DevOps", items: [...] },
-  { category: "Other", items: [...] }
+  { category: "Database", items: [...] },
+  { category: "Cloud & Services", items: [...] }
 ]
+
+// Expanded from ~12 to 20+ technologies
+// New additions: MySQL, SQL Server, Cloudflare, macOS, etc.
 ```
 
-**experience.json** — Work experience timeline:
+**experience.json** — Work experience timeline (3 entries):
 ```typescript
 [
-  { company, role, duration, description, highlights[] }
+  // 1. Promete Technology — Fullstack Developer (2024-Present)
+  // 2. FPT Software — Backend Intern .NET, Team Lead of 10 (2022-2024)
+  // 3. FPT University — CS Student (2020-2024)
+  { company, role, duration, description, highlights[], teamSize? }
 ]
 ```
 
@@ -302,18 +318,18 @@ export function ProjectGrid() {
 ### Production
 - `next@16.1.6`: App Router, SSG, optimized deployment
 - `react@19.2.3`: UI library with latest features
-- `typescript@^5`: Strict type checking
-- `tailwindcss@^4`: Utility-first CSS with tree-shaking
+- `typescript@^5.4`: Strict type checking
+- `tailwindcss@4.2.1`: Utility-first CSS with tree-shaking
 - `@base-ui/react`: Accessible UI components (dropdown-menu, button patterns)
 - `tailwind-merge`: Merge Tailwind classes without conflicts
 - `class-variance-authority`: CVA for component variants
 - `clsx`: Conditional class names
-- `lucide-react`: Consistent, minimal icon library
-- `react-icons`: Additional icon sets (if used)
-- `framer-motion`: Animations for TypewriterHeading, RotatingText, TechStackTabs
-- `cmdk`: Command palette UI (⌘K)
-- `tw-animate-css`: Extended Tailwind animations
+- `lucide-react`: Icon library for UI elements
+- `react-icons`: Additional icon sets (optional)
+- `framer-motion@11+`: Animations for TypewriterHeading, RotatingText, TechStackTabs, LifeSourceCode
+- `cmdk`: Command palette UI (⌘K, lazy-loaded)
 - `next-themes`: Theme switching (light/dark/system)
+- (No external animation libraries beyond Framer Motion)
 
 ### Development
 - `@types/node`, `@types/react`: Type definitions
@@ -345,22 +361,29 @@ Usage: `import { utils } from '@/lib/utils'` (instead of `../../../lib/utils`)
 - `dist/`: Not used (Next.js doesn't output to dist/)
 - Static exports go to `.next/static/` (optimized by Next.js)
 
-## Phase 2 Additions
+## Phase 2 Additions (Starting)
 
-When blog system is added:
+Blog system + Diary content management:
 
-- `/src/content/blog/`: Directory for `.mdx` files
-- `src/lib/mdx-utils.ts`: Markdown parsing utilities
-- `src/components/blog/`: Blog-specific components (post card, TOC, etc.)
-- Tests for blog logic
+- `/src/content/blog/`: Directory for `.mdx` files with frontmatter (title, date, tags, description)
+- `/src/content/diary/`: Directory for `.mdx` files for journal/personal posts
+- `src/lib/mdx-utils.ts`: Markdown parsing utilities, frontmatter extraction
+- `src/components/blog/`: Blog-specific components (BlogPostCard, BlogPostList, RelatedPosts, etc.)
+- `src/app/blog/[slug]/page.tsx`: Dynamic blog detail route (ISR)
+- `src/app/diary/[slug]/page.tsx`: Dynamic diary detail route (ISR)
+- Update blog/diary list pages to display actual posts
+- Reading time calculation utilities
+- Tests for blog/diary logic
 
-## Phase 3 Additions
+## Phase 3 Additions (SEO & Polish)
 
 - `/tests/unit/`: Vitest unit tests
 - `/tests/e2e/`: Playwright e2e tests
-- `src/hooks/`: Custom React hooks
+- `src/hooks/`: Custom React hooks (useScrollY, useTheme, etc.)
 - `/public/robots.txt`: SEO robot instructions
-- `/public/sitemap.xml`: SEO sitemap (generated)
+- `/public/sitemap.xml`: SEO sitemap (generated programmatically)
+- Dark mode refinements (CSS variables, theme transitions)
+- Performance monitoring (Lighthouse CI, Core Web Vitals)
 
 ## Phase 4 Additions
 

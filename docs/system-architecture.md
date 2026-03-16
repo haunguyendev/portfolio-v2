@@ -35,50 +35,66 @@
 - **TypeScript strict mode** for type safety
 - **Tailwind CSS v4.2.1** with Base UI components (not Radix)
 
-## Data Flow (Phase 1)
+## Data Flow (Phase 1 Final)
 
 ```
-┌──────────────────────────────────────────────────────┐
-│              Content Layer                           │
-│  ┌──────────────┐  ┌──────────────┐  ┌────────────┐ │
-│  │projects.json │  │ skills.json  │  │experience  │ │
-│  │              │  │              │  │ .json      │ │
-│  └──────┬───────┘  └──────┬───────┘  └────────┬───┘ │
-└─────────┼──────────────────┼────────────────────┼────┘
+┌──────────────────────────────────────────────────────────────┐
+│              Content Layer                                   │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │projects.json │  │ skills.json  │  │ experience.json  │  │
+│  │ (static)     │  │ (static)     │  │ (static)         │  │
+│  │ +category    │  │              │  │                  │  │
+│  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘  │
+└─────────┼──────────────────┼────────────────────┼────────────┘
           │                  │                    │
-┌─────────▼──────────────────▼────────────────────▼────┐
-│         Component Layer                              │
-│  ┌──────────────────────┐  ┌──────────────────────┐ │
-│  │ ProjectCard          │  │ SkillBadge           │ │
-│  │ ProjectGrid          │  │ TimelineItem         │ │
-│  │ ProjectFilter        │  │ BiographySection     │ │
-│  └──────────────────────┘  └──────────────────────┘ │
-│  ┌──────────────────────┐  ┌──────────────────────┐ │
-│  │ HeroSection          │  │ FeaturedProjectsGrid │ │
-│  │ NavigationHeader     │  │ Footer               │ │
-│  └──────────────────────┘  └──────────────────────┘ │
-└─────────────────────┬───────────────────────────────┘
+          │        ┌─────────┴────────────────────┘
+          │        │
+          │        ├──→ GitHub API (haunguyendev)
+          │        │    - Repos
+          │        │    - Followers
+          │        │    - Contribution Graph
+          │        │
+┌─────────▼────────▼──────────────────────────────────────────┐
+│         Component Layer                                      │
+│  ┌──────────────────────┐  ┌──────────────────────┐         │
+│  │ ProjectCard          │  │ SkillBadge           │         │
+│  │ ProjectGrid          │  │ TimelineItem         │         │
+│  │ ProjectFilter        │  │ BiographySection     │         │
+│  │ CategoryBadge        │  │ GitHubStatsSection   │         │
+│  └──────────────────────┘  └──────────────────────┘         │
+│  ┌──────────────────────┐  ┌──────────────────────┐         │
+│  │ HeroSection          │  │ FeaturedProjectsGrid │         │
+│  │ TypewriterHeading    │  │ LifeSourceCode       │         │
+│  │ RotatingText         │  │ AnimatedPageTitle    │         │
+│  │ TechStackTabs        │  │ CommandMenu (lazy)   │         │
+│  │ AnimatedCtaCard      │  │ ThemeToggle          │         │
+│  │ ContactSection       │  │ Footer               │         │
+│  └──────────────────────┘  └──────────────────────┘         │
+└─────────────────────┬──────────────────────────────────────┘
                       │
-┌─────────────────────▼───────────────────────────────┐
-│         Page Layer (Next.js Routes)                 │
-│  ┌──────────────────────┐  ┌──────────────────────┐ │
-│  │ page.tsx (Home)      │  │ projects/page.tsx    │ │
-│  │ about/page.tsx       │  │ blog/page.tsx        │ │
-│  └──────────────────────┘  └──────────────────────┘ │
-└─────────────────────┬───────────────────────────────┘
+┌─────────────────────▼───────────────────────────────────────┐
+│         Page Layer (Next.js Routes)                         │
+│  ┌──────────────────────┐  ┌──────────────────────┐         │
+│  │ page.tsx (Home)      │  │ projects/page.tsx    │         │
+│  │ about/page.tsx       │  │ blog/page.tsx        │         │
+│  │ diary/page.tsx       │  │ layout.tsx (root)    │         │
+│  └──────────────────────┘  └──────────────────────┘         │
+└─────────────────────┬───────────────────────────────────────┘
                       │
-┌─────────────────────▼───────────────────────────────┐
-│         Browser / User                              │
-│  Rendered HTML + CSS + JavaScript                   │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────▼───────────────────────────────────────┐
+│         Browser / User                                      │
+│  Rendered HTML + CSS + JavaScript (lazy-loaded components) │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 **Flow:**
-1. JSON files in `/src/content/` contain static data
+1. JSON files + GitHub API fetch static/dynamic data
 2. Components import and render this data
 3. Pages compose components to display content
 4. Next.js SSG pre-renders static pages at build time
-5. Browser receives optimized HTML + CSS + minimal JS
+5. Client-side hydration for interactive components
+6. Browser receives optimized HTML + CSS + minimal JS
+7. Lazy-loaded components (CommandMenu, TechStackTabs) load on demand
 
 ## Page Routes & Components
 
@@ -198,42 +214,76 @@
 └─────────────────────────────────────┘
 ```
 
-## Component Hierarchy
+## Component Hierarchy (Phase 1 Final)
 
 ```
 RootLayout
 ├── Header
-│   └── Navigation
-│       ├── Home (Link)
-│       ├── Projects (Link)
-│       ├── About (Link)
-│       └── Blog (Link)
+│   ├── Logo
+│   ├── Navigation (desktop)
+│   │   ├── Home (Link)
+│   │   ├── Projects (Link)
+│   │   ├── About (Link)
+│   │   ├── Blog (Link)
+│   │   └── Diary (Link)
+│   ├── ThemeToggle (light/dark/system)
+│   ├── CommandMenu (lazy-loaded, ⌘K)
+│   └── MobileNav (hamburger, mobile-only)
 ├── PageContent (varies per page)
 │   ├── HomePage
+│   │   ├── AnimatedPageTitle
 │   │   ├── HeroSection
+│   │   │   ├── TypewriterHeading
+│   │   │   ├── RotatingText
+│   │   │   └── PersonalPhoto
 │   │   ├── FeaturedProjectsSection
 │   │   │   └── ProjectGrid
-│   │   │       └── ProjectCard (×3-4)
-│   │   └── AboutPreviewSection
+│   │   │       └── ProjectCard (×featured projects)
+│   │   │           └── CategoryBadge
+│   │   ├── AboutPreviewSection
+│   │   │   ├── BioTeaser
+│   │   │   ├── StatsSection
+│   │   │   └── TechStackTabs (lazy)
+│   │   ├── ContactSection
+│   │   │   ├── AnimatedCtaCard
+│   │   │   └── ContactMethods
+│   │   └── LatestBlogSection (placeholder)
 │   ├── ProjectsPage
+│   │   ├── AnimatedPageTitle
 │   │   ├── ProjectFilter
 │   │   └── ProjectGrid
-│   │       └── ProjectCard (×N)
+│   │       └── ProjectCard (×all projects)
+│   │           ├── ProjectImage
+│   │           ├── CategoryBadge
+│   │           └── TechBadges
 │   ├── AboutPage
+│   │   ├── AnimatedPageTitle
 │   │   ├── BioSection
+│   │   │   ├── ProfilePhoto
+│   │   │   ├── BioText
+│   │   │   ├── SocialLinks
+│   │   │   └── ResumeButton
+│   │   ├── GitHubStatsSection
+│   │   │   ├── ReposCount
+│   │   │   ├── FollowersCount
+│   │   │   └── ContributionGraph
 │   │   ├── SkillsSection
-│   │   │   └── SkillBadge (×N)
+│   │   │   └── TechStackTabs (lazy)
+│   │   ├── LifeSourceCode
+│   │   │   └── AnimatedTerminal (char-by-char typing)
 │   │   └── Timeline
-│   │       └── TimelineItem (×N)
+│   │       └── TimelineItem (×experiences)
+│   ├── DiaryPage
+│   │   └── "Coming soon" placeholder
 │   └── BlogPage
 │       └── "Coming soon" placeholder
 └── Footer
-    ├── ContactInfo
     ├── SocialLinks
+    ├── NavLinks
     └── Copyright
 ```
 
-## Content Schema (Phase 1)
+## Content Schema (Phase 1 Final)
 
 ### Projects (`src/content/projects.json`)
 ```typescript
@@ -243,13 +293,20 @@ interface Project {
   description: string           // Short summary (50-100 chars)
   longDescription: string       // Full description (for detail page)
   image: string                 // URL or /public path
-  technologies: string[]        // ["React", "TypeScript", "Tailwind"]
+  technologies: string[]        // ["React", "TypeScript", "Tailwind", ...]
   featured: boolean             // Show on home page?
+  category: 'personal' | 'company' | 'freelance'  // NEW: Project classification
+  categoryLabel?: string        // NEW: Display label (e.g., "Company")
   links: {
     github?: string             // GitHub repo URL
     demo?: string               // Live demo URL
     blog?: string               // Related blog post (Phase 2)
   }
+  role?: string                 // Role in project
+  teamSize?: number             // Team size
+  impact?: string               // Business/user impact
+  startDate?: string            // YYYY-MM
+  endDate?: string              // YYYY-MM or "Present"
 }
 ```
 
@@ -272,18 +329,21 @@ interface Experience {
 }
 ```
 
-## Routing Map
+## Routing Map (Phase 1 Complete)
 
-| Route | Component | Source | SSG? |
-|-------|-----------|--------|------|
-| `/` | `page.tsx` (home) | Components + projects.json | Yes |
-| `/projects` | `projects/page.tsx` + client filter | Projects list with filtering | Yes |
-| `/about` | `about/page.tsx` | Components + experience.json, skills.json | Yes |
-| `/blog` | `blog/page.tsx` | Placeholder ("Coming soon") | Yes |
-| `/diary` | `diary/page.tsx` | Placeholder ("Coming soon") | Yes |
-| `/blog/[slug]` | `blog/[slug]/page.tsx` | Not yet (Phase 2) | No (Phase 2: ISR) |
-| `404` | `not-found.tsx` | Built-in Next.js | Yes |
-| `Error` | `error.tsx` | Built-in Next.js | Client-side |
+| Route | Component | Source | SSG? | Status |
+|-------|-----------|--------|------|--------|
+| `/` | `page.tsx` (home) | Components + projects.json + GitHub API | Yes | ✓ Complete |
+| `/projects` | `projects/page.tsx` + client filter | Projects list with category filtering | Yes | ✓ Complete |
+| `/about` | `about/page.tsx` | Components + experience.json, skills.json, GitHub API | Yes | ✓ Complete |
+| `/blog` | `blog/page.tsx` | Placeholder ("Coming soon") | Yes | ✓ Complete |
+| `/diary` | `diary/page.tsx` | Placeholder ("Coming soon") | Yes | ✓ Complete |
+| `/blog/[slug]` | `blog/[slug]/page.tsx` | Not yet (Phase 2) | No | Phase 2 |
+| `/diary/[slug]` | `diary/[slug]/page.tsx` | Not yet (Phase 2) | No | Phase 2 |
+| `404` | `not-found.tsx` | Built-in Next.js | Yes | ✓ Complete |
+| `Error` | `error.tsx` | Built-in Next.js | Client-side | ✓ Complete |
+
+**New in Phase 1:** GitHub API integration for live stats (haunguyendev), project category metadata
 
 ## Build & Deployment
 
