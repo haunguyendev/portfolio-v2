@@ -79,6 +79,92 @@ export function ProjectCard({
 }
 ```
 
+### Component Variants with CVA
+Use `class-variance-authority` for complex prop-based styling (buttons, badges):
+
+```typescript
+import { cva } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
+
+const buttonVariants = cva(
+  'px-4 py-2 rounded font-medium transition-colors',
+  {
+    variants: {
+      variant: {
+        default: 'bg-zinc-900 text-white hover:bg-zinc-800',
+        outline: 'border border-zinc-200 hover:bg-zinc-50',
+        ghost: 'hover:bg-zinc-100',
+      },
+      size: {
+        sm: 'text-sm px-3 py-1',
+        md: 'text-base px-4 py-2',
+        lg: 'text-lg px-6 py-3',
+      },
+    },
+    defaultVariants: { variant: 'default', size: 'md' },
+  }
+)
+
+interface ButtonProps {
+  variant?: 'default' | 'outline' | 'ghost'
+  size?: 'sm' | 'md' | 'lg'
+  className?: string
+}
+
+export function Button({ variant, size, className, ...props }: ButtonProps) {
+  return (
+    <button className={cn(buttonVariants({ variant, size }), className)} {...props} />
+  )
+}
+```
+
+### Lazy Loading for Heavy Components
+Use dynamic imports for interactive or animation-heavy components:
+
+```typescript
+// app/layout.tsx or any page
+import dynamic from 'next/dynamic'
+
+const CommandMenu = dynamic(() => import('@/components/layout/command-menu'), {
+  ssr: false, // client-only
+})
+
+const TechStackTabs = dynamic(() => import('@/components/home/tech-stack-tabs'), {
+  ssr: false,
+})
+
+export default function Layout() {
+  return (
+    <>
+      <CommandMenu />
+      <TechStackTabs />
+    </>
+  )
+}
+```
+
+### Hydration-Safe Components
+Components with animations or browser APIs must handle SSR/hydration mismatch:
+
+```typescript
+'use client'
+
+import { useEffect, useState } from 'react'
+
+export function TypewriterHeading() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Don't render animation until mounted on client
+  if (!mounted) return <h1>Static text</h1>
+
+  return <h1>Animated typewriter effect</h1>
+}
+```
+
 ### Props Interface Naming
 - Named: `{ComponentName}Props`
 - Co-located with component in same file

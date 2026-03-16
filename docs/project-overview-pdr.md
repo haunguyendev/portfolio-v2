@@ -40,12 +40,13 @@
 - Projects page (full list, filtering by tech)
 - About page (bio, skills badges, timeline)
 - Blog placeholder ("Coming soon")
+- Diary placeholder ("Coming soon")
 - Static content (JSON data files)
 - Responsive design (mobile, tablet, desktop)
 - Basic analytics ready (setup, not integrated yet)
 
 **Deliverables:**
-- All 4 pages functional
+- All pages functional (Home, Projects, About, Blog, Diary)
 - Project data structure finalized
 - Design implemented
 - Deployed to Vercel

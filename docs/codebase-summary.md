@@ -122,20 +122,73 @@ Next.js App Router pages and layouts. Each page file exports default React compo
 ### `/src/components`
 Reusable React components organized by feature/domain.
 
-- `layout/`: Header, footer, navigation (shared across all pages)
-- `home/`: Hero, featured projects, about preview (home page specific)
-- `projects/`: Project card, grid, filter, tech badge (projects page + home usage)
-- `about/`: Bio, skills, timeline (about page specific)
-- `common/`: Shared utilities (section title, gradient text, external link)
-- `ui/`: shadcn/ui component library (button, card, badge, input, etc.)
+**Layout Components** (`layout/`):
+- `header.tsx` (client) — Sticky header with logo, nav, theme toggle, command menu
+- `logo.tsx` — SVG logo link to home
+- `navigation.tsx` (client) — Desktop nav with active state detection
+- `mobile-nav.tsx` (client) — Hamburger menu overlay (mobile-only)
+- `theme-toggle.tsx` (client) — Light/dark/system theme switcher
+- `theme-provider.tsx` — Next-themes wrapper
+- `command-menu.tsx` (client, lazy) — ⌘K command palette
+- `footer.tsx` — Multi-column footer with nav, socials, copyright
+
+**Home Components** (`home/`):
+- `hero-section.tsx` — Split layout: TypewriterHeading + RotatingText (left), photo (right)
+- `featured-projects-section.tsx` — 3-col grid of featured projects
+- `about-preview-section.tsx` — Bento grid: bio, stats, TechStackTabs (lazy)
+- `tech-stack-tabs.tsx` (client, lazy) — 5 tech category tabs with icons, Framer Motion
+- `animated-cta-card.tsx` (client) — Gradient orbs, particles, resume download (Framer Motion)
+- `contact-section.tsx` — 2-col: AnimatedCtaCard + contact methods
+- `latest-blog-section.tsx` — Blog placeholder ("Coming soon")
+
+**Projects Components** (`projects/`):
+- `project-card.tsx` — Project item: image, title, desc, metadata, tech badges, links
+- `project-grid.tsx` — Responsive 3-col grid or empty state
+- `project-filter.tsx` (client) — Tech tag filtering buttons
+
+**About Components** (`about/`):
+- `bio-section.tsx` — Profile photo + bio + socials + resume button
+- `skills-section.tsx` (client) — TechStackTabs (lazy) + soft skills badges
+- `timeline.tsx` — Experience timeline container
+- `timeline-item.tsx` — Single timeline entry (dot, connector, role/highlights)
+
+**UI Primitives** (`ui/`):
+- `button.tsx` — CVA variants (default, outline, secondary, ghost, destructive, link) + sizes
+- `card.tsx` — Composable: Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter
+- `badge.tsx` — Tech tag variants (default, secondary, destructive, outline, ghost, link)
+- `dialog.tsx` — Full compound dialog component (Dialog, Trigger, Overlay, etc.)
+- `dropdown-menu.tsx` — Menu compound component from @base-ui/react
+- `typewriter-heading.tsx` (client) — Custom typewriter effect with Framer Motion cursor (hydration-safe)
+- `rotating-text.tsx` (client) — Custom rotating text with Framer Motion (hydration-safe)
 
 ### `/src/content`
 Static data files (JSON initially, MDX in Phase 2+).
 
-- `projects.json`: Array of project objects with title, description, tech, links
-- `skills.json`: Skills grouped by category (Frontend, Backend, Tools)
-- `experience.json`: Work experience timeline
-- `blog/`: MDX blog posts (Phase 2)
+**projects.json** — 5 projects (3 featured) with extended metadata:
+```typescript
+// Each project includes:
+id, title, description, longDescription, image, technologies[], featured,
+links{github?, demo?, blog?}, role?, teamSize?, impact?, startDate?, endDate?
+```
+
+**skills.json** — Skills grouped by category:
+```typescript
+[
+  { category: "Frontend", items: [...] },
+  { category: "Backend", items: [...] },
+  { category: "Tools & DevOps", items: [...] },
+  { category: "Other", items: [...] }
+]
+```
+
+**experience.json** — Work experience timeline:
+```typescript
+[
+  { company, role, duration, description, highlights[] }
+]
+```
+
+**blog/** — MDX blog posts (Phase 2)
 
 ### `/src/lib`
 Utility functions and constants.
@@ -244,21 +297,29 @@ export function ProjectGrid() {
 | `.env.example` | Template for environment variables |
 | `.gitignore` | Files to exclude from git |
 
-## Dependencies Overview (Initial)
+## Dependencies Overview (Phase 1)
 
 ### Production
-- `next@15`: Framework
-- `react@19`: UI library
-- `typescript@5`: Type checking
-- `tailwindcss@4`: Styling
-- `shadcn-ui`: Component library (installed via CLI)
-- `lucide-react`: Icons
-- `clsx` / `tailwind-merge`: Class name utilities
+- `next@16.1.6`: App Router, SSG, optimized deployment
+- `react@19.2.3`: UI library with latest features
+- `typescript@^5`: Strict type checking
+- `tailwindcss@^4`: Utility-first CSS with tree-shaking
+- `@base-ui/react`: Accessible UI components (dropdown-menu, button patterns)
+- `tailwind-merge`: Merge Tailwind classes without conflicts
+- `class-variance-authority`: CVA for component variants
+- `clsx`: Conditional class names
+- `lucide-react`: Consistent, minimal icon library
+- `react-icons`: Additional icon sets (if used)
+- `framer-motion`: Animations for TypewriterHeading, RotatingText, TechStackTabs
+- `cmdk`: Command palette UI (⌘K)
+- `tw-animate-css`: Extended Tailwind animations
+- `next-themes`: Theme switching (light/dark/system)
 
 ### Development
 - `@types/node`, `@types/react`: Type definitions
-- `postcss`: CSS processing
-- `eslint`, `prettier`: Linting/formatting
+- `postcss`: CSS processor for Tailwind
+- `eslint`: Code linting (extends next/core-web-vitals)
+- `prettier`: Code formatting (2-space, 80-char limit)
 - `vitest`: Unit testing (Phase 3)
 - `@playwright/test`: E2E testing (Phase 3)
 

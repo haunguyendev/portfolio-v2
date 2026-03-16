@@ -87,27 +87,34 @@
 **Layout:**
 ```
 ┌─────────────────────────────────────┐
-│        Header / Navigation          │
+│   Header (sticky, lazy CommandMenu) │
 ├─────────────────────────────────────┤
-│         Hero Section                │
-│  [Photo] [Intro Text]               │
+│       Hero Section (split)          │
+│  Typewriter + RotatingText | Photo  │
 ├─────────────────────────────────────┤
-│    Featured Projects Section        │
-│  [Project Card] [Project Card]      │
+│  Featured Projects (3-col grid)     │
+│  [ProjectCard] [ProjectCard] [Card] │
 ├─────────────────────────────────────┤
-│   About Preview / CTA               │
-│  [Short bio + link to About]        │
+│ About Preview (bento + TechTabs)    │
+│  [Bio] [Stats] [TechStackTabs]      │
 ├─────────────────────────────────────┤
-│        Footer                       │
+│   Latest Blog (placeholder)         │
+├─────────────────────────────────────┤
+│  Contact Section (2-col)            │
+│  [AnimatedCtaCard] [Contact Info]   │
+├─────────────────────────────────────┤
+│        Footer (multi-col)           │
 └─────────────────────────────────────┘
 ```
 
-**Components Used:**
-- `Header`: Navigation + branding
-- `HeroSection`: Personal photo + introduction
-- `FeaturedProjectsSection`: Top 3-4 projects
-- `AboutPreviewSection`: Bio snippet + link
-- `Footer`: Contact, social links
+**Components Used (Server + Client):**
+- `Header` (client) — Sticky, with lazy-loaded CommandMenu
+- `HeroSection` (server) — TypewriterHeading (client) + RotatingText (client) + photo
+- `FeaturedProjectsSection` (server) — ProjectGrid with featured=true
+- `AboutPreviewSection` (client) — Bento layout, lazy TechStackTabs
+- `LatestBlogSection` (server) — Placeholder
+- `ContactSection` (server) — AnimatedCtaCard (client) + socials
+- `Footer` (server)
 
 ### Projects Page (`src/app/projects/page.tsx`)
 
@@ -270,9 +277,10 @@ interface Experience {
 | Route | Component | Source | SSG? |
 |-------|-----------|--------|------|
 | `/` | `page.tsx` (home) | Components + projects.json | Yes |
-| `/projects` | `projects/page.tsx` | Components + projects.json | Yes |
+| `/projects` | `projects/page.tsx` + client filter | Projects list with filtering | Yes |
 | `/about` | `about/page.tsx` | Components + experience.json, skills.json | Yes |
-| `/blog` | `blog/page.tsx` | Placeholder | Yes (Phase 2: Dynamic) |
+| `/blog` | `blog/page.tsx` | Placeholder ("Coming soon") | Yes |
+| `/diary` | `diary/page.tsx` | Placeholder ("Coming soon") | Yes |
 | `/blog/[slug]` | `blog/[slug]/page.tsx` | Not yet (Phase 2) | No (Phase 2: ISR) |
 | `404` | `not-found.tsx` | Built-in Next.js | Yes |
 | `Error` | `error.tsx` | Built-in Next.js | Client-side |
