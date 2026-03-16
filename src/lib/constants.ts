@@ -8,6 +8,7 @@ export const NAV_LINKS = [
   { label: 'Projects', href: '/projects' },
   { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
+  { label: 'Diary', href: '/diary' },
 ] as const
 
 export const SOCIAL_LINKS = {

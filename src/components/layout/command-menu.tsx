@@ -9,6 +9,7 @@ import {
   FolderOpen,
   User,
   PenLine,
+  BookHeart,
   Sun,
   Moon,
   Monitor,
@@ -27,6 +28,7 @@ const NAV_ICONS: Record<string, React.ElementType> = {
   '/projects': FolderOpen,
   '/about': User,
   '/blog': PenLine,
+  '/diary': BookHeart,
 }
 
 export function CommandMenu() {
