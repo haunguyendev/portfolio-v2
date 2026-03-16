@@ -13,13 +13,14 @@
   },
   {
     "company": "FPT Software",
-    "role": "Backend Developer Intern (.NET)",
+    "role": "Backend Developer Intern (.NET) — Team Lead",
     "duration": "2022",
-    "description": "Backend development internship at one of Vietnam's largest IT outsourcing companies.",
+    "description": "Led a 10-member intern team building a student management system API at one of Vietnam's largest IT outsourcing companies.",
     "highlights": [
-      "Developed backend services using .NET framework",
-      "Gained hands-on experience with enterprise-level software development practices",
-      "Collaborated with senior engineers on production codebases"
+      "Led a team of 10 members as team leader, coordinating backend and frontend collaboration",
+      "Built RESTful APIs for a student management system based on business requirement specifications",
+      "Learned CI/CD build and deployment processes to deliver backend services to production servers",
+      "Coordinated with a separate frontend team to integrate APIs and ship the complete product"
     ]
   },
   {
