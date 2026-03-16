@@ -579,11 +579,64 @@ export const ANALYTICS_ID = process.env.NEXT_PUBLIC_ANALYTICS_ID || ''
 <div onClick={handleClick}>☰</div>
 ```
 
+## MDX Content Standards (Phase 2+)
+
+### File Organization
+- Blog posts: `/content/blog/{slug}.mdx`
+- Diary entries: `/content/diary/{slug}.mdx`
+- Slugs auto-generated from title (kebab-case)
+
+### Frontmatter Schema
+
+**Blog Posts**
+```yaml
+---
+title: "Post Title"                    # Max 120 chars
+slug: "post-slug"                      # Auto-generated
+description: "Brief summary"           # Max 260 chars
+date: "2026-03-16"                     # ISO date (YYYY-MM-DD)
+updated: "2026-03-20"                  # Optional
+tags: ["tag1", "tag2", "tag3"]        # Array of strings
+published: true                        # Default true
+image: "/images/posts/cover.jpg"      # Optional cover image
+---
+```
+
+**Diary Entries**
+```yaml
+---
+title: "Entry Title"                   # Max 120 chars
+slug: "entry-slug"                     # Auto-generated
+description: "Optional summary"        # Max 260 chars
+date: "2026-03-16"                     # ISO date (YYYY-MM-DD)
+mood: "happy"                          # One of: happy, sad, reflective, grateful, motivated
+published: false                       # Default false (private by default)
+---
+```
+
+### MDX Content Guidelines
+- Use markdown for formatting (headings, bold, italic, lists, etc.)
+- Use GitHub-flavored markdown (tables, strikethrough, task lists)
+- Code blocks with language syntax highlighting:
+  ```typescript
+  export function MyComponent() { /* ... */ }
+  ```
+- Headings create automatic anchor links (slugified IDs)
+- Images: Use relative paths to `/public` (e.g., `/images/posts/example.jpg`)
+- Reading time auto-calculated (word count ÷ 200, rounded up)
+
+### Phase 2 MDX Features
+- Syntax highlighting with `rehype-pretty-code` (github-dark theme)
+- Auto-generated heading IDs (for table of contents)
+- Auto-linked headings to their IDs
+- GitHub-flavored markdown tables, strikethrough, etc.
+- No custom React components yet (Phase 3+)
+
 ## Summary: YAGNI / KISS / DRY
 
 | Principle | Application |
 |-----------|-------------|
-| YAGNI | Don't add features/config until needed. Phase 1 is MVP only. |
+| YAGNI | Don't add features/config until needed. Ship in phases. |
 | KISS | Simple code > clever code. Prioritize readability. |
 | DRY | Extract repeated logic into utilities or components. |
 

@@ -35,7 +35,7 @@
 - **TypeScript strict mode** for type safety
 - **Tailwind CSS v4.2.1** with Base UI components (not Radix)
 
-## Data Flow (Phase 1 Final)
+## Data Flow (Phase 1-2 Final)
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -45,39 +45,73 @@
 │  │ (static)     │  │ (static)     │  │ (static)         │  │
 │  │ +category    │  │              │  │                  │  │
 │  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘  │
-└─────────┼──────────────────┼────────────────────┼────────────┘
-          │                  │                    │
-          │        ┌─────────┴────────────────────┘
-          │        │
-          │        ├──→ GitHub API (haunguyendev)
-          │        │    - Repos
-          │        │    - Followers
-          │        │    - Contribution Graph
-          │        │
-┌─────────▼────────▼──────────────────────────────────────────┐
-│         Component Layer                                      │
-│  ┌──────────────────────┐  ┌──────────────────────┐         │
-│  │ ProjectCard          │  │ SkillBadge           │         │
-│  │ ProjectGrid          │  │ TimelineItem         │         │
-│  │ ProjectFilter        │  │ BiographySection     │         │
-│  │ CategoryBadge        │  │ GitHubStatsSection   │         │
-│  └──────────────────────┘  └──────────────────────┘         │
-│  ┌──────────────────────┐  ┌──────────────────────┐         │
-│  │ HeroSection          │  │ FeaturedProjectsGrid │         │
-│  │ TypewriterHeading    │  │ LifeSourceCode       │         │
-│  │ RotatingText         │  │ AnimatedPageTitle    │         │
-│  │ TechStackTabs        │  │ CommandMenu (lazy)   │         │
-│  │ AnimatedCtaCard      │  │ ThemeToggle          │         │
-│  │ ContactSection       │  │ Footer               │         │
-│  └──────────────────────┘  └──────────────────────┘         │
-└─────────────────────┬──────────────────────────────────────┘
+│                                                               │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │     Velite MDX Processing (Phase 2)                  │   │
+│  │  ┌─────────────────┐  ┌─────────────────────────┐    │   │
+│  │  │ content/blog/   │  │ content/diary/         │    │   │
+│  │  │ *.mdx files     │  │ *.mdx files            │    │   │
+│  │  │ (frontmatter    │  │ (date, mood, etc.)     │    │   │
+│  │  │  + markdown)    │  │                        │    │   │
+│  │  └────────┬────────┘  └────────┬───────────────┘    │   │
+│  │           │                    │                    │   │
+│  │  Rehype plugins:  Remark plugins: remark-gfm       │   │
+│  │  - rehype-slug   (auto heading IDs)                │   │
+│  │  - pretty-code   (syntax highlighting)             │   │
+│  │  - autolink      (anchor links)                     │   │
+│  │           │                    │                    │   │
+│  │           └────────┬───────────┘                    │   │
+│  │                    │                                │   │
+│  │  Output: .velite/index compiled MDX data            │   │
+│  │  { blogs: Blog[], diaries: Diary[] }                │   │
+│  └────────────────┬─────────────────────────────────────┘  │
+│                   │                                         │
+└───────────────────┼─────────────────────────────────────────┘
+          ┌─────────┴─────────────────────────┐
+          │                                   │
+          ├──→ GitHub API (haunguyendev)      │
+          │    - Repos                        │
+          │    - Followers                    │
+          │    - Contribution Graph           │
+          │                                   │
+┌─────────▼────────────────────────┬──────────▼─────────────────┐
+│         Component Layer                                        │
+│  ┌──────────────────────────────────────────────────────────┐ │
+│  │ Blog Components (Phase 2)                                │ │
+│  │ - BlogPostCard, BlogPostList, BlogTagFilter             │ │
+│  │ - BlogTableOfContents, MdxContent, MdxComponents        │ │
+│  │ Diary Components (Phase 2)                               │ │
+│  │ - DiaryEntryCard, DiaryEntryList, DiaryMoodFilter       │ │
+│  │ - DiaryMoodBadge                                         │ │
+│  │ Shared Components (Phase 2)                              │ │
+│  │ - ShareButtons, ReadingTime, DateFormatter              │ │
+│  └──────────────────────────────────────────────────────────┘ │
+│  ┌──────────────────────┐  ┌──────────────────────┐           │
+│  │ ProjectCard          │  │ SkillBadge           │           │
+│  │ ProjectGrid          │  │ TimelineItem         │           │
+│  │ ProjectFilter        │  │ BiographySection     │           │
+│  │ CategoryBadge        │  │ GitHubStatsSection   │           │
+│  └──────────────────────┘  └──────────────────────┘           │
+│  ┌──────────────────────┐  ┌──────────────────────┐           │
+│  │ HeroSection          │  │ FeaturedProjectsGrid │           │
+│  │ TypewriterHeading    │  │ LifeSourceCode       │           │
+│  │ RotatingText         │  │ AnimatedPageTitle    │           │
+│  │ TechStackTabs        │  │ CommandMenu (lazy)   │           │
+│  │ AnimatedCtaCard      │  │ ThemeToggle          │           │
+│  │ ContactSection       │  │ LatestBlogSection    │           │
+│  │                      │  │ LatestDiarySection   │           │
+│  │                      │  │ Footer               │           │
+│  └──────────────────────┘  └──────────────────────┘           │
+└─────────────────────┬──────────────────────────────────────────┘
                       │
 ┌─────────────────────▼───────────────────────────────────────┐
 │         Page Layer (Next.js Routes)                         │
 │  ┌──────────────────────┐  ┌──────────────────────┐         │
 │  │ page.tsx (Home)      │  │ projects/page.tsx    │         │
 │  │ about/page.tsx       │  │ blog/page.tsx        │         │
-│  │ diary/page.tsx       │  │ layout.tsx (root)    │         │
+│  │ diary/page.tsx       │  │ blog/[slug]/page.tsx │         │
+│  │ layout.tsx (root)    │  │ diary/[slug]/page.tsx│         │
+│  │ feed.xml/route.ts    │  │ (RSS feed)           │         │
 │  └──────────────────────┘  └──────────────────────┘         │
 └─────────────────────┬───────────────────────────────────────┘
                       │
@@ -88,13 +122,14 @@
 ```
 
 **Flow:**
-1. JSON files + GitHub API fetch static/dynamic data
-2. Components import and render this data
-3. Pages compose components to display content
-4. Next.js SSG pre-renders static pages at build time
-5. Client-side hydration for interactive components
-6. Browser receives optimized HTML + CSS + minimal JS
-7. Lazy-loaded components (CommandMenu, TechStackTabs) load on demand
+1. **Phase 1 Data:** JSON files + GitHub API fetch static/dynamic data
+2. **Phase 2 Data:** Velite processes MDX → compiles to .velite/ → runtime imports
+3. Components import and render data (both static JSON and compiled MDX)
+4. Pages compose components to display content
+5. Next.js SSG pre-renders static pages at build time
+6. Client-side hydration for interactive components
+7. Browser receives optimized HTML + CSS + minimal JS
+8. Lazy-loaded components (CommandMenu, TechStackTabs) load on demand
 
 ## Page Routes & Components
 
@@ -197,22 +232,100 @@
 
 **Phase 1 Status:** Placeholder page ("Coming soon")
 
-**Phase 2 Changes:**
+**Phase 2 Status:** Fully implemented with Velite integration
+
 ```
 ┌─────────────────────────────────────┐
 │        Header / Navigation          │
 ├─────────────────────────────────────┤
 │    Page Title + Description         │
 ├─────────────────────────────────────┤
+│    Tag Filter (client-side)         │
+│  [All] [Tag1] [Tag2] [Tag3]         │
+├─────────────────────────────────────┤
 │    Blog Post List                   │
 │  [Post Card] [Post Card]            │
 │  [Post Card] [Post Card]            │
-├─────────────────────────────────────┤
-│   Pagination / Load More            │
+│  (sorted by date, newest first)     │
 ├─────────────────────────────────────┤
 │        Footer                       │
 └─────────────────────────────────────┘
 ```
+
+**Blog Detail Page (`src/app/blog/[slug]/page.tsx`):**
+```
+┌─────────────────────────────────────┐
+│        Header / Navigation          │
+├─────────────────────────────────────┤
+│    Page Title (h1)                  │
+│    Meta: Date | Reading time        │
+│    Tags (as badges)                 │
+├─────────────────────────────────────┤
+│    Table of Contents (TOC)          │
+│    [generated from h2/h3 headings]  │
+├─────────────────────────────────────┤
+│    MDX Content                      │
+│    (syntax-highlighted code blocks) │
+│    (headings with anchor links)     │
+│    (GitHub-flavored markdown)       │
+├─────────────────────────────────────┤
+│    Share Buttons (Twitter, LinkedIn)│
+│    [Copy Link]                      │
+├─────────────────────────────────────┤
+│        Footer                       │
+└─────────────────────────────────────┘
+```
+
+### Diary Page (`src/app/diary/page.tsx`)
+
+**Phase 2 Status:** Fully implemented with mood filtering
+
+```
+┌─────────────────────────────────────┐
+│        Header / Navigation          │
+├─────────────────────────────────────┤
+│    Page Title + Description         │
+├─────────────────────────────────────┤
+│    Mood Filter (client-side)        │
+│  [All] [Happy] [Sad] [etc]          │
+├─────────────────────────────────────┤
+│    Diary Entry List                 │
+│  [Entry Card] [Entry Card]          │
+│  [Entry Card] [Entry Card]          │
+│  (sorted by date, newest first)     │
+├─────────────────────────────────────┤
+│        Footer                       │
+└─────────────────────────────────────┘
+```
+
+**Diary Detail Page (`src/app/diary/[slug]/page.tsx`):**
+```
+┌─────────────────────────────────────┐
+│        Header / Navigation          │
+├─────────────────────────────────────┤
+│    Page Title (h1)                  │
+│    Meta: Date | Reading time        │
+│    Mood Badge (emoji + color)       │
+├─────────────────────────────────────┤
+│    MDX Content                      │
+│    (syntax-highlighted code blocks) │
+│    (headings with anchor links)     │
+│    (GitHub-flavored markdown)       │
+├─────────────────────────────────────┤
+│    Share Buttons                    │
+│    [Copy Link]                      │
+├─────────────────────────────────────┤
+│        Footer                       │
+└─────────────────────────────────────┘
+```
+
+### RSS Feed (`src/app/feed.xml/route.ts`)
+
+**Phase 2 Status:** Implemented at `/feed.xml`
+
+- Generates RSS feed from published blog posts
+- Includes title, description, date, link for each post
+- Updated on rebuild (static generation)
 
 ## Component Hierarchy (Phase 1 Final)
 
@@ -329,21 +442,27 @@ interface Experience {
 }
 ```
 
-## Routing Map (Phase 1 Complete)
+## Routing Map (Phase 1-2 Complete)
 
 | Route | Component | Source | SSG? | Status |
 |-------|-----------|--------|------|--------|
-| `/` | `page.tsx` (home) | Components + projects.json + GitHub API | Yes | ✓ Complete |
+| `/` | `page.tsx` (home) | Components + projects.json + GitHub API + latest blog/diary | Yes | ✓ Complete |
 | `/projects` | `projects/page.tsx` + client filter | Projects list with category filtering | Yes | ✓ Complete |
 | `/about` | `about/page.tsx` | Components + experience.json, skills.json, GitHub API | Yes | ✓ Complete |
-| `/blog` | `blog/page.tsx` | Placeholder ("Coming soon") | Yes | ✓ Complete |
-| `/diary` | `diary/page.tsx` | Placeholder ("Coming soon") | Yes | ✓ Complete |
-| `/blog/[slug]` | `blog/[slug]/page.tsx` | Not yet (Phase 2) | No | Phase 2 |
-| `/diary/[slug]` | `diary/[slug]/page.tsx` | Not yet (Phase 2) | No | Phase 2 |
+| `/blog` | `blog/page.tsx` + client filter | Blog list from Velite (.velite/blogs) with tag filtering | Yes | ✓ Complete |
+| `/blog/[slug]` | `blog/[slug]/page.tsx` | Dynamic route for blog posts (Velite-compiled MDX) | Yes | ✓ Complete |
+| `/diary` | `diary/page.tsx` + client filter | Diary list from Velite (.velite/diaries) with mood filtering | Yes | ✓ Complete |
+| `/diary/[slug]` | `diary/[slug]/page.tsx` | Dynamic route for diary entries (Velite-compiled MDX) | Yes | ✓ Complete |
+| `/feed.xml` | `feed.xml/route.ts` | RSS feed (blog posts only) | Yes | ✓ Complete |
 | `404` | `not-found.tsx` | Built-in Next.js | Yes | ✓ Complete |
 | `Error` | `error.tsx` | Built-in Next.js | Client-side | ✓ Complete |
 
-**New in Phase 1:** GitHub API integration for live stats (haunguyendev), project category metadata
+**New in Phase 2:**
+- Velite MDX integration for blog + diary
+- Dynamic routes for blog/diary detail pages
+- Tag filtering for blog, mood filtering for diary
+- RSS feed endpoint
+- Latest blog/diary sections on homepage
 
 ## Build & Deployment
 
@@ -441,14 +560,17 @@ Live at custom domain
 - Database query error handling
 - Graceful degradation (return fallback data)
 
-## Future Architecture Changes
+## Architecture Changes (Phase 2 Complete)
 
-### Phase 2 (Blog)
-- Add `/content/blog/` for MDX files
-- Implement MDX loader
-- Add blog components (post card, table of contents)
+### Phase 2 (Blog + Diary) — COMPLETE
+- [x] Added Velite for MDX processing
+- [x] Created `/content/blog/` and `/content/diary/` for MDX files
+- [x] Implemented blog + diary components
+- [x] Added dynamic routes for detail pages
+- [x] Integrated latest blog/diary sections on homepage
+- [x] RSS feed endpoint
 
-### Phase 3 (SEO & Polish)
+### Phase 3 (SEO & Polish) — UPCOMING
 - Add static sitemaps
 - Meta tag management (next-seo or manual)
 - Dark mode with CSS variables (client-side toggle)
