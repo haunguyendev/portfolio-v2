@@ -1,0 +1,104 @@
+# Production stack — chạy trên server
+# Tất cả services chạy trong cùng Docker network, giao tiếp bằng tên service
+# Ví dụ: API kết nối DB bằng URL: postgresql://postgres:password@postgres:5432/portfolio
+#                                                               ^^^^^^^^ = tên service
+
+services:
+  # === DATABASE ===
+  postgres:
+    image: postgres:16-alpine
+    container_name: portfolio_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-portfolio}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # === OBJECT STORAGE (images, files) ===
+  minio:
+    image: minio/minio:latest
+    container_name: portfolio_minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+  # Tạo bucket tự động khi minio start lần đầu
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    restart: "no"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    entrypoint: >
+      /bin/sh -c "
+      sleep 3;
+      mc alias set local http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
+      mc mb local/${MINIO_BUCKET:-portfolio-media} --ignore-existing;
+      exit 0;
+      "
+
+  # === BACKEND API (NestJS + GraphQL) ===
+  api:
+    # Image từ GHCR — GH Actions build & push lên đây
+    image: ghcr.io/haunguyendev/portfolio-v2/api:latest
+    container_name: portfolio_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      API_PORT: 3001
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-portfolio}
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_BUCKET: ${MINIO_BUCKET:-portfolio-media}
+      MINIO_USE_SSL: "false"
+      # Set true lần deploy đầu tiên để seed admin + tags
+      # Sau đó đổi thành false hoặc xoá dòng này
+      SEED_ON_START: ${SEED_ON_START:-false}
+
+  # === FRONTEND (Next.js) ===
+  web:
+    image: ghcr.io/haunguyendev/portfolio-v2/web:latest
+    container_name: portfolio_web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-portfolio}
+
+volumes:
+  postgres_data:
+  minio_data:

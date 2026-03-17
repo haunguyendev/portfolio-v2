@@ -12,6 +12,8 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
 }
 
 const nextConfig: NextConfig = {
+  // standalone mode: output minimal server cho Docker (không cần node_modules)
+  output: 'standalone',
   images: {
     formats: ['image/avif', 'image/webp'],
   },
