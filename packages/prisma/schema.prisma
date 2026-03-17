@@ -1,0 +1,223 @@
+// This is your Prisma schema file
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// === BETTER AUTH TABLES ===
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          Role      @default(ADMIN)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+  posts    Post[]
+  comments Comment[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// === ENUMS ===
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum PostType {
+  BLOG
+  DIARY
+}
+
+// === CONTENT ORGANIZATION ===
+
+model Category {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  slug        String  @unique
+  description String?
+  color       String?
+  sortOrder   Int     @default(0)
+  posts       Post[]
+}
+
+model Tag {
+  id    String    @id @default(cuid())
+  name  String    @unique
+  slug  String    @unique
+  posts PostTag[]
+}
+
+model PostTag {
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  String
+
+  @@id([postId, tagId])
+}
+
+model Series {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?
+  coverImage  String?
+  published   Boolean  @default(false)
+  posts       Post[]
+  createdAt   DateTime @default(now())
+}
+
+// === POSTS (Blog + Diary) ===
+
+model Post {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  description String?
+  content     Json
+  coverImage  String?
+  published   Boolean   @default(false)
+  featured    Boolean   @default(false)
+  type        PostType  @default(BLOG)
+  readingTime Int?
+  mood        String?
+  // Relations
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  series      Series?   @relation(fields: [seriesId], references: [id])
+  seriesId    String?
+  seriesOrder Int?
+  tags        PostTag[]
+  comments    Comment[]
+  likes       Like[]
+  views       PageView[]
+  // SEO
+  metaTitle   String?
+  metaDesc    String?
+  ogImage     String?
+  // Timestamps
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// === PROJECTS ===
+
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  description  String
+  longDesc     String?
+  image        String?
+  technologies String[]
+  category     String?
+  github       String?
+  demo         String?
+  featured     Boolean  @default(false)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// === ENGAGEMENT ===
+
+model Comment {
+  id          String    @id @default(cuid())
+  content     String
+  authorName  String
+  authorEmail String?
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId      String
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      String?
+  approved    Boolean   @default(false)
+  parentId    String?
+  parent      Comment?  @relation("Replies", fields: [parentId], references: [id])
+  replies     Comment[] @relation("Replies")
+  createdAt   DateTime  @default(now())
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  ipHash    String
+  createdAt DateTime @default(now())
+
+  @@unique([postId, ipHash])
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  path      String
+  referrer  String?
+  createdAt DateTime @default(now())
+}
+
+// === MEDIA ===
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  mimeType  String
+  size      Int
+  alt       String?
+  folder    String?
+  createdAt DateTime @default(now())
+}
