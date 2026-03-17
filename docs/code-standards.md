@@ -714,6 +714,211 @@ published: false                       # Default false (private by default)
 - GitHub-flavored markdown tables, strikethrough, etc.
 - No custom React components yet (Phase 3+)
 
+## NestJS Backend (Phase 4A+)
+
+### Project Structure
+```
+apps/api/src/
+├── main.ts                 # Entry point, port 3001
+├── app.module.ts           # Root module
+├── {feature}/
+│   ├── {feature}.module.ts # Feature module
+│   ├── {feature}.service.ts
+│   ├── {feature}.resolver.ts (GraphQL)
+│   ├── dto/
+│   │   ├── create-{feature}.input.ts
+│   │   └── update-{feature}.input.ts
+│   └── entities/
+│       └── {feature}.entity.ts
+├── auth/
+│   ├── auth.module.ts
+│   ├── jwt.guard.ts
+│   ├── jwt.strategy.ts
+│   └── auth.service.ts
+├── prisma/
+│   ├── prisma.service.ts
+│   └── prisma.module.ts
+└── graphql/
+    └── schema.gql (auto-generated)
+```
+
+### Module Pattern
+Each feature (posts, projects, categories, tags, series) follows this structure:
+
+```typescript
+// Feature module bundles service + resolver
+@Module({
+  providers: [FeatureService, FeatureResolver],
+  exports: [FeatureService], // For other modules
+})
+export class FeatureModule {}
+```
+
+### Service Pattern
+Services contain business logic and database access:
+
+```typescript
+@Injectable()
+export class FeatureService {
+  constructor(private prisma: PrismaService) {}
+
+  async findAll() {
+    return this.prisma.feature.findMany()
+  }
+
+  async create(data: CreateFeatureInput) {
+    return this.prisma.feature.create({ data })
+  }
+}
+```
+
+### Resolver Pattern (GraphQL Code-First)
+Resolvers define queries and mutations using decorators:
+
+```typescript
+@Resolver(() => Feature)
+export class FeatureResolver {
+  constructor(private featureService: FeatureService) {}
+
+  @Query(() => [Feature])
+  async features() {
+    return this.featureService.findAll()
+  }
+
+  @Mutation(() => Feature)
+  @UseGuards(JwtGuard)
+  async createFeature(@Args('input') input: CreateFeatureInput) {
+    return this.featureService.create(input)
+  }
+}
+```
+
+### DTO Pattern
+Input types for GraphQL mutations:
+
+```typescript
+@InputType()
+export class CreateFeatureInput {
+  @Field()
+  title: string
+
+  @Field()
+  description: string
+
+  @Field(() => [String])
+  tags: string[]
+}
+```
+
+### GraphQL Types (Entities)
+Exported as GraphQL types:
+
+```typescript
+@ObjectType()
+export class Feature {
+  @Field()
+  id: string
+
+  @Field()
+  title: string
+
+  @Field()
+  description: string
+
+  @Field(() => Date)
+  createdAt: Date
+}
+```
+
+### JWT Authentication Guard
+Protects mutations:
+
+```typescript
+@Injectable()
+export class JwtGuard implements CanActivate {
+  constructor(private jwtService: JwtService) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const ctx = GqlExecutionContext.create(context)
+    const { authorization } = ctx.getContext().req.headers
+
+    if (!authorization) return false
+    const token = authorization.replace('Bearer ', '')
+    return !!this.jwtService.verify(token)
+  }
+}
+```
+
+### Naming Conventions (NestJS)
+- **Modules:** `{feature}.module.ts`
+- **Services:** `{feature}.service.ts`
+- **Resolvers:** `{feature}.resolver.ts` (GraphQL) or `{feature}.controller.ts` (REST)
+- **Guards:** `{name}.guard.ts`
+- **DTOs:** `create-{feature}.input.ts`, `update-{feature}.input.ts`
+- **Entities:** `{feature}.entity.ts` or `{feature}.type.ts` (for GraphQL)
+
+### File Size Limits
+- **Services:** Max 300 lines (with multiple methods)
+- **Resolvers:** Max 200 lines
+- **Guards/Strategies:** Max 100 lines
+- **DTOs:** Max 50 lines
+
+When exceeding limits, extract logic into separate utilities or sub-services.
+
+## Prisma ORM (Phase 4A+)
+
+### Schema Location
+`packages/prisma/schema.prisma` — Shared across monorepo
+
+### Relations Pattern
+```prisma
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   // TipTap JSON
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  comments Comment[]  // One-to-many
+  likes    Like[]
+}
+```
+
+### Naming Conventions (Prisma)
+- **Models:** PascalCase (e.g., `Post`, `User`, `Category`)
+- **Fields:** camelCase (e.g., `createdAt`, `authorId`)
+- **Relations:** singular (author, not authors)
+- **Enums:** UPPER_SNAKE_CASE (e.g., `PostType`, `Role`)
+
+### Generated Client Usage
+```typescript
+// In service
+import { PrismaClient } from '@prisma/client'
+
+const post = await prisma.post.findUnique({ where: { id: '1' } })
+const posts = await prisma.post.findMany({ include: { author: true } })
+```
+
+### Migrations
+```bash
+# After schema changes
+pnpm db:migrate
+
+# Check migration status
+pnpm db:status
+
+# Reset database (dev only!)
+pnpm db:reset
+```
+
 ## Summary: YAGNI / KISS / DRY
 
 | Principle | Application |

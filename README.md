@@ -9,37 +9,67 @@ Personal portfolio website showcasing projects, skills, and experience. Built wi
 - pnpm (package manager)
 
 ### Setup
+
+**Local Development (with database):**
+
 ```bash
 # Install dependencies
 pnpm install
 
-# Run development server
+# Start PostgreSQL in Docker
+docker compose up -d
+
+# Run database migrations
+pnpm db:migrate
+
+# Seed initial data (optional)
+pnpm db:seed
+
+# Run all apps in development mode
 pnpm dev
 
-# Open http://localhost:3000
+# Web app: http://localhost:3000
+# API GraphQL: http://localhost:3001/graphql
+# Admin dashboard: http://localhost:3000/admin
+```
+
+**Quick start (web only, no DB):**
+
+```bash
+cd apps/web
+pnpm install
+pnpm dev
 ```
 
 ### Build & Deploy
+
 ```bash
-# Build for production
+# Build all apps
 pnpm build
 
-# Start production server
+# Start production servers (requires running API separately)
 pnpm start
 
-# Deploy to Vercel (automatic on push to main)
+# Deploy web app to Vercel (automatic on push to main)
+# Note: Configure DATABASE_URL env var in Vercel project settings
 ```
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
-| Framework | Next.js 15 (App Router) |
-| Language | TypeScript |
+| Frontend | Next.js 15 (App Router) |
+| Backend API | NestJS 11 + GraphQL (code-first) |
+| Database | PostgreSQL + Prisma ORM |
+| Authentication | Better Auth + JWT Guard |
 | Styling | Tailwind CSS + shadcn/ui |
-| Content | JSON (Phase 1), MDX (Phase 2+) |
-| Testing | Vitest + Playwright (Phase 3) |
-| Deployment | Vercel |
+| Content | MDX (blog/diary) + GraphQL API |
+| Rich Editor | TipTap (admin dashboard) |
+| Admin Dashboard | Next.js + shadcn/ui |
+| Monorepo | Turborepo |
+| Language | TypeScript |
+| Testing | Vitest + Playwright |
+| Deployment | Vercel (web), Docker Compose (local DB) |
 | Package Manager | pnpm |
 
 ## Project Structure
@@ -54,27 +84,48 @@ porfolio_v2/
 │   ├── design-guidelines.md
 │   ├── deployment-guide.md
 │   └── project-roadmap.md
-├── src/
-│   ├── app/                   # Next.js App Router pages
-│   ├── components/            # Reusable UI components
-│   ├── content/               # Static content (JSON/MDX)
-│   ├── lib/                   # Utility functions
-│   ├── types/                 # TypeScript types
-│   └── styles/                # Global styles
-├── package.json
-├── tsconfig.json
-└── tailwind.config.ts
+│
+├── apps/
+│   ├── web/                   # Next.js frontend + admin dashboard
+│   │   ├── src/app/           # App Router pages + admin routes
+│   │   ├── src/components/    # Reusable UI components
+│   │   ├── src/content/       # Blog + diary MDX content
+│   │   └── package.json
+│   │
+│   └── api/                   # NestJS GraphQL API (port 3001)
+│       ├── src/               # Services, resolvers, modules
+│       │   ├── posts/         # Blog/diary posts
+│       │   ├── projects/      # Projects management
+│       │   ├── categories/    # Categories
+│       │   ├── tags/          # Tags
+│       │   ├── series/        # Blog series
+│       │   ├── auth/          # JWT authentication
+│       │   └── graphql/       # GraphQL schema
+│       └── package.json
+│
+├── packages/
+│   ├── prisma/                # Prisma ORM + schema
+│   │   └── schema.prisma      # Database schema
+│   │
+│   └── shared/                # Shared types & utilities
+│
+├── docker-compose.yml         # PostgreSQL container
+├── turbo.json                 # Monorepo configuration
+├── package.json               # Root workspace
+└── pnpm-workspace.yaml        # Workspace definition
 ```
 
 ## Development Phases
 
-**Phase 1 (Current):** Portfolio pages (Home, Projects, About) with static JSON content.
+**Phase 1:** Portfolio pages (Home, Projects, About) with static JSON content. ✓ COMPLETE
 
-**Phase 2:** Blog system with MDX integration and blog pages.
+**Phase 2:** Blog system with MDX integration and blog pages. ✓ COMPLETE
 
-**Phase 3:** SEO, dark mode toggle, responsive refinements, performance optimization.
+**Phase 3:** SEO, dark mode toggle, responsive refinements, performance optimization. ✓ COMPLETE
 
-**Phase 4:** CMS integration (Sanity/Payload), analytics, comments/interactions, database.
+**Phase 4A (CURRENT):** Custom CMS with Turborepo monorepo, NestJS GraphQL API, PostgreSQL, Better Auth admin login, admin dashboard with CRUD pages, TipTap rich editor, content migration.
+
+**Phase 4B:** Advanced features (comments, likes, page views, analytics) — planned.
 
 ## Key Pages
 

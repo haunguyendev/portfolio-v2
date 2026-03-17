@@ -475,9 +475,99 @@ readingTime: auto-calculated
 - [x] Lint cleanup for production-ready code
 - [x] Zero TypeScript warnings and errors
 
-## Phase 4 Additions
+## Phase 4A Additions (Custom CMS Backend — Complete)
 
-- `src/app/api/`: API routes (comments, views, etc.)
-- `src/db/`: Database schemas and queries (Drizzle ORM)
-- `src/actions/`: Server actions for mutations
-- Migration files and DB setup scripts
+### Monorepo Structure
+```
+porfolio_v2/
+├── apps/
+│   ├── web/                    # Next.js frontend + admin dashboard
+│   │   ├── src/app/admin/      # Admin routes (/admin/login, /admin/posts, etc.)
+│   │   ├── src/components/     # Shared UI components
+│   │   └── src/lib/            # Utilities (GraphQL client, auth, etc.)
+│   │
+│   └── api/                    # NestJS GraphQL API (port 3001)
+│       ├── src/
+│       │   ├── posts/          # BlogPost + DiaryEntry resolvers/services
+│       │   ├── projects/       # Project management (CRUD)
+│       │   ├── categories/     # Category management
+│       │   ├── tags/           # Tag management
+│       │   ├── series/         # Blog series management
+│       │   ├── auth/           # JWT authentication, JWT guard
+│       │   ├── graphql/        # GraphQL schema definitions
+│       │   ├── prisma/         # Prisma service
+│       │   └── main.ts         # NestJS bootstrap (port 3001)
+│       └── src/schema.gql      # Generated GraphQL schema
+│
+├── packages/
+│   ├── prisma/
+│   │   ├── schema.prisma       # Database schema (shared across apps)
+│   │   ├── migrations/         # Database migration files
+│   │   └── seed.ts             # Content migration script (JSON/MDX → DB)
+│   │
+│   └── shared/                 # Shared types, DTOs
+│
+├── docker-compose.yml          # PostgreSQL service definition
+├── turbo.json                  # Monorepo task orchestration
+└── pnpm-workspace.yaml         # Workspace configuration
+```
+
+### Key Files (Phase 4A)
+
+**NestJS API:**
+- `apps/api/src/app.module.ts`: Root module with feature imports
+- `apps/api/src/posts/posts.resolver.ts`: GraphQL queries/mutations for posts
+- `apps/api/src/posts/posts.service.ts`: Business logic (create, read, update, delete)
+- `apps/api/src/auth/jwt.guard.ts`: Protects mutations with JWT validation
+- `apps/api/src/main.ts`: NestJS bootstrap, GraphQL server setup
+- `apps/api/src/schema.gql`: Auto-generated GraphQL schema
+
+**PostgreSQL & Prisma:**
+- `packages/prisma/schema.prisma`: Database schema (User, Post, Project, Category, Tag, Series, Comment, Like, PageView)
+- `packages/prisma/migrations/`: Auto-created migration files after schema changes
+- `packages/prisma/seed.ts`: Seed script to migrate JSON/MDX content to database
+
+**Admin Dashboard:**
+- `apps/web/src/app/admin/layout.tsx`: Admin sidebar, authentication layout
+- `apps/web/src/app/admin/login/page.tsx`: Better Auth login form
+- `apps/web/src/app/admin/posts/page.tsx`: Post management with TipTap editor
+- `apps/web/src/app/admin/projects/page.tsx`: Project CRUD interface
+- `apps/web/src/app/admin/[resource]/page.tsx`: Generic CRUD pages
+
+**Content Fetching (Updated):**
+- `apps/web/src/app/blog/page.tsx`: Fetches blog posts from GraphQL API (with ISR)
+- `apps/web/src/app/blog/[slug]/page.tsx`: Fetches post details from API
+- `apps/web/src/app/diary/page.tsx`: Fetches diary entries from API
+- `apps/web/src/app/projects/page.tsx`: Fetches projects from API
+
+### Database Schema (Phase 4A)
+
+**Tables:**
+- `User`: Admin user (Better Auth)
+- `Session`: Auth sessions
+- `Account`: OAuth/provider accounts
+- `Verification`: Email verification tokens
+- `Post`: Blog posts and diary entries (PostType enum: BLOG, DIARY)
+- `Project`: Project data
+- `Category`: Post/project categories
+- `Tag`: Post/project tags
+- `Series`: Blog series grouping
+- `Comment`: User comments on posts (Phase 4B)
+- `Like`: Likes on posts (Phase 4B)
+- `PageView`: Analytics tracking (Phase 4B)
+
+### Dependencies Added (Phase 4A)
+- `@nestjs/core`, `@nestjs/graphql`, `@nestjs/jwt`: NestJS framework
+- `@prisma/client`: Database client
+- `better-auth`: Authentication library
+- `@tiptap/react`, `@tiptap/core`: Rich text editor
+- `graphql`, `type-graphql`: GraphQL support
+- `turborepo`: Monorepo build orchestration
+
+## Phase 4B Planned Additions
+
+- `Comment` entity and resolvers (comments on posts)
+- `Like` entity and resolvers (likes/upvotes)
+- `PageView` analytics tracking
+- User registration and profiles
+- Email notification service

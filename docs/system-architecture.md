@@ -26,14 +26,51 @@
 └───────────┘  └───────────┘  └────────────┘
 ```
 
-**Key Points:**
-- **Next.js 16.1.6** App Router for pages and routing
-- **Static generation (SSG)** for all pages in Phase 1 (Home, Projects, About, Blog)
-- **Content from local JSON files** (Phase 1) → PostgreSQL Database (Phase 4)
-- **No server logic** in Phase 1 (API routes added in Phase 4 for comments, likes, views)
+**Key Points (Phase 1-3):**
+- **Next.js 15** App Router for pages and routing
+- **Static generation (SSG)** for all pages
+- **Content from local JSON files + MDX** (Phase 1-2)
 - **Vercel** handles deployment, caching, CDN, and serverless functions
-- **TypeScript strict mode** for type safety
-- **Tailwind CSS v4.2.1** with Base UI components (not Radix)
+
+## Phase 4A Architecture (Current)
+
+```
+FRONTEND (Vercel)               BACKEND (Docker/Cloud)
+┌──────────────────────┐       ┌──────────────────────┐
+│  Next.js 15 Web      │       │  NestJS GraphQL API  │
+│  (port 3000)         │◄─────►│  (port 3001)         │
+│  - Public pages      │ REST  │  - Code-first schema │
+│  - Admin dashboard   │ GraphQL  - 5+ Resolvers   │
+│  - Better Auth login │       │  - JWT Guard        │
+│  - TipTap editor     │       │  - Prisma ORM       │
+└──────────┬───────────┘       └────────┬────────────┘
+           │                            │
+           │        ISR Revalidate      │ Prisma Client
+           │◄──────────────────────────►│
+           │                            │
+           │                    ┌───────▼───────┐
+           │                    │  PostgreSQL   │
+           │                    │  (Docker or   │
+           │                    │   Vercel)     │
+           │                    │               │
+           │                    │  Tables:      │
+           │                    │  - User       │
+           │                    │  - Post       │
+           │                    │  - Project    │
+           │                    │  - Category   │
+           │                    │  - Tag, etc   │
+           │                    └───────────────┘
+```
+
+**Phase 4A Stack:**
+- **Turborepo monorepo** — apps/web, apps/api, packages/prisma, packages/shared
+- **Next.js frontend** (Vercel) — ISR revalidation from GraphQL API
+- **NestJS GraphQL API** (local/cloud) — Code-first schema, 5+ resolvers, JWT mutations
+- **PostgreSQL database** — Docker Compose locally, Vercel Postgres in production
+- **Prisma ORM** — Type-safe, auto-migrated schema with relationships
+- **Better Auth + JWT** — Secure admin authentication
+- **Admin dashboard** (/admin/*) — CRUD pages with TipTap rich editor
+- **Content migration** — Seed script converts JSON/MDX to database
 
 ## Data Flow (Phase 1-2 Final)
 
@@ -669,19 +706,29 @@ This creates a cohesive visual experience in dark mode by eliminating gray bands
 - [x] Dark mode with system theme preference
 - [x] Performance optimization and code cleanup
 
-### Phase 4 (CMS & Database)
-```
-Add new layers:
-├── API Routes (/app/api/)
-├── Database (PostgreSQL)
-├── Drizzle ORM
-├── Server Actions (mutations)
-└── Authentication (optional)
+### Phase 4A (Custom CMS Backend) — COMPLETE
+- [x] Turborepo monorepo (apps/web, apps/api, packages/prisma, packages/shared)
+- [x] NestJS 11 GraphQL API (code-first schema, 5+ resolvers)
+- [x] PostgreSQL + Prisma ORM (10+ entity tables)
+- [x] Better Auth + JWT Guard (secure admin authentication)
+- [x] Admin dashboard (/admin/*) with CRUD pages and TipTap editor
+- [x] Content migration script (JSON/MDX → Database)
+- [x] Public API (queries) + Protected API (mutations)
+- [x] ISR revalidation on content updates
 
-Data flow changes:
-  Components → Server Actions → Database
-  Database → API Routes → Components
+**Data flow changes:**
 ```
+Frontend → GraphQL Queries → API Resolvers → Prisma → Database
+Admin → GraphQL Mutations (JWT protected) → Services → Database
+ISR Revalidation ← On-demand invalidation from admin
+```
+
+### Phase 4B (Advanced Features) — PLANNED
+- [ ] Comments system with moderation
+- [ ] Likes and page view counters
+- [ ] Analytics tracking (referrers, devices)
+- [ ] User registration (optional)
+- [ ] Email notifications
 
 ## Summary
 

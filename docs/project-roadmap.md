@@ -318,76 +318,122 @@ Organized by category:
 
 ---
 
-## Phase 4: CMS & Advanced Features
+## Phase 4A: Custom CMS Backend
 
-**Timeline:** 2-3 weeks (starting April 8, 2026)
+**Timeline:** 2 weeks (March 10-17, 2026)
+**Status:** COMPLETE ✓
+**Priority:** HIGH
+**Completion Date:** March 17, 2026
+
+### Objectives (ACHIEVED)
+- Build custom CMS with Turborepo monorepo ✓
+- Implement NestJS GraphQL API ✓
+- Set up PostgreSQL database with Prisma ✓
+- Create admin dashboard with authentication ✓
+- Migrate blog/diary content from MDX to database ✓
+
+### Features Implemented
+
+| Feature | Scope | Priority | Status |
+|---------|-------|----------|--------|
+| Turborepo monorepo | apps/web, apps/api, packages/prisma, packages/shared | HIGH | Complete |
+| NestJS GraphQL API | Code-first schema, resolvers, services on port 3001 | HIGH | Complete |
+| PostgreSQL database | Docker Compose setup with full schema | HIGH | Complete |
+| Prisma ORM | Schema with Posts, Projects, Categories, Tags, Series, Comments, Likes | HIGH | Complete |
+| Better Auth | Admin email/password login, JWT tokens | HIGH | Complete |
+| JWT Guard | Protect API mutations with JWT authentication | HIGH | Complete |
+| Admin Dashboard | /admin/* routes with sidebar, CRUD pages | HIGH | Complete |
+| TipTap Editor | Rich text editor for post content (JSON storage) | HIGH | Complete |
+| Content Migration | Seed script converts JSON + MDX to database | HIGH | Complete |
+| Public GraphQL API | Fetch blog/diary/projects from database (ISR enabled) | HIGH | Complete |
+
+### Technical Implementation
+
+#### Monorepo Setup (✓ Completed)
+- [x] Created Turborepo with workspace configuration
+- [x] apps/web — Next.js frontend + admin dashboard
+- [x] apps/api — NestJS GraphQL API
+- [x] packages/prisma — Shared Prisma schema
+- [x] packages/shared — Shared types and utilities
+
+#### NestJS API (✓ Completed)
+- [x] Code-first GraphQL schema with TypeGraphQL
+- [x] Database connection pooling (5 connections)
+- [x] Modules: PostsModule, ProjectsModule, CategoriesModule, TagsModule, SeriesModule, AuthModule
+- [x] Resolvers for all resources (mutations + queries)
+- [x] Prisma service for database access
+- [x] JWT authentication guard on mutations
+
+#### PostgreSQL Database (✓ Completed)
+- [x] Docker Compose service for local development
+- [x] Prisma schema with full entity relationships
+- [x] Tables: User, Session, Account, Post, Project, Category, Tag, Series, Comment, Like, PageView
+- [x] Better Auth tables for user management
+- [x] Migration scripts via Prisma
+
+#### Admin Dashboard (✓ Completed)
+- [x] /admin/login page (Better Auth integration)
+- [x] /admin/posts — Create, read, update, delete posts
+- [x] /admin/projects — Manage projects
+- [x] /admin/categories — Manage categories
+- [x] /admin/tags — Manage tags
+- [x] /admin/series — Manage blog series
+- [x] TipTap rich editor integrated in post forms
+- [x] Sidebar navigation with logout
+
+#### Content Migration (✓ Completed)
+- [x] Seed script reads JSON files (projects.json) + MDX (blog/, diary/)
+- [x] Converts to Prisma models and inserts to database
+- [x] Migrates all existing content to database
+- [x] Run with `pnpm db:seed`
+
+#### Public API Changes (✓ Completed)
+- [x] Updated blog list/detail pages to fetch from GraphQL API
+- [x] Updated diary list/detail pages to fetch from GraphQL API
+- [x] Updated projects page to fetch from API
+- [x] Enabled ISR (revalidate on demand) for dynamic content
+
+### Success Criteria (Phase 4A COMPLETE)
+
+- [x] Monorepo builds successfully with all apps
+- [x] NestJS API runs on port 3001 with GraphQL endpoint
+- [x] PostgreSQL database runs in Docker Compose
+- [x] Admin login works with Better Auth
+- [x] CRUD operations functional for all content types
+- [x] Content migration script successful (all data seeded)
+- [x] Public pages fetch from GraphQL API with ISR
+- [x] TipTap editor saves JSON to database
+- [x] JWT mutations protected from unauthenticated access
+- [x] No TypeScript errors or runtime errors
+
+### Dependencies
+- [x] Phase 3 complete and deployed
+
+---
+
+## Phase 4B: Advanced Features (Planned)
+
+**Timeline:** 1-2 weeks (Post-Phase 4A)
 **Status:** PLANNED
-**Priority:** LOW (optional enhancement)
+**Priority:** MEDIUM (optional enhancement)
 
 ### Objectives
-- Enable content management without code deploys
 - Add interactive features (comments, likes, views)
-- Scale content infrastructure
+- Enable user engagement and analytics
+- Community features
 
 ### Features
 
 | Feature | Scope | Priority |
 |---------|-------|----------|
-| Headless CMS | Sanity or Payload integration | MEDIUM |
-| Admin dashboard | Content management UI | MEDIUM |
-| Comments system | User comments on posts | LOW |
-| Likes/views counter | Social proof, engagement | LOW |
-| PostgreSQL database | Structured data store | MEDIUM |
-| Drizzle ORM | Type-safe database queries | MEDIUM |
-| API routes | Backend for mutations | MEDIUM |
-
-### Technical Tasks
-
-#### CMS Setup
-- [ ] Choose CMS (Sanity, Payload, Hygraph)
-- [ ] Set up CMS project
-- [ ] Define content schemas in CMS
-- [ ] Configure API access tokens
-- [ ] Test content queries
-
-#### Database Setup
-- [ ] Create PostgreSQL database (Vercel Postgres or Railway)
-- [ ] Set up Drizzle ORM
-- [ ] Define database schema (comments, likes, analytics)
-- [ ] Create migrations
-- [ ] Set up connection pooling
-
-#### API Routes
-- [ ] Create `/api/posts` for blog posts
-- [ ] Create `/api/comments` for comments (CRUD)
-- [ ] Create `/api/likes` for like counts
-- [ ] Add authentication middleware
-- [ ] Set up rate limiting
-
-#### Features
-- [ ] Comments form + display
-- [ ] Like button with count
-- [ ] View counter
-- [ ] User authentication (optional)
-- [ ] Comment moderation (optional)
-
-#### Migration from Phase 2
-- [ ] Migrate blog posts to CMS
-- [ ] Migrate project data to CMS
-- [ ] Update components to use API routes
-
-### Success Criteria
-
-- [ ] CMS fully operational
-- [ ] All content manageable via admin UI
-- [ ] API routes working with proper auth
-- [ ] Comments and likes functional
-- [ ] Database queries performant
-- [ ] Lighthouse scores maintained > 85
+| Comments system | User comments on posts with moderation | MEDIUM |
+| Likes/views counter | Social proof and engagement metrics | MEDIUM |
+| Page analytics | Track page views, referrers, device info | MEDIUM |
+| User profiles | Optional user registration and profiles | LOW |
+| Email notifications | Alert on new comments | LOW |
 
 ### Dependencies
-- Phase 3 complete and stable
-- Decision on CMS platform made
+- Phase 4A complete with working API and admin dashboard
 
 ---
 
@@ -398,10 +444,11 @@ Organized by category:
 | Phase 1 | 2-3 weeks | Feb 16 | Mar 16 | COMPLETE ✓ |
 | Phase 2 | 1-2 weeks | Mar 17 | Mar 31 | COMPLETE ✓ |
 | Phase 3 | 1 week | Apr 1 | Mar 17 | COMPLETE ✓ |
-| Phase 4 | 2-3 weeks | TBD | TBD | PLANNED |
+| Phase 4A | 1 week | Mar 10 | Mar 17 | COMPLETE ✓ |
+| Phase 4B | 1-2 weeks | TBD | TBD | PLANNED |
 
-**Total Estimated Time:** 6-9 weeks for full feature set (Phase 1-3 complete)
-**Production Ready:** Phase 1-3 complete and production-ready for deployment
+**Total Completed:** 6 weeks for Phases 1-3 + Phase 4A (monorepo + API + CMS)
+**Production Ready:** All phases 1-4A complete with working backend CMS and admin dashboard
 
 ## Key Milestones
 
