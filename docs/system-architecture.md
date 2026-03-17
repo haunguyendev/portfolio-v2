@@ -586,6 +586,44 @@ Live at custom domain
 - **Generated from:** Fallback for all pages
 - **Per-post:** Can override with post `image` field
 
+## Dark Mode Implementation (Phase 3 Complete)
+
+### Theme Provider Configuration
+**File:** `src/components/layout/theme-provider.tsx`
+- Uses `next-themes` for theme management
+- Theme options: `light`, `dark`, `system`
+- System preference detection: Enabled (`enableSystem: true`)
+- Persists user preference to localStorage
+
+### Dark Mode Styling Strategy
+**CSS Variable Base:** Tailwind dark mode via `darkMode: 'class'`
+
+**Semantic Colors:**
+- Light: White background (#ffffff), Zinc 900 foreground (#18181b)
+- Dark: Background token (#09090b), Zinc 50 foreground (#fafafa)
+
+### Section Background Uniformity
+**Dark mode sections use unified background (`dark:bg-background`):**
+- Featured projects section
+- Latest blog section
+- Latest diary section
+- Footer
+
+This creates a cohesive visual experience in dark mode by eliminating gray bands and using the main background color throughout.
+
+### Component-Specific Dark Mode Adjustments
+| Component | Dark Mode Style |
+|-----------|-----------------|
+| Diary blockquotes | `dark:border-l-orange-600 dark:bg-orange-950/30` |
+| Blog blockquotes | Standard prose styling with dark mode support |
+| Error boundary | `dark:bg-red-950/50` for error context |
+
+### User Experience
+- Theme toggle in header (light/dark/system icons)
+- System preference auto-detected on first visit
+- Smooth color transitions between modes
+- All text maintains 4.5:1 contrast in both modes
+
 ## Security & Privacy
 
 ### Phase 1-3

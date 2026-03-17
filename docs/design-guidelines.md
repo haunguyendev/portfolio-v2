@@ -423,30 +423,58 @@ import Image from 'next/image'
 | Social OG | 1.91:1 | Open Graph image |
 | Icon | 1:1 | All icons |
 
-## Dark Mode (Phase 3)
+## Dark Mode (Phase 3 — Complete)
 
-**Current:** Light mode only
+**Status:** Fully implemented with system theme preference
 
-**Phase 3 Implementation:**
-- CSS custom properties for theming
-- localStorage for user preference
-- System preference detection
-- Toggle button in header
+**Implementation Details:**
+- Tailwind dark mode enabled (`darkMode: 'class'` in config)
+- System preference detection enabled (`enableSystem: true` in theme-provider)
+- User theme preference persists in localStorage via next-themes
+- All colors use semantic dark mode tokens
 
-```css
-:root {
-  --background: #ffffff;
-  --foreground: #18181b;
-  --card: #f4f4f5;
-}
+### Color Implementation
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --card: #27272a;
-  }
-}
+**Light Mode:**
+- Background: `#ffffff` (white)
+- Foreground: `#18181b` (Zinc 900)
+- Card backgrounds: `#f4f4f5` (Zinc 100)
+
+**Dark Mode:**
+- Background: `#09090b` (CSS custom property: `--background`)
+- Foreground: `#fafafa` (Zinc 50)
+- Card backgrounds: `#27272a` (Zinc 800)
+
+### Section Backgrounds (Dark Mode)
+
+**Uniform dark background implemented for:**
+- Featured projects section: `dark:bg-background`
+- Latest blog section: `dark:bg-background`
+- Latest diary section: `dark:bg-background`
+- Footer: `dark:bg-background`
+
+In dark mode, sections now use the uniform `background` color instead of gray bands, creating a cohesive visual experience.
+
+### Component-Specific Dark Mode Fixes
+
+| Component | Fix |
+|-----------|-----|
+| Diary blockquotes | `dark:border-l-orange-600 dark:bg-orange-950/30` |
+| Error page | `dark:bg-red-950/50` |
+| Blog blockquotes | Standard prose dark mode styling |
+
+### Usage Pattern
+
+```tsx
+// Single dark mode class on section
+<section className="bg-muted dark:bg-background">
+  Content uses unified dark background
+</section>
+
+// Component-specific dark overrides
+<blockquote className="bg-orange-50/50 dark:bg-orange-950/30">
+  Diary-specific styling
+</blockquote>
 ```
 
 ## Accessibility Standards

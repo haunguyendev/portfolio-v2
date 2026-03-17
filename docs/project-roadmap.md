@@ -396,7 +396,7 @@ Organized by category:
 | Phase | Duration | Start | End | Status |
 |-------|----------|-------|-----|--------|
 | Phase 1 | 2-3 weeks | Feb 16 | Mar 16 | COMPLETE ✓ |
-| Phase 2A | 2 weeks | Mar 17 | Mar 31 | COMPLETE ✓ |
+| Phase 2 | 1-2 weeks | Mar 17 | Mar 31 | COMPLETE ✓ |
 | Phase 3 | 1 week | Apr 1 | Mar 17 | COMPLETE ✓ |
 | Phase 4 | 2-3 weeks | TBD | TBD | PLANNED |
 
