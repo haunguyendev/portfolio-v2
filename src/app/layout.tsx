@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ThemeProvider } from '@/components/layout/theme-provider'
+import { SITE_URL } from '@/lib/constants'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -13,7 +14,29 @@ export const metadata: Metadata = {
     template: '%s | Kane Nguyen',
   },
   description:
-    "Software Engineer's portfolio showcasing projects, skills, and experience.",
+    "Software Engineer portfolio — projects, blog, and diary by Kane Nguyen.",
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Kane Nguyen',
+    images: [
+      {
+        url: '/images/og-default.png',
+        width: 1200,
+        height: 630,
+        alt: 'Kane Nguyen — Software Engineer',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/images/og-default.png'],
+  },
+  alternates: {
+    types: { 'application/rss+xml': '/feed.xml' },
+  },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({

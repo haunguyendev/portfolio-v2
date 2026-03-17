@@ -579,6 +579,88 @@ export const ANALYTICS_ID = process.env.NEXT_PUBLIC_ANALYTICS_ID || ''
 <div onClick={handleClick}>☰</div>
 ```
 
+## SEO & Metadata Standards (Phase 3+)
+
+### JSON-LD Schema Markup
+Always use `src/components/seo/json-ld.tsx` components for structured data:
+
+```typescript
+// Homepage (PersonJsonLd)
+import { PersonJsonLd } from '@/components/seo/json-ld'
+
+export default function Home() {
+  return (
+    <>
+      <PersonJsonLd />
+      {/* page content */}
+    </>
+  )
+}
+
+// Blog/Diary detail pages (ArticleJsonLd)
+import { ArticleJsonLd } from '@/components/seo/json-ld'
+
+export default function BlogPost({ post }) {
+  return (
+    <>
+      <ArticleJsonLd
+        title={post.title}
+        description={post.description}
+        datePublished={post.date}
+        dateModified={post.updated}
+        url={`${SITE_URL}/blog/${post.slug}`}
+        image={post.image}
+      />
+      {/* post content */}
+    </>
+  )
+}
+```
+
+**Safety Notes:**
+- Always use the `safeJsonLd()` utility to escape `<` characters and prevent XSS
+- Avoid hardcoding JSON-LD; use component props for dynamic content
+- Validate schema at schema.org/validator
+
+### Metadata Configuration
+In `app/layout.tsx`, configure metadata export:
+
+```typescript
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Kane Nguyen — Software Engineer',
+    template: '%s | Kane Nguyen',
+  },
+  description: 'Portfolio and blog of Kane Nguyen, Software Engineer',
+  openGraph: {
+    title: 'Kane Nguyen — Software Engineer',
+    description: 'Portfolio and blog',
+    url: SITE_URL,
+    type: 'website',
+    images: [{ url: `${SITE_URL}/images/og-default.png` }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kane Nguyen',
+    description: 'Portfolio and blog',
+    images: [`${SITE_URL}/images/og-default.png`],
+  },
+  alternates: {
+    canonical: SITE_URL,
+    types: {
+      'application/rss+xml': `${SITE_URL}/feed.xml`,
+    },
+  },
+  robots: 'index, follow',
+}
+```
+
+### Sitemap & Robots
+- **sitemap.ts:** Generate dynamically with all routes, priorities, and lastModified dates
+- **robots.ts:** Configure user-agent rules and sitemap reference
+- **Both:** Use MetadataRoute pattern (Next.js 14+)
+
 ## MDX Content Standards (Phase 2+)
 
 ### File Organization

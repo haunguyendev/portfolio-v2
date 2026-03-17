@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react'
 import { MdxContent } from '@/components/blog/mdx-content'
 import { DiaryMoodBadge } from '@/components/diary/diary-mood-badge'
 import { ShareButtons } from '@/components/shared/share-buttons'
+import { ArticleJsonLd } from '@/components/seo/json-ld'
 import { getDiaries, getDiaryBySlug } from '@/lib/content'
 import { SITE_URL } from '@/lib/constants'
 
@@ -40,6 +41,12 @@ export default async function DiaryEntryPage({
 
   return (
     <div className="section-spacing">
+      <ArticleJsonLd
+        title={entry.title}
+        description={entry.description || `Diary entry: ${entry.title}`}
+        datePublished={entry.date}
+        url={entryUrl}
+      />
       <div className="container-main max-w-3xl">
         {/* Back link */}
         <Link

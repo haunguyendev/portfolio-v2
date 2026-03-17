@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useSyncExternalStore } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+
+const noop = () => () => {}
 
 type TextItem = {
   text: string
@@ -20,10 +22,8 @@ export function RotatingText({
   interval = 3000,
   className,
 }: RotatingTextProps) {
-  const [mounted, setMounted] = useState(false)
+  const mounted = useSyncExternalStore(noop, () => true, () => false)
   const [index, setIndex] = useState(0)
-
-  useEffect(() => setMounted(true), [])
 
   useEffect(() => {
     if (!mounted) return

@@ -534,13 +534,66 @@ Live at custom domain
 - Vercel Analytics (performance metrics)
 - Umami Analytics (visitor tracking)
 
+## SEO & Metadata (Phase 3 Complete)
+
+### Sitemap Generation
+- **File:** `src/app/sitemap.ts` (programmatic MetadataRoute)
+- **Routes included:** Home, /projects, /about, /blog, /diary, all blog posts, all diary entries
+- **Priorities:** Home (1.0), Projects (0.9), About (0.8), Blog/Diary pages (0.8/0.6), Posts (0.7), Entries (0.5)
+- **Update frequency:** Weekly (home), Monthly (pages), Weekly (lists)
+- **Generated at:** `/sitemap.xml` (Next.js auto-routes)
+
+### Robots Configuration
+- **File:** `src/app/robots.ts` (MetadataRoute)
+- **Rules:** Allow all (`userAgent: '*', allow: '/'`)
+- **Sitemap reference:** Points to `/sitemap.xml`
+
+### JSON-LD Schema Markup
+**Components:** `src/components/seo/json-ld.tsx`
+
+**PersonJsonLd** (on homepage):
+- Type: Person
+- Name: Kane Nguyen
+- Job Title: Software Engineer
+- URL: Site URL
+- Social profiles: GitHub, LinkedIn, Facebook
+
+**ArticleJsonLd** (on blog/diary detail pages):
+- Type: Article
+- Properties: headline, description, datePublished, dateModified, url, image
+- Author: Person (Kane Nguyen)
+
+### Metadata in Layout
+**File:** `src/app/layout.tsx`
+- metadataBase: `SITE_URL`
+- title: Default + per-page override
+- description: Site tagline + per-page override
+- **Open Graph:**
+  - og:title, og:description, og:image
+  - og:type: website (homepage), article (posts)
+  - og:url: canonical URL
+- **Twitter Card:**
+  - twitter:card: summary_large_image
+  - twitter:title, twitter:description, twitter:image
+- **Additional:**
+  - canonical: Self-referential
+  - RSS feed: `/feed.xml`
+  - robots: index, follow
+  - language: en-US
+
+### Open Graph Images
+- **Default:** `/public/images/og-default.png` (1200x630px)
+- **Generated from:** Fallback for all pages
+- **Per-post:** Can override with post `image` field
+
 ## Security & Privacy
 
-### Phase 1
-- No user data collection
+### Phase 1-3
+- No user data collection (static content)
 - No authentication
 - Static content only
 - HTTPS enforced (Vercel automatic)
+- XSS protection in JSON-LD (escaped `<` to prevent injection)
 
 ### Phase 4
 - Add authentication if needed
@@ -570,11 +623,13 @@ Live at custom domain
 - [x] Integrated latest blog/diary sections on homepage
 - [x] RSS feed endpoint
 
-### Phase 3 (SEO & Polish) — UPCOMING
-- Add static sitemaps
-- Meta tag management (next-seo or manual)
-- Dark mode with CSS variables (client-side toggle)
-- Performance budgets in CI
+### Phase 3 (SEO & Polish) — COMPLETE
+- [x] Programmatic sitemap.xml generation
+- [x] Robots.txt configuration
+- [x] JSON-LD schema markup (Person, Article)
+- [x] Enhanced metadata (OG, Twitter, RSS)
+- [x] Dark mode with system theme preference
+- [x] Performance optimization and code cleanup
 
 ### Phase 4 (CMS & Database)
 ```

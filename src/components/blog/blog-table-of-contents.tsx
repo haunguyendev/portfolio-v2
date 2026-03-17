@@ -14,17 +14,20 @@ export function BlogTableOfContents() {
   const [headings, setHeadings] = useState<TocItem[]>([])
   const [activeId, setActiveId] = useState<string>('')
 
-  // Extract headings from DOM after render
+  // Extract headings from DOM after render (rAF avoids sync setState in effect)
   useEffect(() => {
-    const elements = document.querySelectorAll(
-      '.prose h2[id], .prose h3[id]',
-    )
-    const items: TocItem[] = Array.from(elements).map((el) => ({
-      id: el.id,
-      text: el.textContent || '',
-      level: el.tagName === 'H2' ? 2 : 3,
-    }))
-    setHeadings(items)
+    const id = requestAnimationFrame(() => {
+      const elements = document.querySelectorAll(
+        '.prose h2[id], .prose h3[id]',
+      )
+      const items: TocItem[] = Array.from(elements).map((el) => ({
+        id: el.id,
+        text: el.textContent || '',
+        level: el.tagName === 'H2' ? 2 : 3,
+      }))
+      setHeadings(items)
+    })
+    return () => cancelAnimationFrame(id)
   }, [])
 
   // Track active heading via IntersectionObserver

@@ -33,12 +33,14 @@ porfolio_v2/
 │
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx (root layout, header + footer)
-│   │   ├── page.tsx (home page)
-│   │   ├── globals.css (global styles, Tailwind directives)
+│   │   ├── layout.tsx (root layout, header + footer, enhanced metadata Phase 3)
+│   │   ├── page.tsx (home page with PersonJsonLd)
+│   │   ├── globals.css (global styles, Tailwind directives, dark mode fixes Phase 3)
 │   │   ├── favicon.ico
 │   │   ├── not-found.tsx (404 error page)
-│   │   ├── error.tsx (error boundary)
+│   │   ├── error.tsx (error boundary, dark mode fix Phase 3)
+│   │   ├── sitemap.ts (programmatic sitemap generation — Phase 3)
+│   │   ├── robots.ts (robots.txt configuration — Phase 3)
 │   │   ├── projects/
 │   │   │   ├── page.tsx (projects list page)
 │   │   │   └── projects-page-content.tsx (client wrapper with filter state)
@@ -48,21 +50,24 @@ porfolio_v2/
 │   │   │   ├── page.tsx (blog list with filter state — Phase 2)
 │   │   │   ├── blog-page-content.tsx (client wrapper with filter state)
 │   │   │   └── [slug]/
-│   │   │       └── page.tsx (dynamic blog detail route)
+│   │   │       └── page.tsx (dynamic blog detail with ArticleJsonLd — Phase 3)
 │   │   ├── diary/
 │   │   │   ├── page.tsx (diary list with mood filter — Phase 2)
 │   │   │   ├── diary-page-content.tsx (client wrapper with mood filter state)
 │   │   │   └── [slug]/
-│   │   │       └── page.tsx (dynamic diary detail route)
+│   │   │       └── page.tsx (dynamic diary detail with ArticleJsonLd — Phase 3)
 │   │   └── feed.xml/
 │   │       └── route.ts (RSS feed for blog posts — Phase 2)
 │   │
 │   ├── components/
+│   │   ├── seo/ (Phase 3)
+│   │   │   └── json-ld.tsx (PersonJsonLd, ArticleJsonLd components)
 │   │   ├── layout/
 │   │   │   ├── header.tsx (sticky header with logo, nav, mobile-nav)
 │   │   │   ├── footer.tsx (social links, copyright)
 │   │   │   ├── navigation.tsx (desktop nav with active state)
-│   │   │   └── mobile-nav.tsx (hamburger menu, client component)
+│   │   │   ├── mobile-nav.tsx (hamburger menu, client component)
+│   │   │   └── theme-provider.tsx (enableSystem: true for system theme preference)
 │   │   ├── home/
 │   │   │   ├── hero-section.tsx (split hero: text left, photo right)
 │   │   │   ├── featured-projects-section.tsx (featured projects grid)
@@ -126,16 +131,17 @@ porfolio_v2/
 │
 ├── public/
 │   ├── favicon.ico
-│   ├── og-image.png
 │   ├── resume.pdf (downloadable resume)
 │   ├── images/
 │   │   ├── hero/
 │   │   │   └── kane-photo.jpg
 │   │   ├── projects/
 │   │   │   └── [project images]
+│   │   ├── blog/
+│   │   │   └── [blog post images]
+│   │   ├── og-default.png (1200x630 for OG/Twitter cards — Phase 3)
 │   │   └── icons/
 │   │       └── [tech icons — optional]
-│   └── robots.txt (Phase 3)
 │
 └── tests/ (Phase 3)
     ├── unit/
@@ -449,15 +455,25 @@ readingTime: auto-calculated
 - `/src/app/diary/[slug]/page.tsx`: Dynamic diary route with Velite integration
 - `/src/app/feed.xml/route.ts`: RSS feed generator (blog posts only)
 
-## Phase 3 Additions (SEO & Polish)
+## Phase 3 Additions (SEO & Polish — Complete)
 
-- `/tests/unit/`: Vitest unit tests
-- `/tests/e2e/`: Playwright e2e tests
-- `src/hooks/`: Custom React hooks (useScrollY, useTheme, etc.)
-- `/public/robots.txt`: SEO robot instructions
-- `/public/sitemap.xml`: SEO sitemap (generated programmatically)
-- Dark mode refinements (CSS variables, theme transitions)
-- Performance monitoring (Lighthouse CI, Core Web Vitals)
+**SEO & Metadata:**
+- [x] `src/app/sitemap.ts`: Programmatic sitemap generation (MetadataRoute)
+- [x] `src/app/robots.ts`: Robots configuration (MetadataRoute)
+- [x] `src/components/seo/json-ld.tsx`: PersonJsonLd and ArticleJsonLd components
+- [x] Enhanced `src/app/layout.tsx`: OG tags, Twitter cards, RSS feed, metadataBase
+- [x] `public/images/og-default.png`: Default OG image (1200x630px)
+
+**Dark Mode & Styling:**
+- [x] `src/components/layout/theme-provider.tsx`: enableSystem: true for system theme preference
+- [x] Dark mode CSS fixes in `src/app/globals.css` (blockquote styling)
+- [x] Dark mode fixes in `src/app/error.tsx` (text contrast)
+
+**Code Quality:**
+- [x] Fixed React hook linting warnings (rAF, useSyncExternalStore)
+- [x] Added VERCEL_URL fallback in `src/lib/constants.ts`
+- [x] Lint cleanup for production-ready code
+- [x] Zero TypeScript warnings and errors
 
 ## Phase 4 Additions
 

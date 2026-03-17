@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { MdxContent } from '@/components/blog/mdx-content'
 import { BlogTableOfContents } from '@/components/blog/blog-table-of-contents'
 import { ShareButtons } from '@/components/shared/share-buttons'
+import { ArticleJsonLd } from '@/components/seo/json-ld'
 import { getBlogs, getBlogBySlug } from '@/lib/content'
 import { SITE_URL } from '@/lib/constants'
 
@@ -46,6 +47,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="section-spacing">
+      <ArticleJsonLd
+        title={post.title}
+        description={post.description}
+        datePublished={post.date}
+        dateModified={post.updated}
+        url={postUrl}
+        image={post.image}
+      />
       <div className="container-main">
         {/* Back link */}
         <Link

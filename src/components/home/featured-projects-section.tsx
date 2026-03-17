@@ -7,7 +7,7 @@ export function FeaturedProjectsSection() {
   const projects = getFeaturedProjects()
 
   return (
-    <section className="section-spacing bg-muted">
+    <section className="section-spacing bg-muted dark:bg-background">
       <div className="container-main">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">

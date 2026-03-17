@@ -40,7 +40,7 @@ const SOCIAL_ICONS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-muted">
+    <footer className="border-t border-border bg-muted dark:bg-background">
       <div className="container-main py-10 md:py-14">
         {/* Top: Nav columns + social icons */}
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">

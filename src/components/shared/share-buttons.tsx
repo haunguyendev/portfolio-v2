@@ -1,8 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useSyncExternalStore } from 'react'
 import { Share2, Linkedin, Facebook, Twitter } from 'lucide-react'
 import { CopyLinkButton } from './copy-link-button'
+
+const noop = () => () => {}
 
 interface ShareButtonsProps {
   title: string
@@ -10,14 +12,14 @@ interface ShareButtonsProps {
 }
 
 export function ShareButtons({ title, url }: ShareButtonsProps) {
-  const [canNativeShare, setCanNativeShare] = useState(false)
+  // Detect native share support (SSR-safe via useSyncExternalStore)
+  const canNativeShare = useSyncExternalStore(
+    noop,
+    () => typeof navigator !== 'undefined' && 'share' in navigator,
+    () => false,
+  )
   const encodedTitle = encodeURIComponent(title)
   const encodedUrl = encodeURIComponent(url)
-
-  // Detect native share support on client only (avoids SSR mismatch)
-  useEffect(() => {
-    setCanNativeShare(typeof navigator !== 'undefined' && 'share' in navigator)
-  }, [])
 
   const handleNativeShare = async () => {
     try {

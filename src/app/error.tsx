@@ -20,7 +20,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
     <div className="section-spacing">
       <div className="container-main">
         <div className="flex flex-col items-center justify-center py-16 text-center md:py-24">
-          <div className="mb-6 rounded-full bg-red-50 p-4">
+          <div className="mb-6 rounded-full bg-red-50 p-4 dark:bg-red-950/50">
             <AlertTriangle className="h-8 w-8 text-red-500" />
           </div>
 

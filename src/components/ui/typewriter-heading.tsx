@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useSyncExternalStore } from 'react'
 import { motion } from 'framer-motion'
+
+const noop = () => () => {}
 
 type TextSegment = {
   text: string
@@ -32,12 +34,10 @@ export function TypewriterHeading({
   pauseAfterDelete = 700,
   className,
 }: TypewriterHeadingProps) {
-  const [mounted, setMounted] = useState(false)
+  const mounted = useSyncExternalStore(noop, () => true, () => false)
   const [nameIndex, setNameIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)
   const [phase, setPhase] = useState<Phase>('typing')
-
-  useEffect(() => setMounted(true), [])
 
   const currentSegments = names[nameIndex]
   const totalChars = currentSegments.reduce((sum, seg) => sum + seg.text.length, 0)
@@ -53,8 +53,8 @@ export function TypewriterHeading({
     if (phase !== 'typing') return
 
     if (charIndex >= totalChars) {
-      setPhase('paused')
-      return
+      const timer = setTimeout(() => setPhase('paused'), 0)
+      return () => clearTimeout(timer)
     }
 
     const timer = setTimeout(() => setCharIndex((prev) => prev + 1), typeDelay)
@@ -74,8 +74,8 @@ export function TypewriterHeading({
     if (phase !== 'deleting') return
 
     if (charIndex <= 0) {
-      setPhase('waiting')
-      return
+      const timer = setTimeout(() => setPhase('waiting'), 0)
+      return () => clearTimeout(timer)
     }
 
     const timer = setTimeout(() => setCharIndex((prev) => prev - 1), deleteDelay)
