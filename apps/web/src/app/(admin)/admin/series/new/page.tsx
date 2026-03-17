@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { gql } from 'graphql-request'
-import { getGraphQLClient } from '@/lib/graphql-client'
+import { getAuthenticatedGqlClient } from '@/lib/graphql-client'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 const CREATE_SERIES = gql`
   mutation CreateSeries($input: CreateSeriesInput!) {
@@ -37,15 +38,17 @@ export default function NewSeriesPage() {
     setSaving(true)
 
     try {
-      const token = document.cookie.split('; ').find((c) => c.startsWith('better-auth.session_token='))?.split('=')[1]
-      const client = getGraphQLClient(token)
+      const client = await getAuthenticatedGqlClient()
       await client.request(CREATE_SERIES, {
         input: { title, slug, description: description || undefined, coverImage: coverImage || undefined, published },
       })
+      toast.success('Series created successfully')
       router.push('/admin/series')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save')
+      const msg = err instanceof Error ? err.message : 'Failed to save'
+      setError(msg)
+      toast.error(msg)
     } finally {
       setSaving(false)
     }

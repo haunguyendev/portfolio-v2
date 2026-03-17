@@ -8,8 +8,31 @@ function getGraphQLClient(token?: string) {
   })
 }
 
-// Server-side client using env (no token — for public queries)
+// Server-side client (no token — for public queries)
 export const gqlClient = getGraphQLClient()
 
-// Factory for authenticated client (admin mutations)
+/**
+ * Get an authenticated GraphQL client by fetching the session token
+ * from Better Auth's API endpoint (works even with HttpOnly cookies).
+ */
+export async function getAuthenticatedGqlClient(): Promise<GraphQLClient> {
+  const res = await fetch('/api/auth/get-session', {
+    credentials: 'include',
+  })
+
+  if (!res.ok) {
+    throw new Error('Not authenticated')
+  }
+
+  const data = await res.json()
+  const token = data?.session?.token
+
+  if (!token) {
+    throw new Error('No session token')
+  }
+
+  return getGraphQLClient(token)
+}
+
+// Factory for authenticated client (manual token)
 export { getGraphQLClient }

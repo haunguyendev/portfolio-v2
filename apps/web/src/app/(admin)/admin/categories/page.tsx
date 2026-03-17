@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { gql } from 'graphql-request'
-import { gqlClient, getGraphQLClient } from '@/lib/graphql-client'
+import { gqlClient, getAuthenticatedGqlClient } from '@/lib/graphql-client'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import { Pencil, Trash2, Plus, Check, X } from 'lucide-react'
 
 interface Category {
@@ -17,10 +18,6 @@ const DELETE_CATEGORY = gql`mutation DeleteCategory($id: ID!) { deleteCategory(i
 
 function slugify(text: string) {
   return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-}
-
-function getAuthToken() {
-  return document.cookie.split('; ').find((c) => c.startsWith('better-auth.session_token='))?.split('=')[1]
 }
 
 export default function CategoriesPage() {
@@ -40,26 +37,35 @@ export default function CategoriesPage() {
 
   async function handleCreate() {
     if (!newName.trim()) return
-    const client = getGraphQLClient(getAuthToken())
-    const input = { name: newName.trim(), slug: slugify(newName), description: newDesc || undefined }
-    const d = await client.request<{ createCategory: Category }>(CREATE_CATEGORY, { input })
-    setCategories((prev) => [...prev, d.createCategory])
-    setNewName(''); setNewDesc(''); setAdding(false)
+    try {
+      const client = await getAuthenticatedGqlClient()
+      const input = { name: newName.trim(), slug: slugify(newName), description: newDesc || undefined }
+      const d = await client.request<{ createCategory: Category }>(CREATE_CATEGORY, { input })
+      setCategories((prev) => [...prev, d.createCategory])
+      setNewName(''); setNewDesc(''); setAdding(false)
+      toast.success('Category created')
+    } catch (err) { toast.error(err instanceof Error ? err.message : 'Failed to create category') }
   }
 
   async function handleUpdate(id: string) {
-    const client = getGraphQLClient(getAuthToken())
-    const input = { name: editName, slug: slugify(editName), description: editDesc || undefined }
-    const d = await client.request<{ updateCategory: Category }>(UPDATE_CATEGORY, { id, input })
-    setCategories((prev) => prev.map((c) => c.id === id ? d.updateCategory : c))
-    setEditId(null)
+    try {
+      const client = await getAuthenticatedGqlClient()
+      const input = { name: editName, slug: slugify(editName), description: editDesc || undefined }
+      const d = await client.request<{ updateCategory: Category }>(UPDATE_CATEGORY, { id, input })
+      setCategories((prev) => prev.map((c) => c.id === id ? d.updateCategory : c))
+      setEditId(null)
+      toast.success('Category updated')
+    } catch (err) { toast.error(err instanceof Error ? err.message : 'Failed to update category') }
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Delete this category?')) return
-    const client = getGraphQLClient(getAuthToken())
-    await client.request(DELETE_CATEGORY, { id })
-    setCategories((prev) => prev.filter((c) => c.id !== id))
+    try {
+      const client = await getAuthenticatedGqlClient()
+      await client.request(DELETE_CATEGORY, { id })
+      setCategories((prev) => prev.filter((c) => c.id !== id))
+      toast.success('Category deleted')
+    } catch (err) { toast.error(err instanceof Error ? err.message : 'Failed to delete category') }
   }
 
   const inputCls = 'rounded-lg border border-border bg-background px-2.5 py-1.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring'

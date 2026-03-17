@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { gql } from 'graphql-request'
 import { Button } from '@/components/ui/button'
-import { getGraphQLClient } from '@/lib/graphql-client'
+import { getAuthenticatedGqlClient } from '@/lib/graphql-client'
+import { toast } from 'sonner'
 
 interface ProjectFormProps {
   initialData?: {
@@ -66,12 +67,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
     setSaving(true)
 
     try {
-      const token = document.cookie
-        .split('; ')
-        .find((c) => c.startsWith('better-auth.session_token='))
-        ?.split('=')[1]
-
-      const client = getGraphQLClient(token)
+      const client = await getAuthenticatedGqlClient()
       const technologies = techInput.split(',').map((t) => t.trim()).filter(Boolean)
       const input = {
         title, slug, description,
@@ -90,10 +86,13 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
         await client.request(CREATE_PROJECT, { input })
       }
 
+      toast.success(isEdit ? 'Project updated successfully' : 'Project created successfully')
       router.push('/admin/projects')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save')
+      const msg = err instanceof Error ? err.message : 'Failed to save'
+      setError(msg)
+      toast.error(msg)
     } finally {
       setSaving(false)
     }

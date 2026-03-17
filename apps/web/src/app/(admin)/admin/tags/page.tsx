@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { gql } from 'graphql-request'
-import { gqlClient, getGraphQLClient } from '@/lib/graphql-client'
+import { gqlClient, getAuthenticatedGqlClient } from '@/lib/graphql-client'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import { Plus, Check, X } from 'lucide-react'
 
 interface Tag { id: string; name: string; slug: string }
@@ -14,10 +15,6 @@ const DELETE_TAG = gql`mutation DeleteTag($id: ID!) { deleteTag(id: $id) }`
 
 function slugify(text: string) {
   return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-}
-
-function getAuthToken() {
-  return document.cookie.split('; ').find((c) => c.startsWith('better-auth.session_token='))?.split('=')[1]
 }
 
 export default function TagsPage() {
@@ -33,19 +30,25 @@ export default function TagsPage() {
 
   async function handleCreate() {
     if (!newName.trim()) return
-    const client = getGraphQLClient(getAuthToken())
-    const d = await client.request<{ createTag: Tag }>(CREATE_TAG, {
-      input: { name: newName.trim(), slug: slugify(newName) },
-    })
-    setTags((prev) => [...prev, d.createTag])
-    setNewName(''); setAdding(false)
+    try {
+      const client = await getAuthenticatedGqlClient()
+      const d = await client.request<{ createTag: Tag }>(CREATE_TAG, {
+        input: { name: newName.trim(), slug: slugify(newName) },
+      })
+      setTags((prev) => [...prev, d.createTag])
+      setNewName(''); setAdding(false)
+      toast.success('Tag created')
+    } catch (err) { toast.error(err instanceof Error ? err.message : 'Failed to create tag') }
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Delete this tag?')) return
-    const client = getGraphQLClient(getAuthToken())
-    await client.request(DELETE_TAG, { id })
-    setTags((prev) => prev.filter((t) => t.id !== id))
+    try {
+      const client = await getAuthenticatedGqlClient()
+      await client.request(DELETE_TAG, { id })
+      setTags((prev) => prev.filter((t) => t.id !== id))
+      toast.success('Tag deleted')
+    } catch (err) { toast.error(err instanceof Error ? err.message : 'Failed to delete tag') }
   }
 
   return (

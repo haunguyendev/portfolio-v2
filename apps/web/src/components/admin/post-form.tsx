@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation'
 import { gql } from 'graphql-request'
 import { TiptapEditor } from './tiptap-editor'
 import { Button } from '@/components/ui/button'
-import { getGraphQLClient } from '@/lib/graphql-client'
+import { getAuthenticatedGqlClient } from '@/lib/graphql-client'
 import { useSession } from '@/lib/auth-client'
+import { toast } from 'sonner'
 
 interface Category { id: string; name: string }
 interface Tag { id: string; name: string }
@@ -93,13 +94,7 @@ export function PostForm({ initialData, categories, tags, seriesList }: PostForm
     setSaving(true)
 
     try {
-      // Get JWT from Better Auth session token cookie
-      const token = document.cookie
-        .split('; ')
-        .find((c) => c.startsWith('better-auth.session_token='))
-        ?.split('=')[1]
-
-      const client = getGraphQLClient(token)
+      const client = await getAuthenticatedGqlClient()
       const input = {
         title, slug, description: description || undefined,
         content, coverImage: coverImage || undefined,
@@ -119,10 +114,13 @@ export function PostForm({ initialData, categories, tags, seriesList }: PostForm
         await client.request(CREATE_POST, { input })
       }
 
+      toast.success(isEdit ? 'Post updated successfully' : 'Post created successfully')
       router.push('/admin/posts')
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save')
+      const msg = err instanceof Error ? err.message : 'Failed to save'
+      setError(msg)
+      toast.error(msg)
     } finally {
       setSaving(false)
     }
