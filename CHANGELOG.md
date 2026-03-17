@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.0.0...v1.1.0) (2026-03-17)
+
+
+### Features
+
+* add Docker containerization and CI/CD pipeline ([3e2ff03](https://github.com/haunguyendev/portfolio-v2/commit/3e2ff0362459972100a8891723fef1c6f64669ef))
+
 ## 1.0.0 (2026-03-17)
 
 
