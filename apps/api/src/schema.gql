@@ -1,0 +1,233 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  color: String
+  description: String
+  id: ID!
+  name: String!
+  postCount: Int
+  slug: String!
+  sortOrder: Int!
+}
+
+input CreateCategoryInput {
+  color: String
+  description: String
+  name: String!
+  slug: String!
+  sortOrder: Int
+}
+
+input CreatePostInput {
+  categoryId: String
+  content: JSON!
+  coverImage: String
+  description: String
+  featured: Boolean
+  metaDesc: String
+  metaTitle: String
+  mood: String
+  ogImage: String
+  published: Boolean
+  readingTime: Int
+  seriesId: String
+  seriesOrder: Int
+  slug: String!
+  tagIds: [String!]
+  title: String!
+  type: PostType
+}
+
+input CreateProjectInput {
+  category: String
+  demo: String
+  description: String!
+  featured: Boolean
+  github: String
+  image: String
+  longDesc: String
+  slug: String!
+  sortOrder: Int
+  technologies: [String!]!
+  title: String!
+}
+
+input CreateSeriesInput {
+  coverImage: String
+  description: String
+  published: Boolean
+  slug: String!
+  title: String!
+}
+
+input CreateTagInput {
+  name: String!
+  slug: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Mutation {
+  createCategory(input: CreateCategoryInput!): Category!
+  createPost(input: CreatePostInput!): Post!
+  createProject(input: CreateProjectInput!): Project!
+  createSeries(input: CreateSeriesInput!): Series!
+  createTag(input: CreateTagInput!): Tag!
+  deleteCategory(id: ID!): Boolean!
+  deletePost(id: ID!): Boolean!
+  deleteProject(id: ID!): Boolean!
+  deleteSeries(id: ID!): Boolean!
+  deleteTag(id: ID!): Boolean!
+  publishPost(id: ID!): Post!
+  reorderProjects(ids: [ID!]!): [Project!]!
+  updateCategory(id: ID!, input: UpdateCategoryInput!): Category!
+  updatePost(id: ID!, input: UpdatePostInput!): Post!
+  updateProject(id: ID!, input: UpdateProjectInput!): Project!
+  updateSeries(id: ID!, input: UpdateSeriesInput!): Series!
+}
+
+type Post {
+  category: Category
+  categoryId: String
+  content: JSON!
+  coverImage: String
+  createdAt: DateTime!
+  description: String
+  featured: Boolean!
+  id: ID!
+  metaDesc: String
+  metaTitle: String
+  mood: String
+  ogImage: String
+  published: Boolean!
+  publishedAt: DateTime
+  readingTime: Int
+  series: Series
+  seriesId: String
+  slug: String!
+  tags: [Tag!]
+  title: String!
+  type: PostType!
+  updatedAt: DateTime!
+}
+
+enum PostType {
+  BLOG
+  DIARY
+}
+
+input PostsFilterInput {
+  categoryId: String
+  featured: Boolean
+  published: Boolean
+  seriesId: String
+  tagIds: [String!]
+  type: PostType
+}
+
+type Project {
+  category: String
+  createdAt: DateTime!
+  demo: String
+  description: String!
+  featured: Boolean!
+  github: String
+  id: ID!
+  image: String
+  longDesc: String
+  slug: String!
+  sortOrder: Int!
+  technologies: [String!]!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type Query {
+  categories: [Category!]!
+  category(id: ID!): Category
+  post(id: ID!): Post
+  postBySlug(slug: String!): Post
+  posts(filter: PostsFilterInput): [Post!]!
+  project(id: ID!): Project
+  projectBySlug(slug: String!): Project
+  projects(featuredOnly: Boolean): [Project!]!
+  seriesBySlug(slug: String!): Series
+  seriesList: [Series!]!
+  tags: [Tag!]!
+}
+
+type Series {
+  coverImage: String
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  published: Boolean!
+  slug: String!
+  title: String!
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  postCount: Int
+  slug: String!
+}
+
+input UpdateCategoryInput {
+  color: String
+  description: String
+  name: String
+  slug: String
+  sortOrder: Int
+}
+
+input UpdatePostInput {
+  categoryId: String
+  content: JSON
+  coverImage: String
+  description: String
+  featured: Boolean
+  metaDesc: String
+  metaTitle: String
+  mood: String
+  ogImage: String
+  published: Boolean
+  readingTime: Int
+  seriesId: String
+  seriesOrder: Int
+  slug: String
+  tagIds: [String!]
+  title: String
+}
+
+input UpdateProjectInput {
+  category: String
+  demo: String
+  description: String
+  featured: Boolean
+  github: String
+  image: String
+  longDesc: String
+  slug: String
+  sortOrder: Int
+  technologies: [String!]
+  title: String
+}
+
+input UpdateSeriesInput {
+  coverImage: String
+  description: String
+  published: Boolean
+  slug: String
+  title: String
+}
