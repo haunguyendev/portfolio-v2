@@ -38,7 +38,7 @@ const PROJECTS_QUERY = gql`
   query PublicProjects($featuredOnly: Boolean) {
     projects(featuredOnly: $featuredOnly) {
       id slug title description longDesc image technologies category
-      github demo featured sortOrder createdAt
+      github demo featured sortOrder role teamSize impact startDate endDate createdAt
     }
   }
 `
@@ -80,6 +80,11 @@ interface ApiProject {
   demo?: string
   featured: boolean
   sortOrder: number
+  role?: string
+  teamSize?: string
+  impact?: string
+  startDate?: string
+  endDate?: string
   createdAt: string
 }
 
@@ -136,6 +141,11 @@ function mapProject(p: ApiProject): Project {
       github: p.github,
       demo: p.demo,
     },
+    role: p.role,
+    teamSize: p.teamSize,
+    impact: p.impact,
+    startDate: p.startDate,
+    endDate: p.endDate,
   }
 }
 

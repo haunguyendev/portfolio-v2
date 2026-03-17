@@ -8,6 +8,7 @@ const PROJECT_QUERY = gql`
     project(id: $id) {
       id title slug description longDesc image
       technologies category github demo featured sortOrder
+      role teamSize impact startDate endDate
     }
   }
 `
@@ -23,6 +24,8 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
       longDesc?: string; image?: string; technologies: string[]
       category?: string; github?: string; demo?: string
       featured: boolean; sortOrder: number
+      role?: string; teamSize?: string; impact?: string
+      startDate?: string; endDate?: string
     } | null
   }
 

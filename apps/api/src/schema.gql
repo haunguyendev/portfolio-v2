@@ -44,12 +44,17 @@ input CreateProjectInput {
   category: String
   demo: String
   description: String!
+  endDate: String
   featured: Boolean
   github: String
   image: String
+  impact: String
   longDesc: String
+  role: String
   slug: String!
   sortOrder: Int
+  startDate: String
+  teamSize: String
   technologies: [String!]!
   title: String!
 }
@@ -140,13 +145,18 @@ type Project {
   createdAt: DateTime!
   demo: String
   description: String!
+  endDate: String
   featured: Boolean!
   github: String
   id: ID!
   image: String
+  impact: String
   longDesc: String
+  role: String
   slug: String!
   sortOrder: Int!
+  startDate: String
+  teamSize: String
   technologies: [String!]!
   title: String!
   updatedAt: DateTime!
@@ -215,12 +225,17 @@ input UpdateProjectInput {
   category: String
   demo: String
   description: String
+  endDate: String
   featured: Boolean
   github: String
   image: String
+  impact: String
   longDesc: String
+  role: String
   slug: String
   sortOrder: Int
+  startDate: String
+  teamSize: String
   technologies: [String!]
   title: String
 }

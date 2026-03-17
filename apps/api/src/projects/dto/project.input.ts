@@ -34,6 +34,21 @@ export class CreateProjectInput {
 
   @Field(() => Int, { nullable: true })
   sortOrder?: number;
+
+  @Field({ nullable: true })
+  role?: string;
+
+  @Field({ nullable: true })
+  teamSize?: string;
+
+  @Field({ nullable: true })
+  impact?: string;
+
+  @Field({ nullable: true })
+  startDate?: string;
+
+  @Field({ nullable: true })
+  endDate?: string;
 }
 
 @InputType()
@@ -70,4 +85,19 @@ export class UpdateProjectInput {
 
   @Field(() => Int, { nullable: true })
   sortOrder?: number;
+
+  @Field({ nullable: true })
+  role?: string;
+
+  @Field({ nullable: true })
+  teamSize?: string;
+
+  @Field({ nullable: true })
+  impact?: string;
+
+  @Field({ nullable: true })
+  startDate?: string;
+
+  @Field({ nullable: true })
+  endDate?: string;
 }

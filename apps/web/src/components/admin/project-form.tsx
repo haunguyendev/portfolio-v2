@@ -21,6 +21,11 @@ interface ProjectFormProps {
     demo?: string
     featured?: boolean
     sortOrder?: number
+    role?: string
+    teamSize?: string
+    impact?: string
+    startDate?: string
+    endDate?: string
   }
 }
 
@@ -53,6 +58,11 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
   const [github, setGithub] = useState(initialData?.github ?? '')
   const [demo, setDemo] = useState(initialData?.demo ?? '')
   const [featured, setFeatured] = useState(initialData?.featured ?? false)
+  const [role, setRole] = useState(initialData?.role ?? '')
+  const [teamSize, setTeamSize] = useState(initialData?.teamSize ?? '')
+  const [impact, setImpact] = useState(initialData?.impact ?? '')
+  const [startDate, setStartDate] = useState(initialData?.startDate ?? '')
+  const [endDate, setEndDate] = useState(initialData?.endDate ?? '')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -78,6 +88,11 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
         github: github || undefined,
         demo: demo || undefined,
         featured,
+        role: role || undefined,
+        teamSize: teamSize || undefined,
+        impact: impact || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
       }
 
       if (isEdit) {
@@ -144,6 +159,31 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
         <div>
           <label className={labelCls}>Demo URL</label>
           <input className={inputCls} value={demo} onChange={(e) => setDemo(e.target.value)} placeholder="https://…" />
+        </div>
+      </div>
+      {/* Project metadata */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className={labelCls}>Role / Position</label>
+          <input className={inputCls} value={role} onChange={(e) => setRole(e.target.value)} placeholder="Full-stack Developer" />
+        </div>
+        <div>
+          <label className={labelCls}>Team Size</label>
+          <input className={inputCls} value={teamSize} onChange={(e) => setTeamSize(e.target.value)} placeholder="3 members" />
+        </div>
+        <div>
+          <label className={labelCls}>Impact</label>
+          <input className={inputCls} value={impact} onChange={(e) => setImpact(e.target.value)} placeholder="500+ active users" />
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className={labelCls}>Start Date</label>
+            <input className={inputCls} value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder="Mar 2026" />
+          </div>
+          <div>
+            <label className={labelCls}>End Date</label>
+            <input className={inputCls} value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="Leave empty = ongoing" />
+          </div>
         </div>
       </div>
       <label className="flex items-center gap-2 text-sm">

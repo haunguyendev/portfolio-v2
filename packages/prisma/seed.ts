@@ -49,6 +49,11 @@ async function seedProjects() {
         demo: p.links?.demo ?? null,
         featured: p.featured ?? false,
         sortOrder: i,
+        role: p.role ?? null,
+        teamSize: p.teamSize ?? null,
+        impact: p.impact ?? null,
+        startDate: p.startDate ?? null,
+        endDate: p.endDate ?? null,
       },
     });
   }
