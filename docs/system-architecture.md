@@ -43,6 +43,7 @@ FRONTEND (Vercel)               BACKEND (Docker/Cloud)
 │  - Admin dashboard   │ GraphQL  - 5+ Resolvers   │
 │  - Better Auth login │       │  - JWT Guard        │
 │  - TipTap editor     │       │  - Prisma ORM       │
+│  - Image upload      │       │  - Media service    │
 └──────────┬───────────┘       └────────┬────────────┘
            │                            │
            │        ISR Revalidate      │ Prisma Client
@@ -57,19 +58,47 @@ FRONTEND (Vercel)               BACKEND (Docker/Cloud)
            │                    │  - User       │
            │                    │  - Post       │
            │                    │  - Project    │
+           │                    │  - Media      │
            │                    │  - Category   │
            │                    │  - Tag, etc   │
            │                    └───────────────┘
+           │
+           │              Media Upload Flow
+           │         (POST /api/upload, JWT)
+           │              ┌──────────────┐
+           └─────────────►│ Sharp        │
+                          │ (Resize +    │
+                          │  WebP)       │
+                          └──────┬───────┘
+                                 │
+                          ┌──────▼────────┐
+                          │   MinIO S3    │
+                          │  (Docker)     │
+                          │               │
+                          │  Buckets:     │
+                          │  -portfolio-  │
+                          │   media/      │
+                          │   posts/cover │
+                          │   posts/      │
+                          │    content    │
+                          │   projects/   │
+                          │   thumbnails/ │
+                          └───────────────┘
+
+Serve: GET /api/media/:key → Stream from MinIO (cached)
 ```
 
 **Phase 4A Stack:**
 - **Turborepo monorepo** — apps/web, apps/api, packages/prisma, packages/shared
-- **Next.js frontend** (Vercel) — ISR revalidation from GraphQL API
+- **Next.js frontend** (Vercel) — ISR revalidation from GraphQL API, image uploads
 - **NestJS GraphQL API** (local/cloud) — Code-first schema, 5+ resolvers, JWT mutations
+- **NestJS Media Service** — Upload, serve, delete with sharp processing
+- **MinIO S3-compatible storage** (Docker) — Self-hosted image storage with bucket structure
+- **sharp image processing** — Server-side resize to 1920px max, WebP q80 + thumbnail 400px q70
 - **PostgreSQL database** — Docker Compose locally, Vercel Postgres in production
-- **Prisma ORM** — Type-safe, auto-migrated schema with relationships
+- **Prisma ORM** — Type-safe, auto-migrated schema with Media model
 - **Better Auth + JWT** — Secure admin authentication
-- **Admin dashboard** (/admin/*) — CRUD pages with TipTap rich editor
+- **Admin dashboard** (/admin/*) — CRUD pages with TipTap rich editor + image dropzone
 - **Content migration** — Seed script converts JSON/MDX to database
 
 ## Data Flow (Phase 1-2 Final)

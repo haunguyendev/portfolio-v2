@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { getAuthenticatedGqlClient } from '@/lib/graphql-client'
 import { useSession } from '@/lib/auth-client'
 import { toast } from 'sonner'
+import { ImageDropzone } from './image-dropzone'
 
 interface Category { id: string; name: string }
 interface Tag { id: string; name: string }
@@ -211,10 +212,12 @@ export function PostForm({ initialData, categories, tags, seriesList }: PostForm
               ))}
             </div>
           </div>
-          <div>
-            <label className={labelCls}>Cover image URL</label>
-            <input className={inputCls} value={coverImage} onChange={(e) => setCoverImage(e.target.value)} placeholder="https://…" />
-          </div>
+          <ImageDropzone
+            value={coverImage || null}
+            onChange={(url) => setCoverImage(url ?? '')}
+            folder="posts/cover"
+            label="Cover Image"
+          />
           <div className="flex gap-4">
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="rounded" />

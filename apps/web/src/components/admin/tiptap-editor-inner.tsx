@@ -1,5 +1,8 @@
 'use client'
 
+/* eslint-disable react-hooks/refs -- TipTap's useEditor returns a mutable editor instance (standard pattern) */
+
+import { useRef } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
@@ -13,6 +16,9 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { ImageUploadExtension } from '@/lib/tiptap-image-upload'
+import { uploadImage, getMediaUrl } from '@/lib/image-upload-service'
+import { toast } from 'sonner'
 
 interface TiptapEditorInnerProps {
   content?: Record<string, unknown>
@@ -22,13 +28,16 @@ interface TiptapEditorInnerProps {
 }
 
 export default function TiptapEditorInner({ content, onChange, placeholder, className }: TiptapEditorInnerProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockLowlight.configure({ lowlight }),
-      Image,
+      Image.configure({ allowBase64: false }),
       Link.configure({ openOnClick: false }),
       Placeholder.configure({ placeholder: placeholder ?? 'Start writing…' }),
+      ImageUploadExtension,
     ],
     content,
     onUpdate({ editor }) {
@@ -39,8 +48,22 @@ export default function TiptapEditorInner({ content, onChange, placeholder, clas
   if (!editor) return null
 
   function addImage() {
-    const url = window.prompt('Image URL')
-    if (url) editor?.chain().focus().setImage({ src: url }).run()
+    // Open file picker — upload on select
+    fileInputRef.current?.click()
+  }
+
+  async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    e.target.value = '' // Reset so same file can be re-selected
+    try {
+      toast.info('Uploading image…')
+      const result = await uploadImage(file, 'posts/content')
+      editor?.chain().focus().setImage({ src: getMediaUrl(result.url) }).run()
+      toast.success('Image uploaded')
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Upload failed')
+    }
   }
 
   function addLink() {
@@ -49,23 +72,30 @@ export default function TiptapEditorInner({ content, onChange, placeholder, clas
   }
 
   const tools = [
-    { icon: Bold, action: () => editor.chain().focus().toggleBold().run(), active: editor.isActive('bold'), title: 'Bold' },
-    { icon: Italic, action: () => editor.chain().focus().toggleItalic().run(), active: editor.isActive('italic'), title: 'Italic' },
-    { icon: Heading2, action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(), active: editor.isActive('heading', { level: 2 }), title: 'H2' },
-    { icon: Heading3, action: () => editor.chain().focus().toggleHeading({ level: 3 }).run(), active: editor.isActive('heading', { level: 3 }), title: 'H3' },
-    { icon: List, action: () => editor.chain().focus().toggleBulletList().run(), active: editor.isActive('bulletList'), title: 'Bullet list' },
-    { icon: ListOrdered, action: () => editor.chain().focus().toggleOrderedList().run(), active: editor.isActive('orderedList'), title: 'Ordered list' },
-    { icon: Code, action: () => editor.chain().focus().toggleCodeBlock().run(), active: editor.isActive('codeBlock'), title: 'Code block' },
-    { icon: Quote, action: () => editor.chain().focus().toggleBlockquote().run(), active: editor.isActive('blockquote'), title: 'Blockquote' },
-    { icon: ImageIcon, action: addImage, active: false, title: 'Image' },
-    { icon: Link2, action: addLink, active: editor.isActive('link'), title: 'Link' },
-    { icon: Minus, action: () => editor.chain().focus().setHorizontalRule().run(), active: false, title: 'Divider' },
+    { icon: Bold, action: () => editor.chain().focus().toggleBold().run(), activeKey: 'bold' as const, title: 'Bold' },
+    { icon: Italic, action: () => editor.chain().focus().toggleItalic().run(), activeKey: 'italic' as const, title: 'Italic' },
+    { icon: Heading2, action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(), activeKey: 'heading' as const, activeAttrs: { level: 2 }, title: 'H2' },
+    { icon: Heading3, action: () => editor.chain().focus().toggleHeading({ level: 3 }).run(), activeKey: 'heading' as const, activeAttrs: { level: 3 }, title: 'H3' },
+    { icon: List, action: () => editor.chain().focus().toggleBulletList().run(), activeKey: 'bulletList' as const, title: 'Bullet list' },
+    { icon: ListOrdered, action: () => editor.chain().focus().toggleOrderedList().run(), activeKey: 'orderedList' as const, title: 'Ordered list' },
+    { icon: Code, action: () => editor.chain().focus().toggleCodeBlock().run(), activeKey: 'codeBlock' as const, title: 'Code block' },
+    { icon: Quote, action: () => editor.chain().focus().toggleBlockquote().run(), activeKey: 'blockquote' as const, title: 'Blockquote' },
+    { icon: ImageIcon, action: addImage, activeKey: null, title: 'Image' },
+    { icon: Link2, action: addLink, activeKey: 'link' as const, title: 'Link' },
+    { icon: Minus, action: () => editor.chain().focus().setHorizontalRule().run(), activeKey: null, title: 'Divider' },
   ]
 
   return (
     <div className={cn('rounded-xl ring-1 ring-border overflow-hidden', className)}>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/gif,image/webp"
+        className="hidden"
+        onChange={handleFileSelect}
+      />
       <div className="flex flex-wrap gap-0.5 border-b border-border bg-muted/40 p-1.5">
-        {tools.map(({ icon: Icon, action, active, title }) => (
+        {tools.map(({ icon: Icon, action, activeKey, activeAttrs, title }) => (
           <Button
             key={title}
             type="button"
@@ -73,7 +103,7 @@ export default function TiptapEditorInner({ content, onChange, placeholder, clas
             size="icon-sm"
             onClick={action}
             title={title}
-            className={cn(active && 'bg-primary text-primary-foreground hover:bg-primary/90')}
+            className={cn(activeKey && editor.isActive(activeKey, activeAttrs) && 'bg-primary text-primary-foreground hover:bg-primary/90')}
           >
             <Icon />
           </Button>

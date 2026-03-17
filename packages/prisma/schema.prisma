@@ -217,12 +217,15 @@ model PageView {
 // === MEDIA ===
 
 model Media {
-  id        String   @id @default(cuid())
-  filename  String
-  url       String
-  mimeType  String
-  size      Int
-  alt       String?
-  folder    String?
-  createdAt DateTime @default(now())
+  id           String   @id @default(cuid())
+  filename     String
+  url          String
+  thumbnailUrl String?
+  mimeType     String
+  size         Int
+  alt          String?
+  folder       String
+  width        Int?
+  height       Int?
+  createdAt    DateTime @default(now())
 }

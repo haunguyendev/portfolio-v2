@@ -6,6 +6,7 @@ import { gql } from 'graphql-request'
 import { Button } from '@/components/ui/button'
 import { getAuthenticatedGqlClient } from '@/lib/graphql-client'
 import { toast } from 'sonner'
+import { ImageDropzone } from './image-dropzone'
 
 interface ProjectFormProps {
   initialData?: {
@@ -134,10 +135,12 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
         <label className={labelCls}>Long description</label>
         <textarea className={inputCls} value={longDesc} onChange={(e) => setLongDesc(e.target.value)} rows={4} placeholder="Detailed description…" />
       </div>
-      <div>
-        <label className={labelCls}>Cover image URL</label>
-        <input className={inputCls} value={image} onChange={(e) => setImage(e.target.value)} placeholder="https://…" />
-      </div>
+      <ImageDropzone
+        value={image || null}
+        onChange={(url) => setImage(url ?? '')}
+        folder="projects"
+        label="Project Image"
+      />
       <div>
         <label className={labelCls}>Technologies (comma-separated)</label>
         <input className={inputCls} value={techInput} onChange={(e) => setTechInput(e.target.value)} placeholder="Next.js, TypeScript, Prisma" />

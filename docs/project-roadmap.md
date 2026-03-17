@@ -346,6 +346,10 @@ Organized by category:
 | TipTap Editor | Rich text editor for post content (JSON storage) | HIGH | Complete |
 | Content Migration | Seed script converts JSON + MDX to database | HIGH | Complete |
 | Public GraphQL API | Fetch blog/diary/projects from database (ISR enabled) | HIGH | Complete |
+| Self-hosted image upload | MinIO S3-compatible storage with sharp processing | MEDIUM | Complete |
+| Image dropzone | Drag-drop upload for cover + project images | MEDIUM | Complete |
+| TipTap image upload | Drag-drop, paste, and button upload in rich editor | MEDIUM | Complete |
+| Image serving | REST API endpoint (/api/media/*) with caching | MEDIUM | Complete |
 
 ### Technical Implementation
 
@@ -392,6 +396,19 @@ Organized by category:
 - [x] Updated diary list/detail pages to fetch from GraphQL API
 - [x] Updated projects page to fetch from API
 - [x] Enabled ISR (revalidate on demand) for dynamic content
+
+#### Image Upload System (✓ Completed - Sub-feature)
+- [x] MinIO Docker service in docker-compose.yml with portfolio-media bucket
+- [x] Prisma Media model with thumbnailUrl, width, height fields
+- [x] NestJS MediaModule with MinIO, sharp, multer services
+- [x] POST /api/upload endpoint with JWT protection, multipart form handling
+- [x] GET /api/media/:key endpoint for serving images with cache headers (immutable, ETag)
+- [x] DELETE /api/media/:id endpoint for cleanup (JWT protected)
+- [x] sharp image processing: 1920px max (main) + 400px (thumbnail), WebP q80/q70
+- [x] ImageDropzone React component for cover/project images (drag-drop, click, URL input)
+- [x] TipTap image upload extension for drag-drop/paste/button in editor
+- [x] Integration with post form (cover image) and project form (image)
+- [x] Build verification: zero TypeScript errors, lint clean, all features working
 
 ### Success Criteria (Phase 4A COMPLETE)
 
