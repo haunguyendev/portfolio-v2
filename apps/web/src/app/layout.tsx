@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ThemeProvider } from '@/components/layout/theme-provider'
+import { SecretPortal } from '@/components/shared/secret-portal'
+import { Toaster } from 'sonner'
 import { SITE_URL } from '@/lib/constants'
 import './globals.css'
 
@@ -56,6 +58,8 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
 
           <Footer />
+          <SecretPortal />
+          <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
     </html>

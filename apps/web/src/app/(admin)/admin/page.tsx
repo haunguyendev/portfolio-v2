@@ -3,7 +3,6 @@ import { gql } from 'graphql-request'
 import Link from 'next/link'
 import { FileText, Globe, FolderKanban, FilePen } from 'lucide-react'
 import { StatCard } from '@/components/admin/stat-card'
-import { buttonVariants } from '@/components/ui/button'
 
 const DASHBOARD_QUERY = gql`
   query Dashboard {
@@ -51,8 +50,8 @@ export default async function AdminDashboardPage() {
 
       {/* Quick actions */}
       <div className="flex gap-3">
-        <Link href="/admin/posts/new" className={buttonVariants({ size: 'sm' })}>New Post</Link>
-        <Link href="/admin/projects/new" className={buttonVariants({ size: 'sm', variant: 'outline' })}>New Project</Link>
+        <Link href="/admin/posts/new" className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90">New Post</Link>
+        <Link href="/admin/projects/new" className="inline-flex items-center justify-center rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground">New Project</Link>
       </div>
 
       {/* Recent posts */}

@@ -79,6 +79,9 @@ export class UpdatePostInput {
   @Field({ nullable: true })
   featured?: boolean;
 
+  @Field(() => PostType, { nullable: true })
+  type?: PostType;
+
   @Field(() => Int, { nullable: true })
   readingTime?: number;
 

@@ -1,7 +1,6 @@
 import { gqlClient } from '@/lib/graphql-client'
 import { gql } from 'graphql-request'
 import Link from 'next/link'
-import { buttonVariants } from '@/components/ui/button'
 import { DataTable } from '@/components/admin/data-table'
 import { Plus, Pencil } from 'lucide-react'
 
@@ -34,7 +33,7 @@ export default async function AdminProjectsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Projects</h1>
-        <Link href="/admin/projects/new" className={buttonVariants({ size: 'sm' })}><Plus className="size-4" />New Project</Link>
+        <Link href="/admin/projects/new" className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"><Plus className="size-4" />New Project</Link>
       </div>
 
       <DataTable
@@ -58,7 +57,7 @@ export default async function AdminProjectsPage() {
           {
             key: 'actions', header: '', className: 'w-20',
             cell: (p) => (
-              <Link href={`/admin/projects/${p.id}/edit`} className={buttonVariants({ variant: 'ghost', size: 'icon-sm' })}><Pencil className="size-3.5" /></Link>
+              <Link href={`/admin/projects/${p.id}/edit`} className="inline-flex size-8 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"><Pencil className="size-3.5" /></Link>
             ),
           },
         ]}
