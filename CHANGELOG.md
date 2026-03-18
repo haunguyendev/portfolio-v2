@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.1](https://github.com/haunguyendev/portfolio-v2/compare/v1.1.0...v1.1.1) (2026-03-18)
+
+
+### Bug Fixes
+
+* add GHCR login to deploy step for private package pull ([824b777](https://github.com/haunguyendev/portfolio-v2/commit/824b777f4353e0dc7bb7265ff7a068fa48fc68d6))
+* set correct file ownership for Next.js ISR cache writes ([8d58acd](https://github.com/haunguyendev/portfolio-v2/commit/8d58acd2c99652acc5318f91868b9b08331c072e))
+
+
+### Performance Improvements
+
+* optimize CI/CD with parallel conditional builds ([23961eb](https://github.com/haunguyendev/portfolio-v2/commit/23961eb2edc1fbd4d41b6c9b675651ecae7053aa))
+
 ## [1.1.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.0.0...v1.1.0) (2026-03-17)
 
 
