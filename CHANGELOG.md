@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.3.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.2.0...v1.3.0) (2026-03-18)
+
+
+### Features
+
+* add certificate management with dashboard CRUD and portfolio display ([525fd1d](https://github.com/haunguyendev/portfolio-v2/commit/525fd1d86d28247141a2a103b04c678939bcabb4))
+* **web:** show external link icon on certificate cards with credential URL ([64e085b](https://github.com/haunguyendev/portfolio-v2/commit/64e085b60c45f9bbbaa1dcb0e50bec1231920d68))
+
+
+### Bug Fixes
+
+* **api:** add certificates to allowed media serve prefixes ([8748269](https://github.com/haunguyendev/portfolio-v2/commit/87482694827213da2d51dae5d9212c690a16e69e))
+* **api:** add certificates to allowed upload folders ([d244948](https://github.com/haunguyendev/portfolio-v2/commit/d244948a496e415d8ded2337ebf8c16217e5f0a8))
+* **api:** auto-construct Coursera certificate image URL ([3f3ed6c](https://github.com/haunguyendev/portfolio-v2/commit/3f3ed6ce753f11226a50485338a121b3a6b08653))
+* **api:** extract cert title from Coursera embedded JSON data ([363b779](https://github.com/haunguyendev/portfolio-v2/commit/363b7794b27969ddec51ee7b115d2667135ff508))
+* **api:** extract completion date from Coursera grantedAt timestamps ([aede033](https://github.com/haunguyendev/portfolio-v2/commit/aede0337e034f0e387fa52535341ba8cd3cc2a4c))
+* **api:** handle Coursera SPA share links in URL extractor ([37dbe91](https://github.com/haunguyendev/portfolio-v2/commit/37dbe91fc323a32010292fcaa529e6ee40620a23))
+* **deploy:** pass GitHub OAuth env vars to web container ([6782e0a](https://github.com/haunguyendev/portfolio-v2/commit/6782e0ae5afd44c4994e3d0554ce205c34c2e23a))
+* **web:** handle cert images correctly — Coursera URLs return HTML not images ([846cde5](https://github.com/haunguyendev/portfolio-v2/commit/846cde571d97b1ccaf485468f3c8eb4dbba5e38b))
+* **web:** only show local images in certificate card thumbnails ([608a4fb](https://github.com/haunguyendev/portfolio-v2/commit/608a4fb1f8586b5fb0ee548d25e729c5c132cd93))
+* **web:** proxy media images via Next.js rewrites to fix private IP blocking ([553afc3](https://github.com/haunguyendev/portfolio-v2/commit/553afc3abfa5bab1a5fa05cbe5915a4585c8f9d9))
+* **web:** resolve project image 404s, diary mood crash, and mood input UX ([3fc2e38](https://github.com/haunguyendev/portfolio-v2/commit/3fc2e38320c4497d17498731c0866e0f77c8ef1f))
+
 ## [1.2.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.1.1...v1.2.0) (2026-03-18)
 
 
