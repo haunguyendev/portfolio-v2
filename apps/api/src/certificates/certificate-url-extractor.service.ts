@@ -119,8 +119,44 @@ export class CertificateUrlExtractorService {
         }
       });
 
-      // Extract issuer — platform-specific or from OG/JSON-LD data
-      let issuer = jsonLdIssuer || platform?.name || "";
+      // Coursera embeds cert data as JSON inside <script> tags (not JSON-LD)
+      // Extract "name" fields from embedded JSON — filter out generic/short values
+      let embeddedTitle: string | undefined;
+      let embeddedIssuer: string | undefined;
+      const nameMatches = html.match(/"name":"([^"]{10,120})"/g);
+      if (nameMatches) {
+        for (const m of nameMatches) {
+          const val = m.replace(/"name":"/, "").replace(/"$/, "");
+          // Skip generic values
+          if (/unknown|coursera|udemy/i.test(val)) continue;
+          // University/org names → issuer
+          if (
+            /university|institute|college|academy|school/i.test(val)
+          ) {
+            embeddedIssuer = val;
+          } else if (!embeddedTitle) {
+            // First non-generic, non-university name → likely cert title
+            embeddedTitle = val;
+          }
+        }
+      }
+
+      // Also try certificateDescription for issuer info
+      const certDescMatch = html.match(
+        /"certificateDescription":"([^"]+)"/,
+      );
+      if (certDescMatch && !embeddedIssuer) {
+        const descIssuerMatch = certDescMatch[1].match(
+          /authorized by ([^,."]+)/i,
+        );
+        if (descIssuerMatch) {
+          embeddedIssuer = descIssuerMatch[1].trim();
+        }
+      }
+
+      // Extract issuer — prefer embedded > JSON-LD > platform > OG
+      let issuer =
+        embeddedIssuer || jsonLdIssuer || platform?.name || "";
       if (!issuer) {
         issuer =
           $('meta[property="og:site_name"]').attr("content") || "Unknown";
@@ -132,8 +168,8 @@ export class CertificateUrlExtractorService {
       );
       const issueDate = dateMatch ? dateMatch[1] : undefined;
 
-      // Build title — prefer JSON-LD over OG
-      let title = jsonLdTitle || ogTitle || "";
+      // Build title — prefer embedded > JSON-LD > OG
+      let title = embeddedTitle || jsonLdTitle || ogTitle || "";
 
       // Clean title — remove platform suffixes and generic Coursera landing text
       if (platform) {
