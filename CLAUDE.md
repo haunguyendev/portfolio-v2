@@ -7,10 +7,40 @@ Reference: nelsonlai.dev (simplified), leerob.com, delba.dev.
 
 ## Tech Stack
 - **Framework:** Next.js 15 (App Router) + TypeScript
+- **Backend:** NestJS + GraphQL (code-first) + Prisma ORM
 - **Styling:** Tailwind CSS + shadcn/ui (default light theme)
-- **Content:** MDX for blog/projects (Phase 2)
-- **Deploy:** Vercel
+- **Content:** MDX (Velite) + PostgreSQL (admin CMS)
+- **Storage:** MinIO (S3-compatible, self-hosted)
+- **Deploy:** Docker → Self-hosted Ubuntu server via CI/CD
+- **CI/CD:** GitHub Actions → GHCR → SSH deploy via Cloudflare Tunnel
+- **Monorepo:** Turborepo + pnpm workspaces
 - **Package Manager:** pnpm
+
+## Infrastructure
+- **Server:** Proxmox VM (Ubuntu), LAN 192.168.1.123
+- **Domain:** haunguyendev.xyz (Cloudflare DNS)
+- **Tunnel:** Cloudflare Tunnel (ID: a822eac2-2e80-4ec9-8ebd-40b8d678b702)
+- **Registry:** GHCR (ghcr.io/haunguyendev/portfolio-v2)
+- **Monitoring:** Portainer CE (portfolio-portainer.haunguyendev.xyz)
+
+### Live URLs
+| Service | URL |
+|---------|-----|
+| Web | https://portfolio.haunguyendev.xyz |
+| API | https://portfolio-api.haunguyendev.xyz |
+| SSH | deploy.haunguyendev.xyz (via cloudflared proxy) |
+| Portainer | https://portfolio-portainer.haunguyendev.xyz |
+
+### Deploy Flow
+```
+Push to main → GH Actions build Docker images → Push GHCR
+  → SSH via Cloudflare Tunnel → docker compose pull/up → Live
+```
+
+### Server Files
+- `/opt/portfolio/docker-compose.prod.yml` — Production stack
+- `/opt/portfolio/.env` — Secrets (NOT in git)
+- `/etc/cloudflared/config.yml` — Tunnel config
 
 ## Design Direction
 - **Style:** Editorial minimalist, light mode first
@@ -75,13 +105,15 @@ Activate these skills as needed during development:
 - `/ck:plan` — Phase planning
 - `/ck:test` — Testing after implementation
 - `/ck:git` — Commits and PRs
-- `/ck:deploy` — Vercel deployment
+- `/ck:deploy` — Docker/server deployment
 
 ## Development Phases
-- **Phase 1 (Current):** Portfolio — Home, Projects, About pages. Static content.
-- **Phase 2:** Blog — MDX integration, blog list + detail pages.
-- **Phase 3:** Polish — SEO, dark mode, performance, responsive fine-tuning.
-- **Phase 4:** CMS — Headless CMS, admin dashboard, analytics (future).
+- **Phase 1:** Portfolio — Home, Projects, About pages. Static content. ✅
+- **Phase 2:** Blog — MDX integration, blog list + detail pages. ✅
+- **Phase 3:** Polish — SEO, dark mode, performance. ✅
+- **Phase 4A:** CMS — NestJS API, admin dashboard, image upload (MinIO). ✅
+- **Phase 4B:** CI/CD — Docker, GitHub Actions, Cloudflare Tunnel, self-hosted deploy. ✅
+- **Phase 5:** Advanced — Comments, likes, analytics, email notifications.
 
 ## Post-Implementation Protocol
 After each `/ck:cook` completes a plan/phase:
@@ -93,9 +125,9 @@ After each `/ck:cook` completes a plan/phase:
 
 ## Rules
 - YAGNI / KISS / DRY — no over-engineering
-- Ship portfolio first, blog later
 - Use shadcn/ui defaults — don't reinvent components
 - Content in data files, not hardcoded in JSX
-- No database for Phase 1
-- No authentication for Phase 1
 - Gradient accents for personality, but keep minimal overall
+- NEVER commit .env files or secrets to git
+- SSH key for deploy: `~/.ssh/github-deploy` (ed25519)
+- Test Docker build locally before pushing: `docker build -f apps/web/Dockerfile -t portfolio-web .`

@@ -32,74 +32,70 @@
 - **Content from local JSON files + MDX** (Phase 1-2)
 - **Vercel** handles deployment, caching, CDN, and serverless functions
 
-## Phase 4A Architecture (Current)
+## Production Architecture (Current — Phase 4B)
 
 ```
-FRONTEND (Vercel)               BACKEND (Docker/Cloud)
-┌──────────────────────┐       ┌──────────────────────┐
-│  Next.js 15 Web      │       │  NestJS GraphQL API  │
-│  (port 3000)         │◄─────►│  (port 3001)         │
-│  - Public pages      │ REST  │  - Code-first schema │
-│  - Admin dashboard   │ GraphQL  - 5+ Resolvers   │
-│  - Better Auth login │       │  - JWT Guard        │
-│  - TipTap editor     │       │  - Prisma ORM       │
-│  - Image upload      │       │  - Media service    │
-└──────────┬───────────┘       └────────┬────────────┘
-           │                            │
-           │        ISR Revalidate      │ Prisma Client
-           │◄──────────────────────────►│
-           │                            │
-           │                    ┌───────▼───────┐
-           │                    │  PostgreSQL   │
-           │                    │  (Docker or   │
-           │                    │   Vercel)     │
-           │                    │               │
-           │                    │  Tables:      │
-           │                    │  - User       │
-           │                    │  - Post       │
-           │                    │  - Project    │
-           │                    │  - Media      │
-           │                    │  - Category   │
-           │                    │  - Tag, etc   │
-           │                    └───────────────┘
-           │
-           │              Media Upload Flow
-           │         (POST /api/upload, JWT)
-           │              ┌──────────────┐
-           └─────────────►│ Sharp        │
-                          │ (Resize +    │
-                          │  WebP)       │
-                          └──────┬───────┘
-                                 │
-                          ┌──────▼────────┐
-                          │   MinIO S3    │
-                          │  (Docker)     │
-                          │               │
-                          │  Buckets:     │
-                          │  -portfolio-  │
-                          │   media/      │
-                          │   posts/cover │
-                          │   posts/      │
-                          │    content    │
-                          │   projects/   │
-                          │   thumbnails/ │
-                          └───────────────┘
-
-Serve: GET /api/media/:key → Stream from MinIO (cached)
+┌─────────────────────────────────────────────────────────────┐
+│                      GitHub                                  │
+│  Push to main → GitHub Actions                              │
+│  ├── Build web Docker image (Next.js standalone)            │
+│  ├── Build api Docker image (NestJS)                        │
+│  ├── Push to GHCR (ghcr.io/haunguyendev/portfolio-v2)      │
+│  └── SSH via Cloudflare Tunnel → deploy                     │
+└─────────────────────────┬───────────────────────────────────┘
+                          │ SSH (deploy.haunguyendev.xyz)
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│           Ubuntu Server (Proxmox VM 101)                     │
+│           LAN: 192.168.1.123                                 │
+│                                                              │
+│  ┌────────────────── Docker Network ──────────────────┐     │
+│  │                                                     │     │
+│  │  ┌─────────┐    ┌─────────┐    ┌──────────────┐   │     │
+│  │  │  web    │───►│  api    │───►│  PostgreSQL  │   │     │
+│  │  │ :3000   │    │ :3001   │    │  :5432       │   │     │
+│  │  │ Next.js │    │ NestJS  │    │  16-alpine   │   │     │
+│  │  │standalone│   │ GraphQL │    └──────────────┘   │     │
+│  │  └─────────┘    │ Prisma  │                        │     │
+│  │                  │ JWT     │    ┌──────────────┐   │     │
+│  │                  │ Sharp   │───►│    MinIO     │   │     │
+│  │                  └─────────┘    │  :9000/:9001 │   │     │
+│  │                                  │  S3-compat   │   │     │
+│  │                                  └──────────────┘   │     │
+│  └─────────────────────────────────────────────────────┘     │
+│                                                              │
+│  ┌──────────┐   ┌──────────────┐                            │
+│  │Portainer │   │ cloudflared  │ ← Tunnel to Cloudflare     │
+│  │  :9443   │   │  (systemd)   │                            │
+│  └──────────┘   └──────────────┘                            │
+└──────────────────────────────────────────────────────────────┘
+                          │
+                    Cloudflare Tunnel
+                          │
+┌─────────────────────────▼───────────────────────────────────┐
+│                 Cloudflare DNS                               │
+│  portfolio.haunguyendev.xyz     → web (:3000)               │
+│  portfolio-api.haunguyendev.xyz → api (:3001)               │
+│  deploy.haunguyendev.xyz        → SSH (:22)                 │
+│  portfolio-portainer.haunguyendev.xyz → Portainer (:9443)   │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-**Phase 4A Stack:**
+**Production Stack:**
 - **Turborepo monorepo** — apps/web, apps/api, packages/prisma, packages/shared
-- **Next.js frontend** (Vercel) — ISR revalidation from GraphQL API, image uploads
-- **NestJS GraphQL API** (local/cloud) — Code-first schema, 5+ resolvers, JWT mutations
+- **Next.js frontend** (Docker, standalone) — ISR revalidation, image uploads
+- **NestJS GraphQL API** (Docker) — Code-first schema, 5+ resolvers, JWT mutations
 - **NestJS Media Service** — Upload, serve, delete with sharp processing
-- **MinIO S3-compatible storage** (Docker) — Self-hosted image storage with bucket structure
-- **sharp image processing** — Server-side resize to 1920px max, WebP q80 + thumbnail 400px q70
-- **PostgreSQL database** — Docker Compose locally, Vercel Postgres in production
-- **Prisma ORM** — Type-safe, auto-migrated schema with Media model
+- **MinIO S3-compatible storage** (Docker) — Self-hosted image storage
+- **sharp image processing** — Resize 1920px max, WebP q80 + thumbnail 400px q70
+- **PostgreSQL 16** (Docker) — With healthcheck, persistent volume
+- **Prisma ORM** — Auto-migrated via entrypoint script
 - **Better Auth + JWT** — Secure admin authentication
-- **Admin dashboard** (/admin/*) — CRUD pages with TipTap rich editor + image dropzone
-- **Content migration** — Seed script converts JSON/MDX to database
+- **Admin dashboard** (/admin/*) — CRUD pages with TipTap editor + image dropzone
+- **Cloudflare Tunnel** — Expose services without public IP/port forwarding
+- **GitHub Actions CI/CD** — Build → GHCR → SSH deploy
+- **Release Please** — Automated versioning and changelog
+- **Portainer CE** — Container monitoring UI
 
 ## Data Flow (Phase 1-2 Final)
 
@@ -555,22 +551,23 @@ Production Server (pnpm start)
 └── Vercel replaces with serverless functions
 ```
 
-### Vercel Deployment
+### Docker Self-Hosted Deployment
 ```
 Push to main branch
     ↓
-GitHub webhook → Vercel
+GitHub Actions triggered
     ↓
-Vercel pulls code
+Build Docker images (multi-stage, cached)
     ↓
-pnpm install
-pnpm build
+Push to GHCR (ghcr.io)
     ↓
-Static pages uploaded to CDN
+SSH via Cloudflare Tunnel
     ↓
-Serverless functions deployed
+docker compose pull + up -d
     ↓
-Live at custom domain
+Entrypoint: prisma generate → migrate → seed → start
+    ↓
+Live at portfolio.haunguyendev.xyz
 ```
 
 ## State Management (Phase 1)
@@ -752,7 +749,17 @@ Admin → GraphQL Mutations (JWT protected) → Services → Database
 ISR Revalidation ← On-demand invalidation from admin
 ```
 
-### Phase 4B (Advanced Features) — PLANNED
+### Phase 4B (CI/CD & Self-Hosted Deploy) — COMPLETE
+- [x] Docker multi-stage builds (web + api)
+- [x] docker-compose.prod.yml (full production stack)
+- [x] GitHub Actions CI/CD (build → GHCR → SSH deploy)
+- [x] Cloudflare Tunnel (SSH, web, api, portainer subdomains)
+- [x] Release Please bot (automated versioning + changelog)
+- [x] Production seed script (admin user + categories + tags)
+- [x] Entrypoint script (migrate → seed → start)
+- [x] Portainer CE for container monitoring
+
+### Phase 5 (Advanced Features) — PLANNED
 - [ ] Comments system with moderation
 - [ ] Likes and page view counters
 - [ ] Analytics tracking (referrers, devices)

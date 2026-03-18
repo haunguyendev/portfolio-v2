@@ -1,479 +1,238 @@
 # Deployment Guide
 
-## Vercel Setup
+## Architecture Overview
 
-### Prerequisites
-- GitHub account (repo pushed)
-- Vercel account (free tier sufficient)
-- Custom domain (optional, Vercel provides `*.vercel.app`)
-
-### Initial Deployment
-
-**Step 1: Connect Repository**
-1. Go to [vercel.com](https://vercel.com)
-2. Sign in with GitHub
-3. Click "Add New Project"
-4. Select `porfolio_v2` repository
-5. Vercel auto-detects Next.js framework
-
-**Step 2: Configure Project**
-- **Project Name:** porfolio-v2 (or custom)
-- **Root Directory:** ./ (default)
-- **Framework:** Next.js (auto-detected)
-- **Build Command:** `pnpm build` (auto-detected)
-- **Output Directory:** .next (auto-detected)
-- **Install Command:** `pnpm install` (auto-detected)
-
-**Step 3: Environment Variables**
-Vercel's environment variables page:
 ```
-NEXT_PUBLIC_SITE_URL=https://porfolio-v2.vercel.app
-NEXT_PUBLIC_ANALYTICS_ID=your-umami-id (leave empty for Phase 1)
+Push to main
+  → GitHub Actions: build Docker images (web + api)
+    → Push to GHCR (ghcr.io/haunguyendev/portfolio-v2)
+      → SSH via Cloudflare Tunnel → server
+        → docker compose pull + up -d
+          → Live at portfolio.haunguyendev.xyz
 ```
 
-Click "Deploy" and wait for build to complete (~2-3 minutes).
+## Infrastructure
 
-### Custom Domain Setup
+### Server
+- **Platform:** Proxmox VE → VM 101 (Ubuntu)
+- **LAN IP:** 192.168.1.123
+- **User:** haunguyendev
+- **Deploy path:** `/opt/portfolio/`
 
-**Option A: Using Vercel's Domain**
-- Use default `porfolio-v2.vercel.app`
-- No additional setup needed
-- Free HTTPS included
+### Cloudflare Tunnel
+- **Tunnel name:** portfolio-server
+- **Tunnel ID:** `a822eac2-2e80-4ec9-8ebd-40b8d678b702`
+- **Config:** `/etc/cloudflared/config.yml`
+- **Service:** `cloudflared` (systemd, auto-start on reboot)
 
-**Option B: Custom Domain**
+### Subdomains
 
-1. **Buy domain** from registrar (Namecheap, GoDaddy, etc.)
+| Subdomain | Service | Port |
+|-----------|---------|------|
+| `deploy.haunguyendev.xyz` | SSH | 22 |
+| `portfolio.haunguyendev.xyz` | Next.js (web) | 3000 |
+| `portfolio-api.haunguyendev.xyz` | NestJS (api) | 3001 |
+| `portfolio-portainer.haunguyendev.xyz` | Portainer UI | 9443 |
 
-2. **Add domain to Vercel:**
-   - Project Settings → Domains
-   - Enter custom domain (e.g., kane.dev)
-   - Vercel provides DNS records or nameserver instructions
+### Docker Images (GHCR)
+- `ghcr.io/haunguyendev/portfolio-v2/web:latest`
+- `ghcr.io/haunguyendev/portfolio-v2/api:latest`
 
-3. **Update DNS at registrar:**
-   - Add CNAME or nameserver records from Vercel
-   - Wait 24-48 hours for DNS propagation
+## CI/CD Pipeline
 
-4. **Verify SSL certificate:**
-   - Vercel automatically provisions Let's Encrypt
-   - Certificate issued within minutes
+### Workflows
 
-### Automatic Deployments
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `deploy.yml` | Push to main (code changes) | Build → push GHCR → SSH deploy |
+| `release-please.yml` | Push to main | Auto version bump + changelog PR |
 
-**Branch Configuration:**
-- **main branch:** Auto-deploy to production
-- **other branches:** Auto-deploy to preview URLs
-- **Pull requests:** Auto-generate preview URLs
+### GitHub Secrets
 
-**Example URLs:**
+| Secret | Purpose |
+|--------|---------|
+| `SERVER_HOST` | Cloudflare Tunnel hostname (deploy.haunguyendev.xyz) |
+| `SERVER_USER` | SSH username (haunguyendev) |
+| `SSH_PRIVATE_KEY` | ed25519 private key for SSH auth |
+
+### Deploy Workflow Steps
+
+1. **Build & Push Images** (~8-11min first, ~3-5min cached)
+   - Checkout code
+   - Login GHCR (auto `GITHUB_TOKEN`)
+   - Build web image (multi-stage, Next.js standalone)
+   - Build api image (multi-stage, NestJS)
+   - Push both to GHCR with `:latest` + `:sha` tags
+   - GHA cache enabled (`type=gha`)
+
+2. **Deploy to Server** (~1min)
+   - Install cloudflared on GHA runner
+   - Setup SSH config with ProxyCommand
+   - SSH → `docker login ghcr.io` → `docker compose pull` → `docker compose up -d`
+   - Prune old images
+
+## Docker Setup
+
+### Production Stack (`docker-compose.prod.yml`)
+
 ```
-main → https://porfolio-v2.vercel.app
-feature/blog → https://feature-blog-porfolio-v2.vercel.app
-PR #5 → https://porfolio-v2-pr-5.vercel.app
+Services:
+├── postgres (16-alpine, healthcheck, persistent volume)
+├── minio (S3-compatible storage, ports 9000/9001)
+├── minio-init (auto-create bucket)
+├── api (GHCR image, entrypoint: migrate → seed → start)
+└── web (GHCR image, Next.js standalone)
 ```
+
+### Dockerfiles
+
+**Web (`apps/web/Dockerfile`)** — 4 stages:
+1. `base` — Node 20 alpine + pnpm
+2. `deps` — Install all dependencies (with `.npmrc` for shamefully-hoist)
+3. `builder` — Prisma generate → Velite build → Next.js build (standalone)
+4. `runner` — Copy build output with `--chown=nextjs:nodejs`, run as non-root
+
+**API (`apps/api/Dockerfile`)** — 5 stages:
+1. `base` — Node 20 alpine + pnpm
+2. `deps` — Install all dependencies
+3. `builder` — Prisma generate → NestJS build
+4. `prod-deps` — Install production-only dependencies
+5. `runner` — Copy prod deps + build output, entrypoint script
+
+### API Entrypoint (`apps/api/entrypoint.sh`)
+
+```
+Container start
+  → [0] prisma generate (prod-deps don't have generated client)
+  → [1] prisma migrate deploy (apply pending migrations)
+  → [2] Seed (if SEED_ON_START=true): admin user + categories + tags
+  → [3] Start NestJS server
+```
+
+### Key Dockerfile Gotchas
+- **`.npmrc` must be copied** — `shamefully-hoist=true` required for `@prisma/client` resolution
+- **`VELITE_STARTED=1`** — Prevents race condition (next.config.ts triggers velite again with `clean:true`)
+- **`--chown=nextjs:nodejs`** — ISR cache writes need file ownership by non-root user
+- **`prisma generate` in entrypoint** — Runner stage uses prod-deps which don't have generated client
 
 ## Environment Variables
 
-### .env.example (Commit)
-```
-# Site Configuration
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+### Server `.env` (`/opt/portfolio/.env`)
+
+```bash
+# Database
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=<random>
+POSTGRES_DB=portfolio
+
+# API
+JWT_SECRET=<random-32-char>
+CORS_ORIGIN=https://portfolio.haunguyendev.xyz
+
+# Auth
+BETTER_AUTH_SECRET=<random-32-char>
+BETTER_AUTH_URL=https://portfolio.haunguyendev.xyz
+
+# Public (also baked at build time)
+NEXT_PUBLIC_SITE_URL=https://portfolio.haunguyendev.xyz
 NEXT_PUBLIC_SITE_NAME=Kane's Portfolio
 
-# Analytics (Phase 3)
-NEXT_PUBLIC_ANALYTICS_ID=
+# MinIO
+MINIO_ROOT_USER=minioadmin
+MINIO_ROOT_PASSWORD=<random>
+MINIO_BUCKET=portfolio-media
 
-# CMS/Database (Phase 4)
-# DATABASE_URL=
-# CMS_API_KEY=
+# Seed (true for first deploy only)
+SEED_ON_START=false
 ```
 
-### .env.local (Don't Commit)
-```
-# Copy from .env.example and fill in values
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-NEXT_PUBLIC_ANALYTICS_ID=
-```
+### Build-time Args (Dockerfile)
+- `NEXT_PUBLIC_SITE_URL` — Baked into Next.js at build time via `ARG`
+- `NEXT_PUBLIC_SITE_NAME` — Baked into Next.js at build time via `ARG`
 
-### Vercel Environment Variables
+## SSH Access
 
-In Vercel dashboard → Settings → Environment Variables:
-
-| Variable | Production | Preview | Development |
-|----------|-----------|---------|-------------|
-| NEXT_PUBLIC_SITE_URL | https://kane.dev | https://[name]-[repo].vercel.app | http://localhost:3000 |
-| NEXT_PUBLIC_ANALYTICS_ID | [umami-id] | [umami-id] | (empty) |
-
-**Phase 4 additions:**
-```
-DATABASE_URL=postgresql://...
-CMS_API_KEY=...
-JWT_SECRET=...
-```
-
-## Build Configuration
-
-### next.config.ts
-
-```typescript
-import type { NextConfig } from 'next'
-
-const nextConfig: NextConfig = {
-  // Image optimization
-  images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-  },
-
-  // Redirects (optional)
-  redirects: async () => [
-    {
-      source: '/projects/:slug',
-      destination: '/projects',
-      permanent: false,
-    },
-  ],
-
-  // Headers
-  headers: async () => [
-    {
-      source: '/:path*',
-      headers: [
-        {
-          key: 'X-Content-Type-Options',
-          value: 'nosniff',
-        },
-      ],
-    },
-  ],
-}
-
-export default nextConfig
-```
-
-## Build & Deploy Process
-
-### Local Build Test
+### From local machine
 ```bash
-# Clean previous builds
-rm -rf .next
+# Quick access (after adding to ~/.ssh/config)
+ssh portfolio
 
-# Install dependencies
-pnpm install
-
-# Build for production
-pnpm build
-
-# Run production server locally
-pnpm start
-
-# Visit http://localhost:3000 to test
+# Or full command
+ssh -o ProxyCommand="cloudflared access ssh --hostname deploy.haunguyendev.xyz" \
+    -i ~/.ssh/github-deploy haunguyendev@deploy.haunguyendev.xyz
 ```
 
-### Build Output Analysis
+### SSH Config (`~/.ssh/config`)
 ```
-Route (pages)          Size     First Load JS
-─ ○ /                  1.2 kB   45 kB
-- ○ /projects          2.4 kB   48 kB
-- ○ /about             1.8 kB   47 kB
-- ○ /blog              0.5 kB   40 kB
-
-○ (Static)  prerendered as static HTML
+Host portfolio
+  HostName deploy.haunguyendev.xyz
+  User haunguyendev
+  IdentityFile ~/.ssh/github-deploy
+  ProxyCommand cloudflared access ssh --hostname %h
 ```
 
-### Performance Budgets
+## Manual Deploy Commands
 
-Set in `vercel.json` (optional):
-```json
-{
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install",
-  "env": {
-    "NEXT_PUBLIC_SITE_URL": "@next-public-site-url"
-  },
-  "functions": {
-    "api/**/*": {
-      "maxDuration": 10
-    }
-  }
-}
-```
-
-## Continuous Integration
-
-### GitHub Actions (Optional Setup)
-
-Create `.github/workflows/ci.yml`:
-```yaml
-name: CI
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build
-        run: pnpm build
-
-      - name: Type check
-        run: pnpm tsc --noEmit
-
-      - name: Lint (Phase 3)
-        run: pnpm lint
-        continue-on-error: true
-
-      - name: Tests (Phase 3)
-        run: pnpm test
-        continue-on-error: true
-```
-
-Note: Phase 1 focuses on build/deploy. Linting and testing added Phase 3+.
-
-## Monitoring & Debugging
-
-### Vercel Dashboard
-- **Deployments:** View build logs, rollback to previous versions
-- **Analytics:** Performance metrics (Web Vitals, Core Web Vitals)
-- **Logs:** Real-time deployment logs
-- **Usage:** Bandwidth, build hours, function executions
-
-### Build Logs
-If deployment fails:
-1. Go to Vercel dashboard → Deployments
-2. Click failed deployment
-3. View build output
-4. Common errors:
-   - `ENOENT: file not found` → Missing file, check imports
-   - `TypeScript error` → Fix type issues
-   - `OOM: out of memory` → Reduce build size (code split, remove large deps)
-
-### Testing Builds Locally
+On server (`/opt/portfolio/`):
 ```bash
-# Simulate Vercel environment
-NODE_ENV=production pnpm build
+# Pull and restart
+docker compose -f docker-compose.prod.yml pull web api
+docker compose -f docker-compose.prod.yml up -d --remove-orphans
 
-# Test optimized build
-pnpm start
+# View logs
+docker logs portfolio_api -f
+docker logs portfolio_web -f
+
+# Restart specific service
+docker compose -f docker-compose.prod.yml restart api
+
+# Run migrations manually
+docker exec -it portfolio_api npx prisma migrate deploy --schema=./packages/prisma/schema.prisma
+
+# Seed manually
+docker exec -it portfolio_api npx tsx ./packages/prisma/seed-production.ts
+
+# Check DB
+docker exec -it portfolio_postgres psql -U postgres -d portfolio
 ```
 
-## Rollback & Recovery
+## Rollback
 
-### Rollback to Previous Version
-1. Vercel dashboard → Deployments
-2. Find previous successful deployment
-3. Click "..." menu → "Promote to Production"
-4. Confirm rollback
-
-### Redeployment
-Force redeploy without code changes:
-1. Vercel dashboard → Deployments
-2. Click "..." → "Redeploy"
-3. Useful for env variable changes
-
-## Phase 1 Deployment Checklist
-
-Before launching:
-- [ ] All pages build without errors
-- [ ] Environment variables set in Vercel
-- [ ] Custom domain configured (optional)
-- [ ] HTTPS working (automatic on Vercel)
-- [ ] Pages responsive on mobile/tablet/desktop
-- [ ] All links functional
-- [ ] Images load correctly
-- [ ] No console errors or warnings
-- [ ] Lighthouse score > 80 (Performance, Accessibility, Best Practices)
-- [ ] Page load time < 2s (desktop), < 3s (mobile)
-
-## Phase 3 Additions
-
-### SEO & Meta Tags
-```typescript
-// app/layout.tsx
-export const metadata: Metadata = {
-  title: "Kane Nguyen's Portfolio",
-  description: "Software Engineer's portfolio",
-  openGraph: {
-    image: '/og-image.png',
-    url: process.env.NEXT_PUBLIC_SITE_URL,
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-}
+```bash
+# On server — rollback to specific image sha
+docker compose -f docker-compose.prod.yml pull web api
+# Edit compose to use specific tag: ghcr.io/.../web:<sha>
+docker compose -f docker-compose.prod.yml up -d
 ```
 
-### Sitemap Generation
-```typescript
-// app/sitemap.ts
-import { MetadataRoute } from 'next'
+Or re-run a previous GitHub Actions workflow from the Actions tab.
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: process.env.NEXT_PUBLIC_SITE_URL || '',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/projects`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-  ]
-}
-```
+## Monitoring
 
-### Analytics Integration (Umami)
-```typescript
-// app/layout.tsx
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <head>
-        <script
-          async
-          src={`https://analytics.example.com/script.js`}
-          data-website-id={process.env.NEXT_PUBLIC_ANALYTICS_ID}
-        />
-      </head>
-      <body>{children}</body>
-    </html>
-  )
-}
-```
-
-## Phase 4 Additions
-
-### Database Deployment
-- PostgreSQL (Vercel Postgres or Railway)
-- Drizzle ORM migrations
-- Connection pooling for serverless functions
-
-### API Routes Deployment
-- Vercel serverless functions handle `/api/*` routes
-- Automatic scaling, no server management
-- Cold start optimization for Next.js
-
-### Environment Variables for Phase 4
-```
-DATABASE_URL=postgresql://...
-CMS_API_KEY=...
-JWT_SECRET=...
-```
+- **Portainer:** https://portfolio-portainer.haunguyendev.xyz
+- **Logs:** `docker logs <container-name> -f`
+- **Health:** `curl https://portfolio-api.haunguyendev.xyz/api/health`
 
 ## Troubleshooting
 
-### Build Failures
+### GHCR `unauthorized` on pull
+Server needs to login: `docker login ghcr.io -u haunguyendev`
+Deploy workflow handles this automatically.
 
-**Error: "ENOENT: no such file or directory"**
-- Check import paths are correct
-- Verify all imported files exist
-- Run `pnpm install` locally and rebuild
+### ISR cache write permission denied
+Ensure Dockerfile uses `--chown=nextjs:nodejs` on all COPY commands in runner stage.
 
-**Error: "TypeScript error"**
-- Run `pnpm tsc --noEmit` locally
-- Fix all type errors before pushing
+### Prisma client not initialized
+Entrypoint runs `prisma generate` before server start. If still fails, check `packages/prisma` was copied correctly.
 
-**Error: "Module not found"**
-- Check package.json has correct dependencies
-- Run `pnpm install` to ensure lock file matches
-
-### Runtime Errors
-
-**Images not loading:**
-- Verify image paths are correct
-- Check `next.config.ts` image domain allowlist
-- Use Next.js `<Image>` component
-
-**Slow page loads:**
-- Run Lighthouse audit in Chrome DevTools
-- Check image sizes and formats
-- Verify no large JavaScript bundles
-
-### Environment Variable Issues
-
-**Variables not available in build:**
-- Ensure `NEXT_PUBLIC_*` prefix for client-side vars
-- Check Vercel Environment Variables are set
-- Redeploy after adding variables
-
-## Performance Optimization (Phase 3+)
-
-### Image Optimization
-```typescript
-<Image
-  src="/images/hero/kane-photo.jpg"
-  alt="Kane Nguyen's portfolio photo"
-  width={600}
-  height={600}
-  priority // above-fold
-  quality={75} // 75% quality
-  placeholder="blur" // blur while loading
-  blurDataURL="..." // optional
-/>
-```
-
-### Code Splitting
-Next.js automatically code-splits by page. For components:
-```typescript
-import dynamic from 'next/dynamic'
-
-const HeavyComponent = dynamic(() => import('@/components/heavy'), {
-  loading: () => <div>Loading...</div>,
-  ssr: false, // disable server-side rendering
-})
-```
-
-### Font Optimization
-Use Next.js font loading:
-```typescript
-import { Inter, Geist } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
-const geist = Geist({ variable: '--font-geist' })
-```
-
-## Backup & Export
-
-### Export Static Site
+### Cloudflare Tunnel not connecting
 ```bash
-pnpm build
-# Creates optimized static HTML in .next/standalone
+sudo systemctl status cloudflared
+sudo systemctl restart cloudflared
 ```
 
-### GitHub as Backup
+### Container crash loop
 ```bash
-git push origin main
-# Always keep code on GitHub
+docker logs <container> --tail 50
+# Check entrypoint errors, missing env vars, DB connection
 ```
-
-## Summary
-
-1. **Initial Setup:** Connect GitHub repo to Vercel → auto-deploys on push
-2. **Environment:** Set vars in Vercel dashboard and .env.example
-3. **Monitoring:** Use Vercel dashboard for logs and analytics
-4. **Phase 1:** Focus on build/deploy, SEO + analytics Phase 3+
-5. **Rollback:** Available in Vercel dashboard if needed
