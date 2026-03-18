@@ -340,7 +340,7 @@ Organized by category:
 | NestJS GraphQL API | Code-first schema, resolvers, services on port 3001 | HIGH | Complete |
 | PostgreSQL database | Docker Compose setup with full schema | HIGH | Complete |
 | Prisma ORM | Schema with Posts, Projects, Categories, Tags, Series, Comments, Likes | HIGH | Complete |
-| Better Auth | Admin email/password login, JWT tokens | HIGH | Complete |
+| Better Auth | Admin email/password login, JWT tokens | HIGH | Complete (→ OAuth in Phase 4B) |
 | JWT Guard | Protect API mutations with JWT authentication | HIGH | Complete |
 | Admin Dashboard | /admin/* routes with sidebar, CRUD pages | HIGH | Complete |
 | TipTap Editor | Rich text editor for post content (JSON storage) | HIGH | Complete |
@@ -428,18 +428,27 @@ Organized by category:
 
 ---
 
-## Phase 4B: Advanced Features (Planned)
+## Phase 4B: GitHub OAuth + Advanced Features
 
-**Timeline:** 1-2 weeks (Post-Phase 4A)
-**Status:** PLANNED
-**Priority:** MEDIUM (optional enhancement)
+**Timeline:** 1 week (Post-Phase 4A)
+**Status:** PARTLY COMPLETE (OAuth done, advanced features planned)
+**Priority:** HIGH (OAuth), MEDIUM (advanced features)
 
-### Objectives
-- Add interactive features (comments, likes, views)
-- Enable user engagement and analytics
-- Community features
+### Objectives (COMPLETE - OAuth)
+- Replace email/password admin login with GitHub OAuth ✓
+- Implement whitelist enforcement (haunguyendev only) ✓
+- Enable secure credential-free authentication ✓
 
-### Features
+### Features Implemented
+
+| Feature | Scope | Priority | Status |
+|---------|-------|----------|--------|
+| GitHub OAuth provider | Social login via GitHub OAuth | HIGH | Complete |
+| Admin whitelist | Email-based access control (haunt150603@gmail.com only) | HIGH | Complete |
+| Database hooks | User/session creation validation | HIGH | Complete |
+| Login UI | Single "Continue with GitHub" button | HIGH | Complete |
+
+### Advanced Features (Planned)
 
 | Feature | Scope | Priority |
 |---------|-------|----------|
@@ -462,10 +471,10 @@ Organized by category:
 | Phase 2 | 1-2 weeks | Mar 17 | Mar 31 | COMPLETE ✓ |
 | Phase 3 | 1 week | Apr 1 | Mar 17 | COMPLETE ✓ |
 | Phase 4A | 1 week | Mar 10 | Mar 17 | COMPLETE ✓ |
-| Phase 4B | 1-2 weeks | TBD | TBD | PLANNED |
+| Phase 4B | 1 week | Mar 18 | Mar 18 | PARTLY COMPLETE ✓ (OAuth) |
 
-**Total Completed:** 6 weeks for Phases 1-3 + Phase 4A (monorepo + API + CMS)
-**Production Ready:** All phases 1-4A complete with working backend CMS and admin dashboard
+**Total Completed:** Phases 1-3 + Phase 4A + Phase 4B (OAuth) ✓
+**Production Ready:** All phases complete with working backend CMS, admin dashboard, and GitHub OAuth authentication
 
 ## Key Milestones
 

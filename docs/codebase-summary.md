@@ -559,10 +559,31 @@ porfolio_v2/
 ### Dependencies Added (Phase 4A)
 - `@nestjs/core`, `@nestjs/graphql`, `@nestjs/jwt`: NestJS framework
 - `@prisma/client`: Database client
-- `better-auth`: Authentication library
+- `better-auth`: Authentication library with GitHub OAuth provider
 - `@tiptap/react`, `@tiptap/core`: Rich text editor
 - `graphql`, `type-graphql`: GraphQL support
 - `turborepo`: Monorepo build orchestration
+
+## Authentication (Phase 4B — GitHub OAuth Implementation)
+
+### Better Auth Configuration
+**File:** `apps/web/src/lib/auth.ts`
+
+- **Provider:** GitHub OAuth via `socialProviders.github`
+- **Credentials:** `GITHUB_CLIENT_ID` + `GITHUB_CLIENT_SECRET` (env vars)
+- **Access Control:** Whitelist via `databaseHooks` (blocks non-authorized users at creation)
+- **Allowed Emails:** `['haunt150603@gmail.com']` (haunguyendev only)
+- **Hooks:**
+  - `databaseHooks.user.create.before` — Validates email before user creation
+  - `databaseHooks.session.create.before` — Validates email before session creation (blocks existing unauthorized sessions)
+
+### Admin Login Page
+**File:** `apps/web/src/app/(auth)/admin/login/page.tsx`
+
+- Single "Continue with GitHub" button (no email/password form)
+- Uses `signIn.social({ provider: 'github' })`
+- Shows unauthorized error if GitHub account not in whitelist
+- Redirects to `/admin` on success, `/admin/login?error=unauthorized` on failure
 
 ## Phase 4B Planned Additions
 

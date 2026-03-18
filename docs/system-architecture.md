@@ -90,7 +90,7 @@
 - **sharp image processing** — Resize 1920px max, WebP q80 + thumbnail 400px q70
 - **PostgreSQL 16** (Docker) — With healthcheck, persistent volume
 - **Prisma ORM** — Auto-migrated via entrypoint script
-- **Better Auth + JWT** — Secure admin authentication
+- **Better Auth + GitHub OAuth** — Secure admin authentication via GitHub (haunguyendev account only)
 - **Admin dashboard** (/admin/*) — CRUD pages with TipTap editor + image dropzone
 - **Cloudflare Tunnel** — Expose services without public IP/port forwarding
 - **GitHub Actions CI/CD** — Build → GHCR → SSH deploy
@@ -696,11 +696,13 @@ This creates a cohesive visual experience in dark mode by eliminating gray bands
 - HTTPS enforced (Vercel automatic)
 - XSS protection in JSON-LD (escaped `<` to prevent injection)
 
-### Phase 4
-- Add authentication if needed
-- Database access control
-- Input validation (user-generated content)
-- Content Security Policy headers
+### Phase 4A-4B
+- **Admin Authentication:** GitHub OAuth via Better Auth (socialProviders.github)
+- **Access Control:** Whitelist enforcement via databaseHooks.user.create.before + databaseHooks.session.create.before
+- **Authorized Users:** haunt150603@gmail.com (haunguyendev) only
+- **Database Access:** JWT tokens for GraphQL mutations (API layer)
+- **Input Validation:** TipTap editor + image upload validation
+- **Content Security Policy:** Headers configured per environment
 
 ## Error Handling
 

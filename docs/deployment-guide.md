@@ -129,9 +129,11 @@ POSTGRES_DB=portfolio
 JWT_SECRET=<random-32-char>
 CORS_ORIGIN=https://portfolio.haunguyendev.xyz
 
-# Auth
+# Auth (Better Auth + GitHub OAuth)
 BETTER_AUTH_SECRET=<random-32-char>
 BETTER_AUTH_URL=https://portfolio.haunguyendev.xyz
+GITHUB_CLIENT_ID=<github-app-client-id>
+GITHUB_CLIENT_SECRET=<github-app-client-secret>
 
 # Public (also baked at build time)
 NEXT_PUBLIC_SITE_URL=https://portfolio.haunguyendev.xyz
