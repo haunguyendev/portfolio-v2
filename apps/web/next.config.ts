@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     qualities: [75],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'www.coursera.org' },
+      { protocol: 'https', hostname: 'udemy.com' },
+      { protocol: 'https', hostname: 'www.udemy.com' },
+    ],
   },
   // Proxy /api/media/* to backend API — avoids Next.js private IP blocking for images
   async rewrites() {

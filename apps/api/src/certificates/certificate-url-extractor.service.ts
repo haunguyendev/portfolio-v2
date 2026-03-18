@@ -97,20 +97,9 @@ export class CertificateUrlExtractorService {
         (p) => p.pattern.test(url) || p.pattern.test(finalUrl),
       );
 
-      // Coursera cert image: construct from accomplishment URL
-      // Pattern: /account/accomplishments/{type}/{ID} → /account/accomplishments/{type}/certificate/{ID}
-      let courseraCertImage: string | undefined;
-      const accomplishmentMatch = finalUrl.match(
-        /\/account\/accomplishments\/(specialization|certificate|verify)\/([A-Z0-9]+)/i,
-      );
-      if (accomplishmentMatch) {
-        const [, type, id] = accomplishmentMatch;
-        if (type !== "certificate") {
-          courseraCertImage = `https://www.coursera.org/account/accomplishments/${type}/certificate/${id}`;
-        } else {
-          courseraCertImage = finalUrl;
-        }
-      }
+      // Note: Coursera cert image URLs (/account/accomplishments/.../certificate/ID)
+      // return text/html, not actual images — cannot be used as <img src>.
+      // Users must screenshot and upload cert images via the dashboard.
 
       // Extract OG meta tags
       const ogTitle =
@@ -226,7 +215,7 @@ export class CertificateUrlExtractorService {
           issuer: platform?.name,
           issueDate: undefined,
           issuerIcon: platform?.icon,
-          image: courseraCertImage,
+          image: undefined,
           error:
             "This page loads dynamically. Platform detected but title/date need manual entry.",
         };
@@ -238,7 +227,7 @@ export class CertificateUrlExtractorService {
         issuer,
         issueDate,
         issuerIcon: platform?.icon,
-        image: courseraCertImage || ogImage,
+        image: ogImage,
       };
     } catch (err) {
       this.logger.warn(`Failed to extract from ${url}: ${err}`);
