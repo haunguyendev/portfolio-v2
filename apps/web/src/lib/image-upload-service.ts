@@ -63,12 +63,11 @@ export async function uploadImage(
   return res.json();
 }
 
-/** Build a full URL for an API media path */
+/** Build a URL for an API media path — kept relative so Next.js rewrites proxy to API */
 export function getMediaUrl(path: string): string {
   if (!path) return "";
-  // If already a full URL, return as-is
+  // Full URLs returned as-is
   if (path.startsWith("http")) return path;
-  // Prepend API base URL for relative paths like /api/media/...
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-  return `${apiUrl}${path}`;
+  // Relative /api/media/* paths stay relative — Next.js rewrites handle proxying
+  return path;
 }

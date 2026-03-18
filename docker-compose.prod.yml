@@ -95,6 +95,7 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: production
+      INTERNAL_API_URL: http://api:3001
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
       BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-portfolio}

@@ -5,10 +5,9 @@ import { DIARY_MOODS, type DiaryMood } from './diary-constants'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
 
-/** Resolve relative /api/media/* paths to absolute API server URLs */
+/** Resolve /api/media/* paths — kept relative so Next.js rewrites proxy to API */
 function resolveMediaUrl(path?: string): string {
   if (!path) return ''
-  if (path.startsWith('/api/media/')) return `${API_URL}${path}`
   return path
 }
 

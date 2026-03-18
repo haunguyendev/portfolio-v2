@@ -54,6 +54,11 @@ ARG NEXT_PUBLIC_SITE_NAME="Kane's Portfolio"
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 ENV NEXT_PUBLIC_SITE_NAME=${NEXT_PUBLIC_SITE_NAME}
 
+# Internal API URL for Next.js rewrites (baked at build time)
+# Default = http://api:3001 (Docker service name) vì Dockerfile chỉ dùng cho production
+ARG INTERNAL_API_URL=http://api:3001
+ENV INTERNAL_API_URL=${INTERNAL_API_URL}
+
 # Build Next.js app (output: apps/web/.next/)
 # VELITE_STARTED=1 → ngăn next.config.ts trigger velite lần 2 (race condition)
 # Next.js standalone mode → output nhỏ gọn, không cần node_modules
