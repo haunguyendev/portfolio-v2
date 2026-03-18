@@ -97,6 +97,21 @@ export class CertificateUrlExtractorService {
         (p) => p.pattern.test(url) || p.pattern.test(finalUrl),
       );
 
+      // Coursera cert image: construct from accomplishment URL
+      // Pattern: /account/accomplishments/{type}/{ID} → /account/accomplishments/{type}/certificate/{ID}
+      let courseraCertImage: string | undefined;
+      const accomplishmentMatch = finalUrl.match(
+        /\/account\/accomplishments\/(specialization|certificate|verify)\/([A-Z0-9]+)/i,
+      );
+      if (accomplishmentMatch) {
+        const [, type, id] = accomplishmentMatch;
+        if (type !== "certificate") {
+          courseraCertImage = `https://www.coursera.org/account/accomplishments/${type}/certificate/${id}`;
+        } else {
+          courseraCertImage = finalUrl;
+        }
+      }
+
       // Extract OG meta tags
       const ogTitle =
         $('meta[property="og:title"]').attr("content") ||
@@ -211,7 +226,7 @@ export class CertificateUrlExtractorService {
           issuer: platform?.name,
           issueDate: undefined,
           issuerIcon: platform?.icon,
-          image: undefined,
+          image: courseraCertImage,
           error:
             "This page loads dynamically. Platform detected but title/date need manual entry.",
         };
@@ -223,7 +238,7 @@ export class CertificateUrlExtractorService {
         issuer,
         issueDate,
         issuerIcon: platform?.icon,
-        image: ogImage,
+        image: courseraCertImage || ogImage,
       };
     } catch (err) {
       this.logger.warn(`Failed to extract from ${url}: ${err}`);
