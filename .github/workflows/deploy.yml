@@ -122,19 +122,12 @@ jobs:
             ProxyCommand cloudflared access ssh --hostname %h
           EOF
 
+      # Login GHCR trên server (packages private, cần auth để pull)
       - name: Deploy via SSH
         run: |
-          ssh deploy-server << 'DEPLOY'
-            cd /opt/portfolio
-
-            # Pull images mới từ GHCR (public images, không cần login)
-            docker compose -f docker-compose.prod.yml pull web api
-
-            # Restart containers với image mới
-            docker compose -f docker-compose.prod.yml up -d --remove-orphans
-
-            # Dọn dẹp images cũ
-            docker image prune -f
-
-            echo "Deploy complete!"
-          DEPLOY
+          ssh deploy-server "cd /opt/portfolio && \
+            echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u ${{ github.actor }} --password-stdin && \
+            docker compose -f docker-compose.prod.yml pull web api && \
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans && \
+            docker image prune -f && \
+            echo 'Deploy complete!'"
