@@ -10,6 +10,6 @@ import { ImageProcessingService } from "./image-processing.service";
   imports: [PrismaModule, AuthModule],
   controllers: [MediaController],
   providers: [MediaService, MinioService, ImageProcessingService],
-  exports: [MediaService],
+  exports: [MediaService, MinioService],
 })
 export class MediaModule {}

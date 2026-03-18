@@ -9,6 +9,7 @@ import { PostsModule } from "./posts/posts.module";
 import { ProjectsModule } from "./projects/projects.module";
 import { MediaModule } from "./media/media.module";
 import { CertificatesModule } from "./certificates/certificates.module";
+import { ResumeModule } from "./resume/resume.module";
 import { HealthController } from "./health/health.controller";
 
 @Module({
@@ -23,6 +24,7 @@ import { HealthController } from "./health/health.controller";
     ProjectsModule,
     MediaModule,
     CertificatesModule,
+    ResumeModule,
   ],
   controllers: [HealthController],
 })

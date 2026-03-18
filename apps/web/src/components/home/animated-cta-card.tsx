@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Download, FileText, Sparkles } from 'lucide-react'
-import profile from '@/content/profile.json'
+import { RESUME_DOWNLOAD_URL } from '@/lib/constants'
 
 // Floating particle positions around the card
 const PARTICLES = [
@@ -68,9 +68,8 @@ export function AnimatedCtaCard() {
 
         {/* Animated download button */}
         <motion.a
-          href={profile.resumePath}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={RESUME_DOWNLOAD_URL}
+          download
           className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-foreground px-6 py-3 font-medium text-background"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}

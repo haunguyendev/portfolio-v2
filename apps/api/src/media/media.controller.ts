@@ -25,6 +25,7 @@ const ALLOWED_SERVE_PREFIXES = [
   "projects/",
   "certificates/",
   "thumbnails/",
+  "resume/",
 ];
 
 @Controller()

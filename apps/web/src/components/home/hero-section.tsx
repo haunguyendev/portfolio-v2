@@ -4,6 +4,7 @@ import { ArrowRight, Download } from 'lucide-react'
 import { TypewriterHeading } from '@/components/ui/typewriter-heading'
 import { RotatingText } from '@/components/ui/rotating-text'
 import profile from '@/content/profile.json'
+import { RESUME_DOWNLOAD_URL } from '@/lib/constants'
 
 // Name variants for typewriter — last word gets gradient styling
 const NAMES = [
@@ -67,7 +68,7 @@ export function HeroSection() {
                 <ArrowRight className="size-4" />
               </Link>
               <a
-                href={profile.resumePath}
+                href={RESUME_DOWNLOAD_URL}
                 download
                 className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
               >

@@ -1,7 +1,7 @@
 // About page hero section with photo, bio, social links, and resume download
 import Image from 'next/image'
 import { Github, Linkedin, Mail, Download } from 'lucide-react'
-import { SOCIAL_LINKS as SOCIAL_URLS } from '@/lib/constants'
+import { SOCIAL_LINKS as SOCIAL_URLS, RESUME_DOWNLOAD_URL } from '@/lib/constants'
 import profile from '@/content/profile.json'
 import type { LucideIcon } from 'lucide-react'
 
@@ -71,7 +71,7 @@ export function BioSection() {
           {/* Resume download CTA */}
           <div className="mt-5 flex justify-center md:justify-start">
             <a
-              href={profile.resumePath}
+              href={RESUME_DOWNLOAD_URL}
               download
               title="Download resume (PDF)"
               className="inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 px-4 py-2 text-sm font-medium text-white transition-shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

@@ -128,11 +128,13 @@ type Mutation {
   deleteCertificate(id: ID!): Boolean!
   deletePost(id: ID!): Boolean!
   deleteProject(id: ID!): Boolean!
+  deleteResume(id: ID!): Boolean!
   deleteSeries(id: ID!): Boolean!
   deleteTag(id: ID!): Boolean!
   extractCertificateUrl(url: String!): CertificateMetadata!
   publishPost(id: ID!): Post!
   reorderProjects(ids: [ID!]!): [Project!]!
+  setActiveResume(id: ID!): Resume!
   updateCategory(id: ID!, input: UpdateCategoryInput!): Category!
   updateCertificate(id: ID!, input: UpdateCertificateInput!): Certificate!
   updatePost(id: ID!, input: UpdatePostInput!): Post!
@@ -202,6 +204,7 @@ type Project {
 }
 
 type Query {
+  activeResume: Resume
   categories: [Category!]!
   category(id: ID!): Category
   certificate(id: ID!): Certificate
@@ -212,9 +215,27 @@ type Query {
   project(id: ID!): Project
   projectBySlug(slug: String!): Project
   projects(featuredOnly: Boolean): [Project!]!
+  resumes: [Resume!]!
   seriesBySlug(slug: String!): Series
   seriesList: [Series!]!
   tags: [Tag!]!
+}
+
+type Resume {
+  createdAt: DateTime!
+  fileName: String!
+  filePath: String!
+  fileSize: Int!
+  id: ID!
+  isActive: Boolean!
+  type: ResumeType!
+  updatedAt: DateTime!
+}
+
+"""Type of resume: uploaded PDF or generated from data"""
+enum ResumeType {
+  GENERATED
+  UPLOADED
 }
 
 type Series {

@@ -15,3 +15,6 @@ export const NAV_LINKS = [
 ] as const
 
 export const SOCIAL_LINKS = profile.social
+
+/** Resume download URL — served from API (MinIO) instead of static file */
+export const RESUME_DOWNLOAD_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'}/api/resume/download`

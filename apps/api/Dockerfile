@@ -54,6 +54,20 @@ RUN pnpm install --frozen-lockfile --prod
 FROM node:20-alpine AS runner
 WORKDIR /app
 
+# Install Chromium + fonts for Puppeteer PDF generation
+RUN apk add --no-cache \
+  chromium \
+  nss \
+  freetype \
+  harfbuzz \
+  ca-certificates \
+  ttf-freefont \
+  font-noto \
+  font-noto-cjk
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV CHROMIUM_PATH=/usr/bin/chromium-browser
+
 # Copy production node_modules (không có devDeps)
 COPY --from=prod-deps /app ./
 

@@ -6,7 +6,6 @@
   "timezone": "GMT+7",
   "avatar": "/images/hero/kane-avatar.jpg",
   "heroPhoto": "/images/hero/kane-photo.jpg",
-  "resumePath": "/resume.pdf",
   "titles": ["Software Engineer", "Web Developer", "Problem Solver"],
   "bio": {
     "hero": "Built full-stack web apps serving 500+ users — from real-time task management to e-commerce APIs processing 1K+ orders/month. Currently open to new opportunities.",
