@@ -3,7 +3,20 @@ import {
   Logger,
   OnModuleDestroy,
 } from "@nestjs/common";
+import { existsSync } from "fs";
 import type { Browser } from "puppeteer-core";
+
+/** Common Chromium/Chrome paths by platform */
+const CHROMIUM_CANDIDATES = [
+  process.env.CHROMIUM_PATH,
+  // macOS
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/Applications/Chromium.app/Contents/MacOS/Chromium",
+  // Linux / Docker Alpine
+  "/usr/bin/chromium-browser",
+  "/usr/bin/chromium",
+  "/usr/bin/google-chrome",
+].filter(Boolean) as string[];
 
 @Injectable()
 export class PuppeteerPdfService implements OnModuleDestroy {
@@ -16,10 +29,13 @@ export class PuppeteerPdfService implements OnModuleDestroy {
 
     const puppeteer = await import("puppeteer-core");
 
-    // Resolve Chromium path: env var > common defaults
-    const executablePath =
-      process.env.CHROMIUM_PATH ||
-      "/usr/bin/chromium-browser" // Alpine Docker default
+    // Find first available Chromium/Chrome binary
+    const executablePath = CHROMIUM_CANDIDATES.find((p) => existsSync(p));
+    if (!executablePath) {
+      throw new Error(
+        `Chromium not found. Set CHROMIUM_PATH env var. Searched: ${CHROMIUM_CANDIDATES.join(", ")}`,
+      );
+    }
 
     this.logger.log(`Launching Chromium from: ${executablePath}`);
 
@@ -43,7 +59,7 @@ export class PuppeteerPdfService implements OnModuleDestroy {
     const page = await browser.newPage();
 
     try {
-      await page.setContent(html, { waitUntil: "networkidle0", timeout: 15000 });
+      await page.setContent(html, { waitUntil: "domcontentloaded", timeout: 30000 });
 
       const pdfBuffer = await page.pdf({
         format: "A4",
