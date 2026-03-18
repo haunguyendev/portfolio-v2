@@ -162,11 +162,23 @@ export class CertificateUrlExtractorService {
           $('meta[property="og:site_name"]').attr("content") || "Unknown";
       }
 
-      // Try to extract date from page content
-      const dateMatch = html.match(
-        /(?:issued|completed|date)[:\s]*(\w+\s+\d{1,2},?\s*\d{4}|\d{4}-\d{2}-\d{2})/i,
-      );
-      const issueDate = dateMatch ? dateMatch[1] : undefined;
+      // Try to extract date — check grantedAt timestamps first (Coursera),
+      // then fall back to text pattern matching
+      let issueDate: string | undefined;
+      const grantedAtMatches = html.match(/"grantedAt":(\d{10,13})/g);
+      if (grantedAtMatches && grantedAtMatches.length > 0) {
+        // Use the latest grantedAt (last one = specialization completion)
+        const lastTs = parseInt(
+          grantedAtMatches[grantedAtMatches.length - 1].split(":")[1],
+        );
+        issueDate = new Date(lastTs).toISOString().split("T")[0];
+      }
+      if (!issueDate) {
+        const dateMatch = html.match(
+          /(?:issued|completed|date)[:\s]*(\w+\s+\d{1,2},?\s*\d{4}|\d{4}-\d{2}-\d{2})/i,
+        );
+        issueDate = dateMatch ? dateMatch[1] : undefined;
+      }
 
       // Build title — prefer embedded > JSON-LD > OG
       let title = embeddedTitle || jsonLdTitle || ogTitle || "";
