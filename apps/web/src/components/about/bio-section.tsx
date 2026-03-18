@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { Github, Linkedin, Mail, Download } from 'lucide-react'
 import { SOCIAL_LINKS as SOCIAL_URLS } from '@/lib/constants'
+import profile from '@/content/profile.json'
 import type { LucideIcon } from 'lucide-react'
 
 interface SocialLink {
@@ -24,8 +25,8 @@ export function BioSection() {
         <div className="flex justify-center md:justify-start">
           <div className="relative size-40 overflow-hidden rounded-full border-2 border-border">
             <Image
-              src="/images/hero/kane-avatar.jpg"
-              alt="Kane Nguyen's profile photo"
+              src={profile.avatar}
+              alt={`${profile.name}'s profile photo`}
               fill
               priority
               className="object-cover"
@@ -37,20 +38,14 @@ export function BioSection() {
         {/* Bio content */}
         <div className="text-center md:text-left">
           <h2 className="text-2xl font-bold text-foreground md:text-3xl">
-            Kane Nguyen
+            {profile.name}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Software Engineer — Vietnam
+            {profile.title} — Vietnam
           </p>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            I build web apps with React, Next.js, and TypeScript. In my first
-            year as a Software Engineer, I shipped features that improved user
-            engagement by 20%, built REST APIs for e-commerce, and set up
-            CI/CD pipelines that cut production bugs by 30%. I value clean
-            boundaries between work and life — it keeps my code sharp and my
-            thinking fresh. Currently looking for a full-stack or frontend role
-            where I can grow with a strong engineering team.
+            {profile.bio.full}
           </p>
 
           {/* Social links */}
@@ -76,7 +71,7 @@ export function BioSection() {
           {/* Resume download CTA */}
           <div className="mt-5 flex justify-center md:justify-start">
             <a
-              href="/resume.pdf"
+              href={profile.resumePath}
               download
               title="Download resume (PDF)"
               className="inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-orange-500 via-red-500 to-blue-500 px-4 py-2 text-sm font-medium text-white transition-shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

@@ -460,6 +460,43 @@ RootLayout
 
 ## Content Schema (Phase 1 Final)
 
+### Profile (`src/content/profile.json`)
+```typescript
+interface Profile {
+  name: string                  // Display name (e.g., "Kane Nguyen")
+  fullName: string              // Legal name
+  title: string                 // Primary job title
+  location: string              // Current location
+  timezone: string              // Timezone (e.g., "GMT+7")
+  avatar: string                // Avatar image path
+  heroPhoto: string             // Hero section photo path
+  resumePath: string            // Path to resume PDF
+  titles: string[]              // Job title variants for rotating text
+  bio: {
+    hero: string                // Short bio for hero section
+    aboutPreview: string[]       // About page preview snippets
+    full: string                // Full biography (About page)
+    contact: string             // Contact section callout
+  }
+  stats: Array<{
+    value: string               // e.g., "1yr", "9"
+    label: string               // e.g., "Shipping Production Code"
+  }>
+  contact: {
+    email: string               // Email address
+    phone: string               // Phone number
+    zaloId: string              // Zalo contact ID
+  }
+  social: {
+    github: string              // GitHub profile URL
+    linkedin: string            // LinkedIn profile URL
+    facebook: string            // Facebook profile URL
+    email: string               // Email mailto URL
+    zalo: string                // Zalo message URL
+  }
+}
+```
+
 ### Projects (`src/content/projects.json`)
 ```typescript
 interface Project {
@@ -470,8 +507,8 @@ interface Project {
   image: string                 // URL or /public path
   technologies: string[]        // ["React", "TypeScript", "Tailwind", ...]
   featured: boolean             // Show on home page?
-  category: 'personal' | 'company' | 'freelance'  // NEW: Project classification
-  categoryLabel?: string        // NEW: Display label (e.g., "Company")
+  category: 'personal' | 'company' | 'freelance'  // Project classification
+  categoryLabel?: string        // Display label (e.g., "Company")
   links: {
     github?: string             // GitHub repo URL
     demo?: string               // Live demo URL
@@ -488,7 +525,7 @@ interface Project {
 ### Skills (`src/content/skills.json`)
 ```typescript
 interface SkillGroup {
-  category: string              // "Frontend", "Backend", "Tools"
+  category: string              // "Frontend", "Backend", "Tools", "Soft Skills"
   items: string[]               // ["React", "TypeScript", "Next.js"]
 }
 ```

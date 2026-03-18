@@ -3,17 +3,16 @@
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ArrowRight, Briefcase, FolderGit2, Layers } from 'lucide-react'
+import profile from '@/content/profile.json'
 
 const TechStackTabs = dynamic(
   () => import('@/components/home/tech-stack-tabs').then(m => ({ default: m.TechStackTabs })),
   { ssr: false, loading: () => <div className="h-40 animate-pulse rounded-lg bg-muted" /> }
 )
 
-const STATS = [
-  { icon: Briefcase, value: '1yr', label: 'Shipping Production Code' },
-  { icon: FolderGit2, value: '9', label: 'Production Apps' },
-  { icon: Layers, value: '10+', label: 'Tools in My Stack' },
-]
+// Icon mapping for stats (presentation concern — stays in component)
+const STAT_ICONS = [Briefcase, FolderGit2, Layers]
+const STATS = profile.stats.map((stat, i) => ({ ...stat, icon: STAT_ICONS[i] }))
 
 
 export function AboutPreviewSection() {
@@ -28,16 +27,9 @@ export function AboutPreviewSection() {
               About Me
             </h2>
             <div className="flex flex-col gap-4 leading-relaxed text-muted-foreground">
-              <p>
-                Built 5 production apps across full-stack — from real-time task
-                management (500+ users) to e-commerce APIs handling 1K+
-                orders/month. I pick up new stacks fast and ship clean, tested
-                code.
-              </p>
-              <p>
-                Looking for a full-stack or frontend role where I can grow with
-                a strong engineering team. Currently based in Ho Chi Minh City.
-              </p>
+              {profile.bio.aboutPreview.map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
             </div>
             <div className="mt-6">
               <Link

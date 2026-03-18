@@ -1,0 +1,37 @@
+{
+  "name": "Kane Nguyen",
+  "fullName": "Trung Hau Nguyen",
+  "title": "Software Engineer",
+  "location": "Ho Chi Minh City, Vietnam",
+  "timezone": "GMT+7",
+  "avatar": "/images/hero/kane-avatar.jpg",
+  "heroPhoto": "/images/hero/kane-photo.jpg",
+  "resumePath": "/resume.pdf",
+  "titles": ["Software Engineer", "Web Developer", "Problem Solver"],
+  "bio": {
+    "hero": "Built full-stack web apps serving 500+ users — from real-time task management to e-commerce APIs processing 1K+ orders/month. Currently open to new opportunities.",
+    "aboutPreview": [
+      "Built 5 production apps across full-stack — from real-time task management (500+ users) to e-commerce APIs handling 1K+ orders/month. I pick up new stacks fast and ship clean, tested code.",
+      "Looking for a full-stack or frontend role where I can grow with a strong engineering team. Currently based in Ho Chi Minh City."
+    ],
+    "full": "I build web apps with React, Next.js, and TypeScript. In my first year as a Software Engineer, I shipped features that improved user engagement by 20%, built REST APIs for e-commerce, and set up CI/CD pipelines that cut production bugs by 30%. I value clean boundaries between work and life — it keeps my code sharp and my thinking fresh. Currently looking for a full-stack or frontend role where I can grow with a strong engineering team.",
+    "contact": "I'm looking for full-stack or frontend roles at product companies. Also open to freelance projects — feel free to reach out!"
+  },
+  "stats": [
+    { "value": "1yr", "label": "Shipping Production Code" },
+    { "value": "9", "label": "Production Apps" },
+    { "value": "10+", "label": "Tools in My Stack" }
+  ],
+  "contact": {
+    "email": "haunt150603@gmail.com",
+    "phone": "0969 313 263",
+    "zaloId": "0969313263"
+  },
+  "social": {
+    "github": "https://github.com/haunguyendev",
+    "linkedin": "https://www.linkedin.com/in/h%E1%BA%ADu-nguy%E1%BB%85n-6b1576229/",
+    "facebook": "https://www.facebook.com/nguyen.trung.hau.778410/",
+    "email": "mailto:haunt150603@gmail.com",
+    "zalo": "https://zalo.me/0969313263"
+  }
+}

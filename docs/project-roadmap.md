@@ -4,9 +4,9 @@
 
 Kane Nguyen's Portfolio v2 is a 4-phase project building from a minimal static portfolio to a feature-rich CMS-driven site with analytics and community interactions.
 
-**Current Status:** Phase 1 (Complete) — Launched with polished editorial design, all pages functional and responsive, deployed to Vercel. Phase 2+ planned.
+**Current Status:** Phase 1-5 Complete — Launched with polished editorial design, all pages functional, blog/diary system live, CMS with GitHub OAuth enabled, and certificate management implemented. Ready for advanced features in Phase 6+.
 
-**Last Updated:** March 16, 2026
+**Last Updated:** March 18, 2026
 
 ## Phase 1: Portfolio MVP
 

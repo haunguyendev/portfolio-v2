@@ -3,22 +3,15 @@
 // Skills section reusing TechStackTabs from home + soft skills badges
 import dynamic from 'next/dynamic'
 import { Badge } from '@/components/ui/badge'
+import skills from '@/content/skills.json'
 
 const TechStackTabs = dynamic(
   () => import('@/components/home/tech-stack-tabs').then(m => ({ default: m.TechStackTabs })),
   { ssr: false, loading: () => <div className="h-40 animate-pulse rounded-lg bg-muted" /> }
 )
 
-const SOFT_SKILLS = [
-  'Communication',
-  'English (B2)',
-  'Teamwork',
-  'Problem Solving',
-  'Agile/Scrum',
-  'Technical Writing',
-  'Time Management',
-  'Self-learning',
-]
+// Extract soft skills from centralized skills.json
+const softSkills = skills.find(s => s.category === 'Soft Skills')?.items ?? []
 
 export function SkillsSection() {
   return (
@@ -41,7 +34,7 @@ export function SkillsSection() {
           Soft Skills
         </h3>
         <div className="flex flex-wrap gap-2">
-          {SOFT_SKILLS.map((skill) => (
+          {softSkills.map((skill) => (
             <Badge
               key={skill}
               variant="secondary"

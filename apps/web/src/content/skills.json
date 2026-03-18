@@ -14,5 +14,9 @@
   {
     "category": "Other",
     "items": ["Agile/Scrum", "CI/CD", "Testing", "Technical Writing"]
+  },
+  {
+    "category": "Soft Skills",
+    "items": ["Communication", "English (B2)", "Teamwork", "Problem Solving", "Time Management", "Self-learning"]
   }
 ]

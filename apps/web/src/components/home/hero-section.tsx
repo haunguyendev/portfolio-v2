@@ -3,17 +3,31 @@ import Link from 'next/link'
 import { ArrowRight, Download } from 'lucide-react'
 import { TypewriterHeading } from '@/components/ui/typewriter-heading'
 import { RotatingText } from '@/components/ui/rotating-text'
+import profile from '@/content/profile.json'
 
+// Name variants for typewriter — last word gets gradient styling
 const NAMES = [
-  [{ text: 'Kane ' }, { text: 'Nguyen', className: 'gradient-text' }],
-  [{ text: 'Trung Hau ' }, { text: 'Nguyen', className: 'gradient-text' }],
+  [
+    { text: `${profile.name.split(' ').slice(0, -1).join(' ')} ` },
+    { text: profile.name.split(' ').at(-1)!, className: 'gradient-text' },
+  ],
+  [
+    { text: `${profile.fullName.split(' ').slice(0, -1).join(' ')} ` },
+    { text: profile.fullName.split(' ').at(-1)!, className: 'gradient-text' },
+  ],
 ]
 
-const TITLES = [
-  { text: 'Software Engineer', className: 'text-orange-500 drop-shadow-[0_0_12px_rgba(249,115,22,0.5)]' },
-  { text: 'Web Developer', className: 'text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]' },
-  { text: 'Problem Solver', className: 'text-blue-500 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]' },
+// Rotating title styles (presentation concern — stays in component)
+const TITLE_STYLES = [
+  'text-orange-500 drop-shadow-[0_0_12px_rgba(249,115,22,0.5)]',
+  'text-red-500 drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]',
+  'text-blue-500 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]',
 ]
+
+const TITLES = profile.titles.map((text, i) => ({
+  text,
+  className: TITLE_STYLES[i],
+}))
 
 export function HeroSection() {
   return (
@@ -37,13 +51,11 @@ export function HeroSection() {
             </div>
 
             <p className="max-w-md leading-relaxed text-muted-foreground">
-              Built full-stack web apps serving 500+ users — from real-time
-              task management to e-commerce APIs processing 1K+ orders/month.
-              Currently open to new opportunities.
+              {profile.bio.hero}
             </p>
 
             <span className="text-xs text-muted-foreground">
-              Ho Chi Minh City, Vietnam &middot; GMT+7
+              {profile.location} &middot; {profile.timezone}
             </span>
 
             <div className="flex flex-wrap gap-3">
@@ -55,7 +67,7 @@ export function HeroSection() {
                 <ArrowRight className="size-4" />
               </Link>
               <a
-                href="/resume.pdf"
+                href={profile.resumePath}
                 download
                 className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
               >
@@ -69,8 +81,8 @@ export function HeroSection() {
           <div className="order-1 flex justify-center md:order-2 md:justify-end">
             <div className="relative h-72 w-72 overflow-hidden rounded-2xl shadow-xl md:h-80 md:w-80 lg:h-96 lg:w-96">
               <Image
-                src="/images/hero/kane-photo.jpg"
-                alt="Kane Nguyen"
+                src={profile.heroPhoto}
+                alt={profile.name}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 288px, (max-width: 1024px) 320px, 384px"

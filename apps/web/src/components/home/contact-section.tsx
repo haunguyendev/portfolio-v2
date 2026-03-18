@@ -1,19 +1,21 @@
 import { Mail, Phone, Linkedin } from 'lucide-react'
 import { SiFacebook, SiZalo } from 'react-icons/si'
 import { AnimatedCtaCard } from '@/components/home/animated-cta-card'
+import profile from '@/content/profile.json'
 
+// Contact methods with icons (presentation mapping stays in component)
 const CONTACT_METHODS = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'haunt150603@gmail.com',
-    href: 'mailto:haunt150603@gmail.com',
+    value: profile.contact.email,
+    href: profile.social.email,
   },
   {
     icon: Phone,
     label: 'Zalo',
-    value: '0969 313 263',
-    href: 'https://zalo.me/0969313263',
+    value: profile.contact.phone,
+    href: profile.social.zalo,
   },
 ]
 
@@ -21,19 +23,19 @@ const SOCIALS = [
   {
     icon: SiFacebook,
     label: 'Facebook',
-    href: 'https://www.facebook.com/nguyen.trung.hau.778410/',
+    href: profile.social.facebook,
     color: 'hover:text-[#1877F2]',
   },
   {
     icon: Linkedin,
     label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/h%E1%BA%ADu-nguy%E1%BB%85n-6b1576229/',
+    href: profile.social.linkedin,
     color: 'hover:text-[#0A66C2]',
   },
   {
     icon: SiZalo,
     label: 'Zalo',
-    href: 'https://zalo.me/0969313263',
+    href: profile.social.zalo,
     color: 'hover:text-[#0068FF]',
   },
 ]
@@ -54,9 +56,7 @@ export function ContactSection() {
           {/* Right: Contact info */}
           <div className="flex flex-col gap-6">
             <p className="text-muted-foreground">
-              I&apos;m looking for full-stack or frontend roles at product
-              companies. Also open to freelance projects — feel free to reach
-              out!
+              {profile.bio.contact}
             </p>
 
             {/* Contact method cards */}
