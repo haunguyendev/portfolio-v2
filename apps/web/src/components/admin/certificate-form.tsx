@@ -96,7 +96,12 @@ export function CertificateForm({ initialData }: CertificateFormProps) {
         if (result.issueDate) setIssueDate(toDateInput(result.issueDate))
         if (result.issuerIcon) setIssuerIcon(result.issuerIcon)
         if (result.image) setImage(result.image)
-        toast.success('Fields auto-filled from URL')
+        // Partial success — platform detected but not all fields
+        if (result.error) {
+          toast.info(result.error)
+        } else {
+          toast.success('Fields auto-filled from URL')
+        }
       } else {
         toast.warning(result.error || 'Could not extract metadata. Please fill manually.')
       }
