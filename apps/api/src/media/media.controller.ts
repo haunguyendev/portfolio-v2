@@ -23,6 +23,7 @@ const ALLOWED_SERVE_PREFIXES = [
   "posts/cover/",
   "posts/content/",
   "projects/",
+  "certificates/",
   "thumbnails/",
 ];
 
