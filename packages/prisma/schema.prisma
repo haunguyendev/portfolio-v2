@@ -230,6 +230,41 @@ model PageView {
   createdAt DateTime @default(now())
 }
 
+// === AI CHATBOT (RAG) ===
+
+enum KnowledgeSourceType {
+  SYSTEM
+  CUSTOM
+}
+
+model KnowledgeSource {
+  id        String              @id @default(cuid())
+  name      String
+  type      KnowledgeSourceType
+  sourceKey String              @unique
+  enabled   Boolean             @default(true)
+  content   String?             @db.Text
+  metadata  Json?
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  embeddings Embedding[]
+}
+
+model Embedding {
+  id         String   @id @default(cuid())
+  content    String
+  metadata   Json     @default("{}")
+  sourceType String
+  sourceId   String?
+  embedding  Unsupported("vector(768)")?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  knowledgeSource   KnowledgeSource? @relation(fields: [knowledgeSourceId], references: [id], onDelete: SetNull)
+  knowledgeSourceId String?
+}
+
 // === MEDIA ===
 
 model Media {

@@ -1,14 +1,14 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-interface ChatMsg { id: string; role: string; content: string }
+import type { ChatMessage } from './use-chat-stream'
 import { ChatMessageBubble } from './chat-message-bubble'
 
 export function ChatMessageList({
   messages,
   isLoading,
 }: {
-  messages: ChatMsg[]
+  messages: ChatMessage[]
   isLoading: boolean
 }) {
   const bottomRef = useRef<HTMLDivElement>(null)

@@ -64,6 +64,9 @@ COPY --from=builder /app/packages/prisma ./packages/prisma
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 COPY --from=builder /app/apps/api/package.json ./apps/api/
 
+# Copy content JSON files for RAG indexing (from web app)
+COPY --from=builder /app/apps/web/src/content ./content
+
 # Copy entrypoint script (migrate → seed → start)
 COPY apps/api/entrypoint.sh ./entrypoint.sh
 

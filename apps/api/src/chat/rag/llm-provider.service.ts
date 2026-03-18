@@ -6,30 +6,38 @@ import type { BaseMessage } from "@langchain/core/messages";
 @Injectable()
 export class LlmProviderService {
   private readonly logger = new Logger(LlmProviderService.name);
-  private groq: ChatGroq;
-  private gemini: ChatGoogleGenerativeAI;
+  private groq: ChatGroq | null = null;
+  private gemini: ChatGoogleGenerativeAI | null = null;
 
-  constructor() {
-    this.groq = new ChatGroq({
-      apiKey: process.env.GROQ_API_KEY,
-      model: "llama-3.3-70b-versatile",
-      temperature: 0.7,
-      maxTokens: 1024,
-      streaming: true,
-    });
+  private getGroq(): ChatGroq {
+    if (!this.groq) {
+      this.groq = new ChatGroq({
+        apiKey: process.env.GROQ_API_KEY,
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.7,
+        maxTokens: 1024,
+        streaming: true,
+      });
+    }
+    return this.groq;
+  }
 
-    this.gemini = new ChatGoogleGenerativeAI({
-      apiKey: process.env.GOOGLE_API_KEY,
-      model: "gemini-2.0-flash",
-      temperature: 0.7,
-      maxOutputTokens: 1024,
-      streaming: true,
-    });
+  private getGemini(): ChatGoogleGenerativeAI {
+    if (!this.gemini) {
+      this.gemini = new ChatGoogleGenerativeAI({
+        apiKey: process.env.GOOGLE_API_KEY,
+        model: "gemini-2.0-flash",
+        temperature: 0.7,
+        maxOutputTokens: 1024,
+        streaming: true,
+      });
+    }
+    return this.gemini;
   }
 
   async *stream(messages: BaseMessage[]): AsyncGenerator<string> {
     try {
-      const stream = await this.groq.stream(messages);
+      const stream = await this.getGroq().stream(messages);
       for await (const chunk of stream) {
         if (chunk.content) yield chunk.content as string;
       }
@@ -37,9 +45,16 @@ export class LlmProviderService {
       this.logger.warn(
         `Groq failed, falling back to Gemini Flash: ${(error as Error).message}`,
       );
-      const stream = await this.gemini.stream(messages);
-      for await (const chunk of stream) {
-        if (chunk.content) yield chunk.content as string;
+      try {
+        const stream = await this.getGemini().stream(messages);
+        for await (const chunk of stream) {
+          if (chunk.content) yield chunk.content as string;
+        }
+      } catch (fallbackError) {
+        this.logger.error(
+          `Both LLMs failed: ${(fallbackError as Error).message}`,
+        );
+        throw new Error("AI service temporarily unavailable");
       }
     }
   }

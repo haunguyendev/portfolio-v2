@@ -19,6 +19,7 @@ import { ContentChunkerService } from "./rag/content-chunker.service";
     IndexingService,
     ContentChunkerService,
   ],
+  exports: [IndexingService, ContentChunkerService, EmbeddingService, VectorStoreService],
 })
 export class ChatModule implements OnModuleInit {
   private readonly logger = new Logger(ChatModule.name);

@@ -55,6 +55,11 @@ input CreateCertificateInput {
   title: String!
 }
 
+input CreateCustomSourceInput {
+  content: String!
+  name: String!
+}
+
 input CreatePostInput {
   categoryId: String
   content: JSON!
@@ -112,29 +117,60 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type EmbeddingChunkModel {
+  content: String!
+  createdAt: DateTime!
+  id: String!
+  metadata: JSON
+  sourceType: String!
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
 
+type KnowledgeSourceModel {
+  chunkCount: Int!
+  content: String
+  enabled: Boolean!
+  id: String!
+  lastIndexedAt: DateTime
+  metadata: JSON
+  name: String!
+  sourceKey: String!
+  type: KnowledgeSourceType!
+  updatedAt: DateTime!
+}
+
+enum KnowledgeSourceType {
+  CUSTOM
+  SYSTEM
+}
+
 type Mutation {
   createCategory(input: CreateCategoryInput!): Category!
   createCertificate(input: CreateCertificateInput!): Certificate!
+  createCustomKnowledgeSource(input: CreateCustomSourceInput!): KnowledgeSourceModel!
   createPost(input: CreatePostInput!): Post!
   createProject(input: CreateProjectInput!): Project!
   createSeries(input: CreateSeriesInput!): Series!
   createTag(input: CreateTagInput!): Tag!
   deleteCategory(id: ID!): Boolean!
   deleteCertificate(id: ID!): Boolean!
+  deleteCustomKnowledgeSource(id: ID!): Boolean!
   deletePost(id: ID!): Boolean!
   deleteProject(id: ID!): Boolean!
   deleteSeries(id: ID!): Boolean!
   deleteTag(id: ID!): Boolean!
   extractCertificateUrl(url: String!): CertificateMetadata!
   publishPost(id: ID!): Post!
+  reindexKnowledgeSource(id: ID!): ReindexResult!
   reorderProjects(ids: [ID!]!): [Project!]!
+  toggleKnowledgeSource(enabled: Boolean!, id: ID!): KnowledgeSourceModel!
   updateCategory(id: ID!, input: UpdateCategoryInput!): Category!
   updateCertificate(id: ID!, input: UpdateCertificateInput!): Certificate!
+  updateCustomKnowledgeSource(id: ID!, input: UpdateCustomSourceInput!): KnowledgeSourceModel!
   updatePost(id: ID!, input: UpdatePostInput!): Post!
   updateProject(id: ID!, input: UpdateProjectInput!): Project!
   updateSeries(id: ID!, input: UpdateSeriesInput!): Series!
@@ -206,6 +242,8 @@ type Query {
   category(id: ID!): Category
   certificate(id: ID!): Certificate
   certificates(publishedOnly: Boolean): [Certificate!]!
+  knowledgeSourceChunks(sourceId: ID!): [EmbeddingChunkModel!]!
+  knowledgeSources: [KnowledgeSourceModel!]!
   post(id: ID!): Post
   postBySlug(slug: String!): Post
   posts(filter: PostsFilterInput): [Post!]!
@@ -215,6 +253,10 @@ type Query {
   seriesBySlug(slug: String!): Series
   seriesList: [Series!]!
   tags: [Tag!]!
+}
+
+type ReindexResult {
+  chunksIndexed: Int!
 }
 
 type Series {
@@ -251,6 +293,11 @@ input UpdateCertificateInput {
   published: Boolean
   sortOrder: Int
   title: String
+}
+
+input UpdateCustomSourceInput {
+  content: String
+  name: String
 }
 
 input UpdatePostInput {

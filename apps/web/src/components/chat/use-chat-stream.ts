@@ -19,6 +19,12 @@ export function useChatStream() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const idCounter = useRef(0)
+  const abortRef = useRef<AbortController | null>(null)
+
+  const stop = useCallback(() => {
+    abortRef.current?.abort()
+    setIsLoading(false)
+  }, [])
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -36,12 +42,21 @@ export function useChatStream() {
         content: '',
       }
 
-      setMessages((prev) => [...prev, userMsg, assistantMsg])
+      // Capture current messages before state update for the API call
+      let currentMessages: ChatMessage[] = []
+      setMessages((prev) => {
+        currentMessages = prev
+        return [...prev, userMsg, assistantMsg]
+      })
       setIsLoading(true)
       setError(null)
 
+      // Abort any previous in-flight request
+      abortRef.current?.abort()
+      abortRef.current = new AbortController()
+
       try {
-        const allMessages = [...messages, userMsg].map((m) => ({
+        const allMessages = [...currentMessages, userMsg].map((m) => ({
           role: m.role,
           content: m.content,
         }))
@@ -50,6 +65,7 @@ export function useChatStream() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ messages: allMessages }),
+          signal: abortRef.current.signal,
         })
 
         if (!res.ok) {
@@ -77,9 +93,7 @@ export function useChatStream() {
           for (const line of lines) {
             if (!line.trim()) continue
 
-            // Parse Vercel AI SDK Data Stream Protocol
             if (line.startsWith('0:')) {
-              // Text delta: 0:"token text"
               try {
                 const token = JSON.parse(line.slice(2)) as string
                 setMessages((prev) => {
@@ -97,7 +111,6 @@ export function useChatStream() {
                 // Skip malformed tokens
               }
             } else if (line.startsWith('e:')) {
-              // Error: e:{"message":"..."}
               try {
                 const err = JSON.parse(line.slice(2)) as { message: string }
                 throw new Error(err.message)
@@ -105,12 +118,13 @@ export function useChatStream() {
                 if (e instanceof Error) throw e
               }
             }
-            // d: (finish) — just ignore, stream ends naturally
           }
         }
       } catch (err) {
+        // Ignore abort errors (user-initiated cancellation)
+        if (err instanceof DOMException && err.name === 'AbortError') return
+
         setError(err instanceof Error ? err : new Error('Unknown error'))
-        // Remove empty assistant message on error
         setMessages((prev) => {
           const last = prev[prev.length - 1]
           if (last?.role === 'assistant' && !last.content) {
@@ -122,13 +136,14 @@ export function useChatStream() {
         setIsLoading(false)
       }
     },
-    [messages, isLoading],
+    [isLoading],
   )
 
   const clearMessages = useCallback(() => {
+    stop()
     setMessages([])
     setError(null)
-  }, [])
+  }, [stop])
 
-  return { messages, isLoading, error, sendMessage, clearMessages }
+  return { messages, isLoading, error, sendMessage, clearMessages, stop }
 }

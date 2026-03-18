@@ -19,19 +19,24 @@ export class RagService {
     message: string,
     chatHistory: ChatMessage[] = [],
   ): AsyncGenerator<string> {
-    // 1. Embed user question
-    const queryVector = await this.embeddingService.embedQuery(message);
+    try {
+      // 1. Embed user question
+      const queryVector = await this.embeddingService.embedQuery(message);
 
-    // 2. Retrieve relevant chunks
-    const chunks = await this.vectorStore.similaritySearch(queryVector, 5);
-    this.logger.debug(
-      `Retrieved ${chunks.length} chunks (top similarity: ${chunks[0]?.similarity?.toFixed(3) ?? "N/A"})`,
-    );
+      // 2. Retrieve relevant chunks
+      const chunks = await this.vectorStore.similaritySearch(queryVector, 5);
+      this.logger.debug(
+        `Retrieved ${chunks.length} chunks (top similarity: ${chunks[0]?.similarity?.toFixed(3) ?? "N/A"})`,
+      );
 
-    // 3. Build prompt with context
-    const prompt = buildPrompt(chunks, chatHistory, message);
+      // 3. Build prompt with context
+      const prompt = buildPrompt(chunks, chatHistory, message);
 
-    // 4. Stream LLM response
-    yield* this.llmProvider.stream(prompt);
+      // 4. Stream LLM response
+      yield* this.llmProvider.stream(prompt);
+    } catch (error) {
+      this.logger.error(`RAG query failed: ${(error as Error).message}`);
+      yield "I'm having trouble processing your question. Please try again later.";
+    }
   }
 }

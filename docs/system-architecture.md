@@ -59,8 +59,8 @@
 │  │  └─────────┘    │ Prisma  │                        │     │
 │  │                  │ JWT     │    ┌──────────────┐   │     │
 │  │                  │ Sharp   │───►│    MinIO     │   │     │
-│  │                  └─────────┘    │  :9000/:9001 │   │     │
-│  │                                  │  S3-compat   │   │     │
+│  │                  │ Puppeteer   │  :9000/:9001 │   │     │
+│  │                  └─────────┘    │  S3-compat   │   │     │
 │  │                                  └──────────────┘   │     │
 │  └─────────────────────────────────────────────────────┘     │
 │                                                              │
@@ -86,12 +86,15 @@
 - **Next.js frontend** (Docker, standalone) — ISR revalidation, image uploads
 - **NestJS GraphQL API** (Docker) — Code-first schema, 5+ resolvers, JWT mutations
 - **NestJS Media Service** — Upload, serve, delete with sharp processing
-- **MinIO S3-compatible storage** (Docker) — Self-hosted image storage
+- **NestJS Resume Module** — CV upload, PDF generation via Puppeteer, active resume management
+- **MinIO S3-compatible storage** (Docker) — Self-hosted image + resume PDF storage
+- **Puppeteer PDF generation** — HTML → PDF conversion for resume templates
 - **sharp image processing** — Resize 1920px max, WebP q80 + thumbnail 400px q70
 - **PostgreSQL 16** (Docker) — With healthcheck, persistent volume
 - **Prisma ORM** — Auto-migrated via entrypoint script
 - **Better Auth + GitHub OAuth** — Secure admin authentication via GitHub (haunguyendev account only)
-- **Admin dashboard** (/admin/*) — CRUD pages with TipTap editor + image dropzone
+- **Admin dashboard** (/admin/*) — CRUD pages with TipTap editor + image dropzone + resume management
+- **Chromium** — Headless browser for Puppeteer PDF rendering (Alpine image)
 - **Cloudflare Tunnel** — Expose services without public IP/port forwarding
 - **GitHub Actions CI/CD** — Build → GHCR → SSH deploy
 - **Release Please** — Automated versioning and changelog
@@ -798,7 +801,29 @@ ISR Revalidation ← On-demand invalidation from admin
 - [x] Entrypoint script (migrate → seed → start)
 - [x] Portainer CE for container monitoring
 
-### Phase 5 (Advanced Features) — PLANNED
+### Phase 6 (CV Download Feature) — COMPLETE
+- [x] Resume module (upload, generate, setActive, delete)
+- [x] Puppeteer integration for PDF generation from HTML template
+- [x] MinIO storage for resume files
+- [x] Admin dashboard for CV management
+- [x] Public endpoint for CV download without auth
+- [x] Chromium installation in API Docker image
+- [x] XSS prevention in generated PDF output
+
+**Data flow changes:**
+```
+Admin uploads PDF or clicks generate
+  → POST /api/resume/upload or POST /api/resume/generate
+  → NestJS service (Puppeteer for generate)
+  → MinIO storage for PDF file
+  → Prisma resume record (type, isActive)
+Public user clicks download
+  → GET /api/resume/download
+  → Returns active resume from MinIO
+  → Browser forces download via Content-Disposition header
+```
+
+### Phase 7 (Advanced Features) — PLANNED
 - [ ] Comments system with moderation
 - [ ] Likes and page view counters
 - [ ] Analytics tracking (referrers, devices)

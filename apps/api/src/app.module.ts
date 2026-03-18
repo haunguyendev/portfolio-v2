@@ -9,10 +9,16 @@ import { PostsModule } from "./posts/posts.module";
 import { ProjectsModule } from "./projects/projects.module";
 import { MediaModule } from "./media/media.module";
 import { CertificatesModule } from "./certificates/certificates.module";
+import { ThrottlerModule } from "@nestjs/throttler";
 import { HealthController } from "./health/health.controller";
+import { ChatModule } from "./chat/chat.module";
+import { KnowledgeModule } from "./knowledge/knowledge.module";
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      { ttl: 60000, limit: 30 },
+    ]),
     PrismaModule,
     AuthModule,
     GraphqlModule,
@@ -23,6 +29,8 @@ import { HealthController } from "./health/health.controller";
     ProjectsModule,
     MediaModule,
     CertificatesModule,
+    ChatModule,
+    KnowledgeModule,
   ],
   controllers: [HealthController],
 })

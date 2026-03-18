@@ -1,8 +1,8 @@
-interface ChatMsg { id: string; role: string; content: string }
+import type { ChatMessage } from './use-chat-stream'
 import { Sparkles, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-export function ChatMessageBubble({ message }: { message: ChatMsg }) {
+export function ChatMessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === 'user'
 
   return (

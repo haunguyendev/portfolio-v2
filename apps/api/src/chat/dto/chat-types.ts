@@ -1,14 +1,6 @@
-export type SourceType =
-  | "profile"
-  | "skill"
-  | "experience"
-  | "project"
-  | "certificate"
-  | "blog";
-
 export interface ContentChunk {
   content: string;
-  sourceType: SourceType;
+  sourceType: string;
   sourceId: string;
   metadata: {
     title: string;

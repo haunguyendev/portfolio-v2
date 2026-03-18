@@ -470,7 +470,169 @@ Organized by category:
 **Priority:** MEDIUM
 **Completion Date:** March 18, 2026
 
+---
+
+## Phase 6: CV Download Feature
+
+**Timeline:** 1 day (March 18, 2026)
+**Status:** COMPLETE ✓
+**Priority:** HIGH
+**Completion Date:** March 18, 2026
+
+---
+
+## Phase 7: AI Chatbot with RAG
+
+**Timeline:** 1 day (March 18, 2026)
+**Status:** COMPLETE ✓
+**Priority:** HIGH
+**Completion Date:** March 18, 2026
+
 ### Objectives (ACHIEVED)
+- RAG-powered chatbot answering visitor questions about Kane ✓
+- pgvector + Gemini embeddings + Groq LLM integration ✓
+- Floating chat widget on all pages ✓
+- Rate limiting and Cloudflare Tunnel integration ✓
+
+### Features Implemented
+
+| Feature | Scope | Priority | Status |
+|---------|-------|----------|--------|
+| pgvector infrastructure | PostgreSQL with vector extension + HNSW index | HIGH | Complete |
+| Content indexing pipeline | Chunk portfolio content (profile, skills, experience, projects, certificates, blog) | HIGH | Complete |
+| Embedding service | Gemini Embedding API integration via LangChain.js (768-dim vectors) | HIGH | Complete |
+| Vector search | Cosine similarity search on pgvector with relevance filtering | HIGH | Complete |
+| RAG query pipeline | User question → embed → search → retrieve context → stream LLM response | HIGH | Complete |
+| LLM streaming | Groq Llama 3.3 70B primary + Gemini Flash fallback via LangChain | HIGH | Complete |
+| REST SSE endpoint | NestJS chat API with AI SDK Data Stream Protocol compliance | HIGH | Complete |
+| Frontend widget | Floating chat bubble + panel with message streaming | HIGH | Complete |
+| Suggested questions | 3 pre-built prompt suggestions on first open | MEDIUM | Complete |
+| Rate limiting | IP-based throttling (5 msgs/min) via Cloudflare headers extraction | HIGH | Complete |
+| Admin re-index | Dashboard button to trigger full content re-indexing | MEDIUM | Complete |
+
+### Technical Implementation
+
+#### Database & Infrastructure
+- [x] Swapped Docker image to `pgvector/pgvector:pg16`
+- [x] Created `Embedding` model with `vector(768)` type
+- [x] Prisma migration with pgvector extension + HNSW index
+- [x] Zero-downtime upgrade for existing deployments
+
+#### Content Pipeline
+- [x] ContentChunkerService — reads profile.json, skills.json, experience.json, certificates.json, projects, blog posts
+- [x] Structured chunking (1 chunk per item for structured data, 512-token chunks for blog with overlap)
+- [x] TipTap JSON text extraction for blog content
+- [x] Incremental re-indexing by source type
+
+#### Embedding & Vector Search
+- [x] EmbeddingService wraps Gemini `embedding-001` API (free tier, 768-dim)
+- [x] VectorStoreService with `$queryRaw` for vector operations
+- [x] Cosine similarity search with 0.3 minimum relevance threshold
+- [x] Top-5 retrieval for RAG context
+
+#### RAG Pipeline
+- [x] RagService orchestrates: query embedding → similarity search → prompt building → LLM streaming
+- [x] System prompt constrains bot to portfolio context only
+- [x] Conversation history support (last 6 messages / 3 turns)
+- [x] LlmProviderService with Groq primary + Gemini fallback
+
+#### API & Frontend
+- [x] ChatController with `/api/chat` (SSE, public) and `/api/chat/reindex` (admin-only)
+- [x] Streaming response compatible with Vercel AI SDK `useChat`
+- [x] ChatWidget component (floating bubble + panel, client-only)
+- [x] Message list with auto-scroll and typing indicator
+- [x] Suggested questions on first open
+
+#### Deployment & Safety
+- [x] Rate limiting (5 msgs/min per IP) via `@nestjs/throttler`
+- [x] Cloudflare `CF-Connecting-IP` header extraction for real client IP
+- [x] X-Accel-Buffering: no header for SSE through Cloudflare Tunnel
+- [x] Environment variables (`GOOGLE_API_KEY`, `GROQ_API_KEY`) in production `.env`
+
+### Success Criteria (Phase 7 COMPLETE)
+
+- [x] Full RAG pipeline functional (embed → search → stream)
+- [x] Chat widget visible and interactive on all pages
+- [x] Groq streaming working with <3s first token latency
+- [x] Fallback to Gemini on Groq failure (graceful degradation)
+- [x] Rate limiting prevents abuse (429 responses)
+- [x] Real client IP correctly identified behind Cloudflare Tunnel
+- [x] SSE streaming works through tunnel without buffering
+- [x] Admin can re-index content from dashboard
+- [x] Suggested questions improve UX
+- [x] System prompt constraints prevent off-topic responses
+- [x] Vietnamese language support (responds in Vietnamese if queried)
+- [x] No TypeScript errors or build failures
+- [x] All phases 1-6 completed and tested
+
+### Dependencies
+- Phase 6 (CV Download) complete with working API infrastructure
+- PostgreSQL + MinIO available in production
+- Gemini API key configured for embeddings
+- Groq API key configured for LLM
+
+### Key Decisions
+- **No GraphQL for chat** — SSE requires REST; simpler than Apollo subscriptions
+- **Session-only history** — No DB persistence for MVP (YAGNI principle)
+- **Admin-triggered re-indexing** — No auto-sync; manual CLI or dashboard button
+- **Groq primary LLM** — Faster (276 tok/s) than Gemini, better for streaming
+- **Gemini Flash fallback** — Better Vietnamese support, always available
+- **Knowledge Base Management (Phase 8)** — Post-MVP enhancement for source toggling
+
+---
+
+### Objectives (ACHIEVED)
+- Dynamic CV management via API (no static file redeploy) ✓
+- Admin upload PDF or auto-generate from portfolio data ✓
+- Professional CV PDF download for HR applications ✓
+- Puppeteer integration for HTML-to-PDF conversion ✓
+
+### Features Implemented
+
+| Feature | Scope | Priority | Status |
+|---------|-------|----------|--------|
+| API Resume Module | CRUD endpoints, MinIO storage, active resume logic | HIGH | Complete |
+| Admin Upload | Upload PDF file, validation, preview | HIGH | Complete |
+| Admin Generate | Render HTML template, Puppeteer → PDF | HIGH | Complete |
+| Active Toggle | Select upload vs generated, atomic transactions | HIGH | Complete |
+| Public Download | GET /api/resume/download, single button endpoint | HIGH | Complete |
+| Frontend Integration | Hero + About + CTA download buttons updated | HIGH | Complete |
+| Docker Puppeteer | Chromium installation, --no-sandbox flag | HIGH | Complete |
+| XSS Prevention | Escaped template output in generated PDF | HIGH | Complete |
+
+### Technical Changes
+- **Prisma:** Resume model with type, fileName, fileSize, isActive fields
+- **NestJS API:** ResumeModule with controller, service, Puppeteer integration
+- **Admin Dashboard:** /admin/resume with upload, preview, generate, setActive, delete
+- **Frontend:** Download button URLs changed from `/resume.pdf` to `/api/resume/download`
+- **Docker:** Added chromium to API Dockerfile
+- **Content:** Removed static `/public/resume.pdf`
+
+### Success Criteria (Phase 6 COMPLETE)
+
+- [x] Admin can upload PDF resume files
+- [x] Admin can generate CV from portfolio data (profile, skills, experience)
+- [x] Generated CV renders as professional 1-page PDF via Puppeteer
+- [x] Single active resume toggle for upload vs generated
+- [x] Public download endpoint serves active resume without auth
+- [x] Hero + About + CTA buttons all use new API endpoint
+- [x] XSS protection in CV template output
+- [x] Docker build includes Chromium for Puppeteer
+- [x] MinIO storage integration with proper content-disposition
+- [x] All CRUD operations protected with JWT
+- [x] No TypeScript errors or build failures
+
+### Code Review Findings (Applied)
+- Critical: Filename sanitization in Content-Disposition header
+- Critical: Body size limit on generate endpoint (100kb)
+- High: Fixed `animated-cta-card.tsx` to use `download` attribute
+- High: Added Puppeteer timeout on page.setContent()
+- Medium: Created proper DTO with class-validator decorators
+- Documentation: Updated codebase references
+
+### Dependencies
+- Phase 5 (Certificate Management) complete with working API
+- PostgreSQL + MinIO available
 - Showcase professional certifications on About page ✓
 - Implement full CRUD dashboard for certificate management ✓
 - Add smart URL auto-fill feature (Coursera/Udemy link parsing) ✓
@@ -536,10 +698,11 @@ Organized by category:
 | Phase 3 | 1 week | Apr 1 | Mar 17 | COMPLETE ✓ |
 | Phase 4A | 1 week | Mar 10 | Mar 17 | COMPLETE ✓ |
 | Phase 4B | 1 week | Mar 18 | Mar 18 | PARTLY COMPLETE ✓ (OAuth) |
-| Phase 5 | 1 day | Mar 18 | Mar 18 | COMPLETE ✓ |
+| Phase 5 | 1 day | Mar 18 | Mar 18 | COMPLETE ✓ (Certificates) |
+| Phase 6 | 1 day | Mar 18 | Mar 18 | COMPLETE ✓ (CV Download) |
 
-**Total Completed:** Phases 1-3 + Phase 4A + Phase 4B (OAuth) + Phase 5 (Certificates) ✓
-**Production Ready:** All phases complete with working backend CMS, admin dashboard, GitHub OAuth authentication, and certificate management system
+**Total Completed:** Phases 1-3 + Phase 4A + Phase 4B (OAuth) + Phase 5 (Certificates) + Phase 6 (CV Download) ✓
+**Production Ready:** All phases complete with working backend CMS, admin dashboard, GitHub OAuth authentication, certificate management, and dynamic CV download system
 
 ## Key Milestones
 
