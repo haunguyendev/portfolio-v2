@@ -11,6 +11,8 @@
 # - SERVER_HOST: Cloudflare Tunnel hostname (e.g., ssh.yourdomain.com)
 # - SERVER_USER: SSH username on server
 # - SSH_PRIVATE_KEY: SSH private key for authentication
+# - OAUTH_CLIENT_ID: GitHub OAuth App Client ID (mapped to GITHUB_CLIENT_ID on server)
+# - OAUTH_CLIENT_SECRET: GitHub OAuth App Client Secret (mapped to GITHUB_CLIENT_SECRET on server)
 
 name: Deploy
 
@@ -171,6 +173,17 @@ jobs:
             StrictHostKeyChecking no
             ProxyCommand cloudflared access ssh --hostname %h
           EOF
+
+      # Sync env vars từ GitHub Secrets xuống server
+      - name: Sync env vars to server
+        run: |
+          ssh deploy-server "cd /opt/portfolio && \
+            grep -q '^GITHUB_CLIENT_ID=' .env 2>/dev/null && \
+              sed -i 's/^GITHUB_CLIENT_ID=.*/GITHUB_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}/' .env || \
+              echo 'GITHUB_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}' >> .env && \
+            grep -q '^GITHUB_CLIENT_SECRET=' .env 2>/dev/null && \
+              sed -i 's/^GITHUB_CLIENT_SECRET=.*/GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}/' .env || \
+              echo 'GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}' >> .env"
 
       # Deploy chỉ những services đã thay đổi
       - name: Deploy via SSH
