@@ -26,8 +26,8 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
 
   const card = (
     <div className="group w-56 shrink-0 snap-start overflow-hidden rounded-lg border border-border bg-background transition-colors hover:border-foreground/20 hover:bg-muted/30">
-      {/* Thumbnail — only show for local/API images, not external HTML pages */}
-      {image && !image.startsWith('https://www.coursera.org/account') ? (
+      {/* Thumbnail — only show for local/API images (starts with / or /api/) */}
+      {image && image.startsWith('/') ? (
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
           <Image
             src={image}
