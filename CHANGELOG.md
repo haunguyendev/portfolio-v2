@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.3.0...v1.4.0) (2026-03-18)
+
+
+### Features
+
+* **api,web:** add AI chatbot with RAG pipeline ([fcbbdf0](https://github.com/haunguyendev/portfolio-v2/commit/fcbbdf049767571e0727889009b19eac200e720e))
+* **api,web:** add knowledge base management and fix embedding model ([5b6b0f5](https://github.com/haunguyendev/portfolio-v2/commit/5b6b0f5819e62d229499b6aea40d486aa3275743))
+
 ## [1.3.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.2.0...v1.3.0) (2026-03-18)
 
 
