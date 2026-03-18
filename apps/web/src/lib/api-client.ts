@@ -1,9 +1,16 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import type { Blog, Diary } from './content'
 import type { Project } from '@/types'
-import type { DiaryMood } from './diary-constants'
+import { DIARY_MOODS, type DiaryMood } from './diary-constants'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
+
+/** Resolve relative /api/media/* paths to absolute API server URLs */
+function resolveMediaUrl(path?: string): string {
+  if (!path) return ''
+  if (path.startsWith('/api/media/')) return `${API_URL}${path}`
+  return path
+}
 
 function client() {
   return new GraphQLClient(`${API_URL}/graphql`)
@@ -100,7 +107,7 @@ function mapPostToBlog(post: ApiPost): Blog & { id: string; coverImage?: string 
     updated: post.updatedAt,
     tags: post.tags?.map((t) => t.name) ?? [],
     published: post.published,
-    image: post.coverImage,
+    image: resolveMediaUrl(post.coverImage),
     body: '', // TipTap JSON content stored separately
     readingTime: post.readingTime ?? 1,
   }
@@ -113,7 +120,7 @@ function mapPostToDiary(post: ApiPost): Diary & { id: string; coverImage?: strin
     slug: post.slug,
     description: post.description,
     date: post.createdAt,
-    mood: (post.mood ?? 'neutral') as DiaryMood,
+    mood: (post.mood && post.mood in DIARY_MOODS ? post.mood : 'reflective') as DiaryMood,
     published: post.published,
     body: '',
     readingTime: post.readingTime ?? 1,
@@ -133,7 +140,7 @@ function mapProject(p: ApiProject): Project {
     title: p.title,
     description: p.description,
     longDescription: p.longDesc ?? '',
-    image: p.image ?? '',
+    image: resolveMediaUrl(p.image),
     technologies: p.technologies,
     featured: p.featured,
     category,

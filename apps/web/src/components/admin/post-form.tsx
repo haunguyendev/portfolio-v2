@@ -184,7 +184,14 @@ export function PostForm({ initialData, categories, tags, seriesList }: PostForm
           {type === 'DIARY' && (
             <div>
               <label className={labelCls}>Mood</label>
-              <input className={inputCls} value={mood} onChange={(e) => setMood(e.target.value)} placeholder="e.g. reflective" />
+              <select className={inputCls} value={mood} onChange={(e) => setMood(e.target.value)}>
+                <option value="">Select mood...</option>
+                <option value="happy">😊 Happy</option>
+                <option value="sad">😢 Sad</option>
+                <option value="reflective">🤔 Reflective</option>
+                <option value="grateful">🙏 Grateful</option>
+                <option value="motivated">🔥 Motivated</option>
+              </select>
             </div>
           )}
           <div>

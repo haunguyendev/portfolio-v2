@@ -9,7 +9,7 @@ interface DiaryEntryCardProps {
 }
 
 export function DiaryEntryCard({ entry }: DiaryEntryCardProps) {
-  const mood = DIARY_MOODS[entry.mood]
+  const mood = DIARY_MOODS[entry.mood] ?? DIARY_MOODS.reflective
   const isDraft = !entry.published
 
   return (
