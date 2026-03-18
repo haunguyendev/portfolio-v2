@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.1.1...v1.2.0) (2026-03-18)
+
+
+### Features
+
+* **auth:** replace email/password with GitHub OAuth login ([4d3bcb6](https://github.com/haunguyendev/portfolio-v2/commit/4d3bcb6e6bcb4c1a5842424790c9f53a54d95e91))
+
 ## [1.1.1](https://github.com/haunguyendev/portfolio-v2/compare/v1.1.0...v1.1.1) (2026-03-18)
 
 
