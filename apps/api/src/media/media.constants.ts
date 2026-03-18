@@ -15,10 +15,11 @@ export const MEDIA_CONFIG = {
   thumbQuality: 70,
 } as const;
 
-export type MediaFolder = "posts/cover" | "posts/content" | "projects";
+export type MediaFolder = "posts/cover" | "posts/content" | "projects" | "certificates";
 
 export const VALID_FOLDERS: MediaFolder[] = [
   "posts/cover",
   "posts/content",
   "projects",
+  "certificates",
 ];
