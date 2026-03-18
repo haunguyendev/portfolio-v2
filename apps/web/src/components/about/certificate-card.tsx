@@ -1,6 +1,6 @@
 // Compact certificate card: thumbnail + title + issuer · date (minimal, single row layout)
 import Image from 'next/image'
-import { GraduationCap } from 'lucide-react'
+import { ExternalLink, GraduationCap } from 'lucide-react'
 import type { Certificate } from '@/types'
 
 const ISSUER_STYLES: Record<string, { label: string; color: string }> = {
@@ -59,10 +59,15 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
           {title}
         </h3>
 
-        {/* Date */}
-        <p className="mt-1 text-[10px] text-muted-foreground">
-          {formatDate(issueDate)}
-        </p>
+        {/* Date + credential link icon */}
+        <div className="mt-1 flex items-center justify-between">
+          <p className="text-[10px] text-muted-foreground">
+            {formatDate(issueDate)}
+          </p>
+          {credentialUrl && (
+            <ExternalLink className="size-3 text-muted-foreground/60 transition-colors group-hover:text-foreground" />
+          )}
+        </div>
       </div>
     </div>
   )
