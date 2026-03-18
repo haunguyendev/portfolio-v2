@@ -490,6 +490,7 @@ porfolio_v2/
 │       ├── src/
 │       │   ├── posts/          # BlogPost + DiaryEntry resolvers/services
 │       │   ├── projects/       # Project management (CRUD)
+│       │   ├── certificates/   # Certificate management (CRUD + URL extractor) — Phase 5
 │       │   ├── categories/     # Category management
 │       │   ├── tags/           # Tag management
 │       │   ├── series/         # Blog series management
@@ -552,6 +553,7 @@ porfolio_v2/
 - `Category`: Post/project categories
 - `Tag`: Post/project tags
 - `Series`: Blog series grouping
+- `Certificate`: Professional certifications (title, issuer, issueDate, credentialUrl, issuerIcon, sortOrder, published) — Phase 5
 - `Comment`: User comments on posts (Phase 4B)
 - `Like`: Likes on posts (Phase 4B)
 - `PageView`: Analytics tracking (Phase 4B)
@@ -592,3 +594,43 @@ porfolio_v2/
 - `PageView` analytics tracking
 - User registration and profiles
 - Email notification service
+
+## Phase 5 Additions (Certificate Management — Complete)
+
+### Certificates Module
+**File:** `apps/api/src/certificates/`
+
+- **Service:** `certificates.service.ts` — CRUD operations (create, read, update, delete)
+- **URL Extractor:** `certificate-url-extractor.service.ts` — Cheerio-based URL scraping for Coursera/Udemy/FreeCodeCamp
+- **Resolver:** `certificates.resolver.ts` — GraphQL queries (public) + mutations (JWT protected)
+- **DTO:** Input types for create/update, output types for metadata extraction
+- **Model:** GraphQL ObjectType with fields (id, title, issuer, issueDate, credentialUrl, issuerIcon, sortOrder, published, etc.)
+
+### Dashboard Enhancements
+**File:** `apps/web/src/app/(admin)/admin/certificates/`
+
+- List page with DataTable (columns: title, issuer, issueDate, published, actions)
+- Create/Edit pages with shared form component
+- URL auto-fill feature: paste Coursera/Udemy link → API scrapes metadata → pre-fills form fields
+- Graceful fallback on URL extraction failure (toast warning, manual entry)
+
+### Components
+**File:** `apps/web/src/components/`
+
+- **CertificateCard** (`about/certificate-card.tsx`) — Compact card with issuer icon, title, issuer, date, verify link
+- **CertificatesSection** (`about/certificates-section.tsx`) — Grid wrapper with API fetch + JSON fallback
+- **CertificateForm** (`admin/certificate-form.tsx`) — Create/edit form with URL auto-fill and form validation
+
+### API Client
+**File:** `apps/web/src/lib/api/certificates.ts`
+
+- `apiGetCertificates()` — Fetch published certificates from GraphQL API with JSON fallback
+
+### Database & Migration
+- Prisma model: `Certificate` with fields for title, issuer, issueDate, credentialUrl, issuerIcon, sortOrder, published
+- Auto-migration via Prisma
+
+### Integration Points
+- About page: CertificatesSection displays between Skills and Timeline
+- Admin dashboard: New sidebar nav item with Award icon
+- Public portfolio: API-backed certificate display with fallback

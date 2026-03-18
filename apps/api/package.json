@@ -21,6 +21,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^10.4.15",
     "@portfolio/prisma": "workspace:*",
+    "cheerio": "^1.2.0",
     "graphql": "^16.13.1",
     "graphql-type-json": "^0.3.2",
     "multer": "^2.1.1",

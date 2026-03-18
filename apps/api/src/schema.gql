@@ -12,12 +12,47 @@ type Category {
   sortOrder: Int!
 }
 
+type Certificate {
+  createdAt: DateTime!
+  credentialUrl: String
+  id: ID!
+  image: String
+  issueDate: DateTime!
+  issuer: String!
+  issuerIcon: String
+  published: Boolean!
+  sortOrder: Int!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type CertificateMetadata {
+  error: String
+  image: String
+  issueDate: String
+  issuer: String
+  issuerIcon: String
+  success: Boolean!
+  title: String
+}
+
 input CreateCategoryInput {
   color: String
   description: String
   name: String!
   slug: String!
   sortOrder: Int
+}
+
+input CreateCertificateInput {
+  credentialUrl: String
+  image: String
+  issueDate: DateTime!
+  issuer: String!
+  issuerIcon: String
+  published: Boolean
+  sortOrder: Int
+  title: String!
 }
 
 input CreatePostInput {
@@ -84,18 +119,22 @@ scalar JSON
 
 type Mutation {
   createCategory(input: CreateCategoryInput!): Category!
+  createCertificate(input: CreateCertificateInput!): Certificate!
   createPost(input: CreatePostInput!): Post!
   createProject(input: CreateProjectInput!): Project!
   createSeries(input: CreateSeriesInput!): Series!
   createTag(input: CreateTagInput!): Tag!
   deleteCategory(id: ID!): Boolean!
+  deleteCertificate(id: ID!): Boolean!
   deletePost(id: ID!): Boolean!
   deleteProject(id: ID!): Boolean!
   deleteSeries(id: ID!): Boolean!
   deleteTag(id: ID!): Boolean!
+  extractCertificateUrl(url: String!): CertificateMetadata!
   publishPost(id: ID!): Post!
   reorderProjects(ids: [ID!]!): [Project!]!
   updateCategory(id: ID!, input: UpdateCategoryInput!): Category!
+  updateCertificate(id: ID!, input: UpdateCertificateInput!): Certificate!
   updatePost(id: ID!, input: UpdatePostInput!): Post!
   updateProject(id: ID!, input: UpdateProjectInput!): Project!
   updateSeries(id: ID!, input: UpdateSeriesInput!): Series!
@@ -165,6 +204,8 @@ type Project {
 type Query {
   categories: [Category!]!
   category(id: ID!): Category
+  certificate(id: ID!): Certificate
+  certificates(publishedOnly: Boolean): [Certificate!]!
   post(id: ID!): Post
   postBySlug(slug: String!): Post
   posts(filter: PostsFilterInput): [Post!]!
@@ -199,6 +240,17 @@ input UpdateCategoryInput {
   name: String
   slug: String
   sortOrder: Int
+}
+
+input UpdateCertificateInput {
+  credentialUrl: String
+  image: String
+  issueDate: DateTime
+  issuer: String
+  issuerIcon: String
+  published: Boolean
+  sortOrder: Int
+  title: String
 }
 
 input UpdatePostInput {

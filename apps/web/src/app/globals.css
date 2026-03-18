@@ -170,4 +170,13 @@
   .diary-prose .prose blockquote {
     @apply border-l-orange-300 bg-orange-50/50 dark:border-l-orange-600 dark:bg-orange-950/30;
   }
+
+  /* Hide scrollbar for horizontal scroll containers */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

@@ -463,6 +463,70 @@ Organized by category:
 
 ---
 
+## Phase 5: Certificate Management
+
+**Timeline:** 1 day (March 18, 2026)
+**Status:** COMPLETE ✓
+**Priority:** MEDIUM
+**Completion Date:** March 18, 2026
+
+### Objectives (ACHIEVED)
+- Showcase professional certifications on About page ✓
+- Implement full CRUD dashboard for certificate management ✓
+- Add smart URL auto-fill feature (Coursera/Udemy link parsing) ✓
+- Integrate certificates into portfolio with API-first architecture ✓
+
+### Features Implemented
+
+| Feature | Scope | Priority | Status |
+|---------|-------|----------|--------|
+| Portfolio UI | CertificateCard + CertificatesSection on About page (3/2/1 grid) | HIGH | Complete |
+| Mock data | certificates.json with 4-5 sample certs | HIGH | Complete |
+| Dashboard CRUD | List, Create, Edit, Delete pages with DataTable | HIGH | Complete |
+| Prisma model | Certificate entity with title, issuer, date, credentialUrl, icon, sortOrder | HIGH | Complete |
+| GraphQL API | Public queries + JWT-protected mutations | HIGH | Complete |
+| URL auto-fill | Paste Coursera/Udemy link → API scrapes → pre-fills form | MEDIUM | Complete |
+| Cheerio integration | Server-side URL metadata extraction (OG tags, platform-specific) | MEDIUM | Complete |
+| Error handling | Toast warning on scrape fail, manual fallback works | MEDIUM | Complete |
+| API integration | About page fetches from API with JSON fallback | HIGH | Complete |
+| Responsive grid | 3-col ≥1024px, 2-col ≥768px, 1-col mobile | HIGH | Complete |
+| Verify links | Credential URLs open in new tab with external link icon | HIGH | Complete |
+
+### Technical Changes
+- **Prisma:** Certificate model with full schema migration
+- **NestJS API:** CertificatesModule with service, resolver, DTOs, and URL extraction service
+- **Dashboard:** 3 pages (list, new, edit) with shared CertificateForm component
+- **Components:** CertificateCard, CertificatesSection, CertificateForm (admin)
+- **API Client:** apiGetCertificates() with JSON fallback
+- **Cheerio:** URL scraping for Coursera, Udemy, FreeCodeCamp, generic fallback
+
+### Key Decisions
+- **Card layout:** Compact horizontal scroll (changed from grid) for efficient space usage
+- **Card content:** Issuer icon + title + issuer + date + verify link
+- **Thumbnail:** Certificate thumbnail image added to card (enhancement)
+- **Placement:** About page (between Skills and Timeline sections)
+- **No OCR:** Manual entry + URL auto-fill sufficient for 4-7 certs
+- **Graceful degradation:** API fetch with JSON fallback ensures portfolio works offline
+
+### Success Criteria (Phase 5 COMPLETE)
+
+- [x] Certificates section visible on About page with responsive grid
+- [x] Dashboard CRUD fully functional (add/edit/delete certificates)
+- [x] URL auto-fill works for Coursera, Udemy, and other platforms
+- [x] Credential verify links open in new tab
+- [x] API integration with JSON fallback for resilience
+- [x] Horizontal scroll layout with compact cards
+- [x] Certificate thumbnail images displayed on cards
+- [x] GraphQL schema generated without errors
+- [x] All mutations protected by JwtAuthGuard
+- [x] No TypeScript errors or warnings
+- [x] Build passes without errors
+
+### Dependencies
+- Phase 4B complete with GitHub OAuth and working API
+
+---
+
 ## Timeline Summary
 
 | Phase | Duration | Start | End | Status |
@@ -472,9 +536,10 @@ Organized by category:
 | Phase 3 | 1 week | Apr 1 | Mar 17 | COMPLETE ✓ |
 | Phase 4A | 1 week | Mar 10 | Mar 17 | COMPLETE ✓ |
 | Phase 4B | 1 week | Mar 18 | Mar 18 | PARTLY COMPLETE ✓ (OAuth) |
+| Phase 5 | 1 day | Mar 18 | Mar 18 | COMPLETE ✓ |
 
-**Total Completed:** Phases 1-3 + Phase 4A + Phase 4B (OAuth) ✓
-**Production Ready:** All phases complete with working backend CMS, admin dashboard, and GitHub OAuth authentication
+**Total Completed:** Phases 1-3 + Phase 4A + Phase 4B (OAuth) + Phase 5 (Certificates) ✓
+**Production Ready:** All phases complete with working backend CMS, admin dashboard, GitHub OAuth authentication, and certificate management system
 
 ## Key Milestones
 

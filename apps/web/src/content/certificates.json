@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1",
+    "title": "Meta Front-End Developer Professional Certificate",
+    "issuer": "Meta (via Coursera)",
+    "issueDate": "2025-02-10",
+    "credentialUrl": "https://coursera.org/verify/professional-cert/ABC123",
+    "image": "/images/certificates/meta-frontend.png",
+    "issuerIcon": "coursera",
+    "sortOrder": 1,
+    "published": true
+  },
+  {
+    "id": "2",
+    "title": "Docker & Kubernetes: The Practical Guide",
+    "issuer": "Udemy",
+    "issueDate": "2024-12-05",
+    "credentialUrl": "https://udemy.com/certificate/UC-12345",
+    "image": "/images/certificates/docker-kubernetes.png",
+    "issuerIcon": "udemy",
+    "sortOrder": 2,
+    "published": true
+  },
+  {
+    "id": "3",
+    "title": "The Complete NestJS Developer",
+    "issuer": "Udemy",
+    "issueDate": "2024-11-20",
+    "credentialUrl": "https://udemy.com/certificate/UC-67890",
+    "image": "/images/certificates/nestjs-complete.png",
+    "issuerIcon": "udemy",
+    "sortOrder": 3,
+    "published": true
+  },
+  {
+    "id": "4",
+    "title": "Responsive Web Design Certification",
+    "issuer": "freeCodeCamp",
+    "issueDate": "2024-08-15",
+    "credentialUrl": "https://freecodecamp.org/certification/kanenguyen/responsive-web-design",
+    "image": "/images/certificates/responsive-web-design.png",
+    "issuerIcon": "freecodecamp",
+    "sortOrder": 4,
+    "published": true
+  },
+  {
+    "id": "5",
+    "title": "Advanced React Patterns",
+    "issuer": "Coursera",
+    "issueDate": "2025-01-08",
+    "credentialUrl": "https://coursera.org/verify/XYZ789",
+    "image": "/images/certificates/react-advanced.png",
+    "issuerIcon": "coursera",
+    "sortOrder": 5,
+    "published": true
+  }
+]

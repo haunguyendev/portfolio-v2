@@ -1,4 +1,4 @@
-export type MediaFolder = "posts/cover" | "posts/content" | "projects";
+export type MediaFolder = "posts/cover" | "posts/content" | "projects" | "certificates";
 
 export interface UploadResult {
   id: string;

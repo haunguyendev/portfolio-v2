@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import type { Blog, Diary } from './content'
-import type { Project } from '@/types'
+import type { Project, Certificate } from '@/types'
 import { DIARY_MOODS, type DiaryMood } from './diary-constants'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
@@ -45,6 +45,14 @@ const PROJECTS_QUERY = gql`
     projects(featuredOnly: $featuredOnly) {
       id slug title description longDesc image technologies category
       github demo featured sortOrder role teamSize impact startDate endDate createdAt
+    }
+  }
+`
+
+const CERTIFICATES_QUERY = gql`
+  query PublicCertificates {
+    certificates(publishedOnly: true) {
+      id title issuer issueDate credentialUrl image issuerIcon sortOrder published
     }
   }
 `
@@ -211,6 +219,20 @@ export async function apiGetProjects(featuredOnly?: boolean): Promise<Project[]>
       featuredOnly: featuredOnly ?? null,
     })
     return data.projects.map(mapProject)
+  } catch {
+    return []
+  }
+}
+
+export async function apiGetCertificates(): Promise<Certificate[]> {
+  try {
+    const data = await client().request<{
+      certificates: (Omit<Certificate, 'issueDate'> & { issueDate: string })[]
+    }>(CERTIFICATES_QUERY)
+    return data.certificates.map((c) => ({
+      ...c,
+      issueDate: new Date(c.issueDate).toISOString().split('T')[0],
+    }))
   } catch {
     return []
   }

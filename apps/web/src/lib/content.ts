@@ -1,8 +1,9 @@
-import type { Project, SkillGroup, Experience } from '@/types'
+import type { Project, SkillGroup, Experience, Certificate } from '@/types'
 import type { DiaryMood } from './diary-constants'
 import projectsData from '@/content/projects.json'
 import skillsData from '@/content/skills.json'
 import experienceData from '@/content/experience.json'
+import certificatesData from '@/content/certificates.json'
 // Velite generates JSON files — use default import (JSON modules have no named exports)
 import blogsData from '#site/blogs'
 import diariesData from '#site/diaries'
@@ -39,6 +40,7 @@ const diaries = diariesData as Diary[]
 const projects = projectsData as Project[]
 const skills = skillsData as SkillGroup[]
 const experience = experienceData as Experience[]
+const certificates = certificatesData as Certificate[]
 
 // --- Project helpers ---
 
@@ -68,6 +70,12 @@ export function getSkills(): SkillGroup[] {
 
 export function getExperience(): Experience[] {
   return experience
+}
+
+export function getCertificates(): Certificate[] {
+  return certificates
+    .filter((c) => c.published)
+    .sort((a, b) => a.sortOrder - b.sortOrder)
 }
 
 // --- Blog helpers ---

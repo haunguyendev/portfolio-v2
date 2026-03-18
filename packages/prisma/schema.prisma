@@ -177,6 +177,22 @@ model Project {
   updatedAt    DateTime @updatedAt
 }
 
+// === CERTIFICATES ===
+
+model Certificate {
+  id            String   @id @default(cuid())
+  title         String
+  issuer        String
+  issueDate     DateTime
+  credentialUrl String?
+  image         String?
+  issuerIcon    String?
+  sortOrder     Int      @default(0)
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
 // === ENGAGEMENT ===
 
 model Comment {

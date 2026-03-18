@@ -9,6 +9,7 @@ import {
   Tag,
   BookOpen,
   Layers,
+  Award,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -19,6 +20,7 @@ const navItems = [
   { href: '/admin/categories', label: 'Categories', icon: BookOpen },
   { href: '/admin/tags', label: 'Tags', icon: Tag },
   { href: '/admin/series', label: 'Series', icon: Layers },
+  { href: '/admin/certificates', label: 'Certificates', icon: Award },
 ]
 
 export function AdminSidebar() {
