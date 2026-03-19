@@ -3,7 +3,8 @@ import type { Blog, Diary } from './content'
 import type { Project, Certificate } from '@/types'
 import { DIARY_MOODS, type DiaryMood } from './diary-constants'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
+/** Server-side only — uses INTERNAL_API_URL for Docker networking */
+const API_URL = process.env.INTERNAL_API_URL ?? 'http://localhost:3001'
 
 /** Resolve /api/media/* paths — kept relative so Next.js rewrites proxy to API */
 function resolveMediaUrl(path?: string): string {

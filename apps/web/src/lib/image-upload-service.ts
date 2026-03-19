@@ -48,8 +48,7 @@ export async function uploadImage(
   formData.append("folder", folder);
   if (alt) formData.append("alt", alt);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-  const res = await fetch(`${apiUrl}/api/upload`, {
+  const res = await fetch('/api/upload', {
     method: "POST",
     headers: { Authorization: `Bearer ${token}` },
     body: formData,

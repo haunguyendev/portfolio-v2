@@ -1,9 +1,13 @@
 import { GraphQLClient } from 'graphql-request'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
+/** Server-side: use INTERNAL_API_URL (Docker: http://api:3001). Client-side: relative URL via rewrite. */
+const GQL_URL =
+  typeof window === 'undefined'
+    ? `${process.env.INTERNAL_API_URL ?? 'http://localhost:3001'}/graphql`
+    : '/graphql'
 
 function getGraphQLClient(token?: string) {
-  return new GraphQLClient(`${API_URL}/graphql`, {
+  return new GraphQLClient(GQL_URL, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   })
 }

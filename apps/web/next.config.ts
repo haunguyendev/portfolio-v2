@@ -26,12 +26,15 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'www.udemy.com' },
     ],
   },
-  // Proxy /api/media/* to backend API — avoids Next.js private IP blocking for images
+  // Proxy backend API routes through Next.js to avoid NEXT_PUBLIC_API_URL build-time issues
+  // In Docker: INTERNAL_API_URL=http://api:3001, locally: http://localhost:3001
   async rewrites() {
     return [
       { source: '/api/media/:path*', destination: `${INTERNAL_API_URL}/api/media/:path*` },
       { source: '/api/chat/:path*', destination: `${INTERNAL_API_URL}/api/chat/:path*` },
       { source: '/api/chat', destination: `${INTERNAL_API_URL}/api/chat` },
+      { source: '/graphql', destination: `${INTERNAL_API_URL}/graphql` },
+      { source: '/api/upload', destination: `${INTERNAL_API_URL}/api/upload` },
     ]
   },
 }

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Sparkles, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
+/** Use relative URL — Next.js rewrite proxies /api/chat/* to backend */
 
 export function ReindexAiButton() {
   const [loading, setLoading] = useState(false)
@@ -26,7 +26,7 @@ export function ReindexAiButton() {
         return
       }
 
-      const res = await fetch(`${API_URL}/api/chat/reindex`, {
+      const res = await fetch('/api/chat/reindex', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       })
