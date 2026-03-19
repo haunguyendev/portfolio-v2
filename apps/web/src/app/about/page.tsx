@@ -1,3 +1,5 @@
+export const revalidate = 60
+
 import type { Metadata } from 'next'
 import { AnimatedPageTitle } from '@/components/ui/animated-page-title'
 import { BioSection } from '@/components/about/bio-section'

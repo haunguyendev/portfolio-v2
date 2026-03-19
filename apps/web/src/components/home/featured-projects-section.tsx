@@ -2,9 +2,14 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { ProjectCard } from '@/components/projects/project-card'
 import { apiGetProjects } from '@/lib/api-client'
+import { getFeaturedProjects } from '@/lib/content'
 
 export async function FeaturedProjectsSection() {
-  const projects = (await apiGetProjects(true)).slice(0, 3)
+  // Try API first, fallback to static JSON (same pattern as CertificatesSection)
+  let projects = (await apiGetProjects(true)).slice(0, 3)
+  if (projects.length === 0) {
+    projects = getFeaturedProjects().slice(0, 3)
+  }
 
   return (
     <section className="section-spacing bg-muted dark:bg-background">
