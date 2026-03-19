@@ -102,6 +102,10 @@ jobs:
           tags: |
             ${{ env.WEB_IMAGE }}:latest
             ${{ env.WEB_IMAGE }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=https://portfolio.haunguyendev.xyz
+            NEXT_PUBLIC_SITE_NAME=Kane's Portfolio
+            INTERNAL_API_URL=http://api:3001
           cache-from: type=gha,scope=web
           cache-to: type=gha,mode=max,scope=web
 
@@ -183,7 +187,13 @@ jobs:
               echo 'GITHUB_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}' >> .env && \
             grep -q '^GITHUB_CLIENT_SECRET=' .env 2>/dev/null && \
               sed -i 's/^GITHUB_CLIENT_SECRET=.*/GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}/' .env || \
-              echo 'GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}' >> .env"
+              echo 'GITHUB_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}' >> .env && \
+            grep -q '^BETTER_AUTH_URL=' .env 2>/dev/null && \
+              sed -i 's|^BETTER_AUTH_URL=.*|BETTER_AUTH_URL=https://portfolio.haunguyendev.xyz|' .env || \
+              echo 'BETTER_AUTH_URL=https://portfolio.haunguyendev.xyz' >> .env && \
+            grep -q '^CORS_ORIGIN=' .env 2>/dev/null && \
+              sed -i 's|^CORS_ORIGIN=.*|CORS_ORIGIN=https://portfolio.haunguyendev.xyz|' .env || \
+              echo 'CORS_ORIGIN=https://portfolio.haunguyendev.xyz' >> .env"
 
       # Deploy chỉ những services đã thay đổi
       - name: Deploy via SSH

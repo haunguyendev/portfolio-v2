@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function proxy(request: NextRequest) {
+/**
+ * Middleware for admin route protection.
+ * Checks for Better Auth session token cookie before allowing access to /admin/* routes.
+ *
+ * Note: This runs on the Edge runtime, so we can only check cookie existence.
+ * Full session verification happens in route handlers when pages load.
+ */
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Allow login page through
@@ -10,6 +17,7 @@ export async function proxy(request: NextRequest) {
 
   // Protect all /admin/* routes
   if (pathname.startsWith('/admin')) {
+    // Check for session token cookie (supports both secure and non-secure variants)
     const sessionToken =
       request.cookies.get('better-auth.session_token')?.value ??
       request.cookies.get('__Secure-better-auth.session_token')?.value
@@ -20,9 +28,8 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(loginUrl)
     }
 
-    // Verify session via cookie check only (avoid internal HTTPS fetch in Docker)
-    // The session token existence + route handler validation is sufficient
-    // Full session verification happens in the route handler when pages load
+    // Cookie exists - let request through
+    // Full session validation happens server-side in page components
   }
 
   return NextResponse.next()
