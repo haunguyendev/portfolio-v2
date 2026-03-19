@@ -82,6 +82,7 @@ services:
       MINIO_USE_SSL: "false"
       GOOGLE_API_KEY: ${GOOGLE_API_KEY}
       GROQ_API_KEY: ${GROQ_API_KEY}
+      ZHIPUAI_API_KEY: ${ZHIPUAI_API_KEY}
       # Set true lần deploy đầu tiên để seed admin + tags
       # Sau đó đổi thành false hoặc xoá dòng này
       SEED_ON_START: ${SEED_ON_START:-false}
