@@ -8,7 +8,7 @@ export interface ChatMessage {
   content: string
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
+/** Chat API goes through Next.js rewrite → backend, so use relative URL */
 
 /**
  * Lightweight chat hook that parses Vercel AI SDK Data Stream Protocol.
@@ -61,7 +61,7 @@ export function useChatStream() {
           content: m.content,
         }))
 
-        const res = await fetch(`${API_URL}/api/chat`, {
+        const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ messages: allMessages, provider }),

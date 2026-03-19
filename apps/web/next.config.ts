@@ -30,6 +30,8 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       { source: '/api/media/:path*', destination: `${INTERNAL_API_URL}/api/media/:path*` },
+      { source: '/api/chat/:path*', destination: `${INTERNAL_API_URL}/api/chat/:path*` },
+      { source: '/api/chat', destination: `${INTERNAL_API_URL}/api/chat` },
     ]
   },
 }
