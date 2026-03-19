@@ -7,15 +7,15 @@
   "avatar": "/images/hero/kane-avatar.jpg",
   "heroPhoto": "/images/hero/kane-photo.jpg",
   "resumePath": "/resume.pdf",
-  "titles": ["Software Engineer", "Web Developer", "Problem Solver"],
+  "titles": ["Software Engineer", "Fullstack Developer", "AI-Augmented Builder"],
   "bio": {
-    "hero": "Built full-stack web apps serving 500+ users — from real-time task management to e-commerce APIs processing 1K+ orders/month. Currently open to new opportunities.",
+    "hero": "Fullstack developer specializing in AI chatbot platforms — integrated 4 channels (Facebook, Zalo, Teams, Widget) for enterprise clients. I leverage AI tools to ship faster and deliver end-to-end, from backend APIs to mobile apps.",
     "aboutPreview": [
-      "Built 5 production apps across full-stack — from real-time task management (500+ users) to e-commerce APIs handling 1K+ orders/month. I pick up new stacks fast and ship clean, tested code.",
-      "Looking for a full-stack or frontend role where I can grow with a strong engineering team. Currently based in Ho Chi Minh City."
+      "I build production systems end-to-end — from NestJS + GraphQL backends to React frontends and React Native mobile apps. At my current role, I develop AI chatbot platforms serving enterprise clients across 4 communication channels.",
+      "I'm a fast learner who dives deep into new tech when the project needs it — from setting up Kubernetes staging environments to picking up React Native for mobile. Open to freelance and remote collaboration."
     ],
-    "full": "I build web apps with React, Next.js, and TypeScript. In my first year as a Software Engineer, I shipped features that improved user engagement by 20%, built REST APIs for e-commerce, and set up CI/CD pipelines that cut production bugs by 30%. I value clean boundaries between work and life — it keeps my code sharp and my thinking fresh. Currently looking for a full-stack or frontend role where I can grow with a strong engineering team.",
-    "contact": "I'm looking for full-stack or frontend roles at product companies. Also open to freelance projects — feel free to reach out!"
+    "full": "I'm a fullstack developer with 1+ year of professional experience building AI chatbot platforms at an outsourcing agency. My work involves integrating chatbot services across Facebook, Zalo, Microsoft Teams, and web widgets for enterprise clients including universities and government organizations. I handle the full stack — NestJS + GraphQL APIs, React/Next.js admin dashboards, React Native mobile apps, and self-hosted Kubernetes staging environments. Before that, I led a 10-member intern team at FPT Software building a student management system with .NET. I use AI tools extensively to accelerate my workflow and I'm always ready to dive into unfamiliar tech when the project calls for it. Open to freelance, remote, and full-time opportunities.",
+    "contact": "Open to collaboration — freelance, remote, or full-time opportunities. Let's build something together."
   },
   "stats": [
     { "value": "1yr", "label": "Shipping Production Code" },

@@ -5,11 +5,15 @@
   },
   {
     "category": "Backend",
-    "items": ["Node.js", "Express", "PostgreSQL", "MySQL", "SQL Server", "REST APIs", "Python"]
+    "items": ["Node.js", "NestJS", "GraphQL", ".NET/C#", "PostgreSQL", "SQL Server", "REST APIs"]
+  },
+  {
+    "category": "Mobile",
+    "items": ["React Native"]
   },
   {
     "category": "Tools & DevOps",
-    "items": ["Git", "GitHub", "Docker", "Vercel", "Cloudflare", "VS Code", "Linux", "macOS"]
+    "items": ["Git", "GitHub", "GitLab", "Docker", "Vercel", "Cloudflare", "VS Code", "Linux", "macOS"]
   },
   {
     "category": "Other",

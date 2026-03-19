@@ -3,23 +3,24 @@
     "company": "Promete Technology",
     "role": "Fullstack Developer",
     "duration": "Mar 2025 - Present",
-    "description": "Full-stack development for web applications at a technology company specializing in software solutions and e-commerce platforms.",
+    "description": "Building AI-powered chatbot platforms with multi-channel integrations at a software outsourcing agency. Full-stack ownership from backend APIs to mobile apps.",
     "highlights": [
-      "Built and maintained React-based frontend features improving user engagement by 20%",
-      "Developed RESTful APIs with Node.js and PostgreSQL for core business logic",
-      "Collaborated with cross-functional teams using Agile methodology",
-      "Implemented automated testing pipelines reducing production bugs by 30%"
+      "Developed NestJS + GraphQL backend for chatbot data management, integrated with Python AI services in a dual-backend architecture",
+      "Personally integrated all 4 communication channels — Facebook, Zalo, Microsoft Teams, and embeddable web widget",
+      "Built React/Next.js admin dashboard for chatbot configuration and conversation analytics",
+      "Delivered chatbot solutions for enterprise clients including UEH, SKHCN, Citeka, and IFC",
+      "Maintained self-hosted Kubernetes (Minikube) staging environment for team testing before production deployment",
+      "Built internal mobile app with React Native for chatbot testing and demo"
     ]
   },
   {
     "company": "FPT Software",
-    "role": "Backend Developer Intern (.NET) — Team Lead",
+    "role": "Backend Developer Intern — Team Lead",
     "duration": "2022",
-    "description": "Led a 10-member intern team building a student management system API at one of Vietnam's largest IT outsourcing companies.",
+    "description": "Led a 10-member intern team at one of Vietnam's largest IT companies, coordinating backend and frontend collaboration on a student management system.",
     "highlights": [
-      "Led a team of 10 members as team leader, coordinating backend and frontend collaboration",
-      "Built RESTful APIs for a student management system based on business requirement specifications",
-      "Learned CI/CD build and deployment processes to deliver backend services to production servers",
+      "Appointed team leader by mentor — distributed tasks, ensured on-time delivery, and coordinated communication among team members",
+      "Built RESTful APIs for a student management system using .NET and SQL Server",
       "Coordinated with a separate frontend team to integrate APIs and ship the complete product"
     ]
   },
@@ -27,10 +28,10 @@
     "company": "FPT University",
     "role": "Computer Science Student",
     "duration": "2020 - 2024",
-    "description": "Bachelor's degree in Computer Science with focus on software engineering.",
+    "description": "Bachelor's degree in Software Engineering. GPA: 3.16/4.0.",
     "highlights": [
-      "Graduated with honors",
-      "Completed capstone project: full-stack web application",
+      "Capstone: SmartFarmManager — IoT-integrated smart farm management system for poultry farming with disease diagnosis, vaccination scheduling, and environmental monitoring",
+      "Achieved 'Excellent Student' and 'Distinguished Student' honors",
       "Relevant coursework: Data Structures, Algorithms, Web Development, Databases"
     ]
   }
