@@ -23,7 +23,8 @@ export function middleware(request: NextRequest) {
       request.cookies.get('__Secure-better-auth.session_token')?.value
 
     if (!sessionToken) {
-      const loginUrl = new URL('/admin/login', request.url)
+      const loginUrl = request.nextUrl.clone()
+      loginUrl.pathname = '/admin/login'
       loginUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(loginUrl)
     }
