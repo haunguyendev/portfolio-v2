@@ -1,10 +1,10 @@
 import { GraphQLClient } from 'graphql-request'
 
-/** Server-side: use INTERNAL_API_URL (Docker: http://api:3001). Client-side: relative URL via rewrite. */
+/** Server-side: use INTERNAL_API_URL (Docker: http://api:3001). Client-side: absolute URL via rewrite. */
 const GQL_URL =
   typeof window === 'undefined'
     ? `${process.env.INTERNAL_API_URL ?? 'http://localhost:3001'}/graphql`
-    : '/graphql'
+    : `${window.location.origin}/graphql`
 
 function getGraphQLClient(token?: string) {
   return new GraphQLClient(GQL_URL, {
