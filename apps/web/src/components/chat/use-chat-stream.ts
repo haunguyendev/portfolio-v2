@@ -27,7 +27,7 @@ export function useChatStream() {
   }, [])
 
   const sendMessage = useCallback(
-    async (text: string) => {
+    async (text: string, provider?: string) => {
       if (!text.trim() || isLoading) return
 
       const userMsg: ChatMessage = {
@@ -64,7 +64,7 @@ export function useChatStream() {
         const res = await fetch(`${API_URL}/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: allMessages }),
+          body: JSON.stringify({ messages: allMessages, provider }),
           signal: abortRef.current.signal,
         })
 

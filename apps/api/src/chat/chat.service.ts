@@ -6,7 +6,7 @@ import type { ChatMessage } from "./dto/chat-types";
 export class ChatService {
   constructor(private ragService: RagService) {}
 
-  async *chat(messages: ChatMessage[]): AsyncGenerator<string> {
+  async *chat(messages: ChatMessage[], provider?: string): AsyncGenerator<string> {
     if (!messages?.length) {
       throw new BadRequestException("Messages array is required");
     }
@@ -26,6 +26,6 @@ export class ChatService {
 
     // Pass history (all except last) + current question
     const history = messages.slice(0, -1);
-    yield* this.ragService.query(lastMessage.content, history);
+    yield* this.ragService.query(lastMessage.content, history, provider);
   }
 }

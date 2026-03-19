@@ -31,7 +31,7 @@ export class ChatController {
   @UseGuards(CloudflareThrottlerGuard)
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   async chat(
-    @Body() body: { messages: { role: string; content: string }[] },
+    @Body() body: { messages: { role: string; content: string }[]; provider?: string },
     @Res() res: Response,
   ) {
     // Validate input BEFORE entering SSE stream (returns proper HTTP errors)
@@ -68,7 +68,7 @@ export class ChatController {
     res.setHeader("X-Accel-Buffering", "no");
 
     try {
-      for await (const token of this.chatService.chat(messages)) {
+      for await (const token of this.chatService.chat(messages, body.provider)) {
         res.write(`0:${JSON.stringify(token)}\n`);
       }
 

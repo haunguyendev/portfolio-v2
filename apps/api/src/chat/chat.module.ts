@@ -32,5 +32,8 @@ export class ChatModule implements OnModuleInit {
         `Missing env vars: ${missing.join(", ")}. Chat feature may not work.`,
       );
     }
+    if (process.env.ZHIPUAI_API_KEY) {
+      this.logger.log("GLM (ZhipuAI) provider enabled");
+    }
   }
 }

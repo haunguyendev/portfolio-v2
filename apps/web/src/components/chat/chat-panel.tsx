@@ -1,14 +1,22 @@
 'use client'
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
-import { X, Sparkles, RotateCcw } from 'lucide-react'
+import { X, Sparkles, RotateCcw, ChevronDown } from 'lucide-react'
 import { useChatStream } from './use-chat-stream'
 import { ChatMessageList } from './chat-message-list'
 import { ChatInputForm } from './chat-input-form'
 import { ChatSuggestedQuestions } from './chat-suggested-questions'
 
+const MODEL_OPTIONS = [
+  { value: 'auto', label: 'Auto' },
+  { value: 'groq', label: 'Groq (Llama)' },
+  { value: 'glm', label: 'GLM' },
+  { value: 'gemini', label: 'Gemini' },
+] as const
+
 export function ChatPanel({ onClose }: { onClose: () => void }) {
   const [input, setInput] = useState('')
+  const [provider, setProvider] = useState<string>('auto')
   const { messages, isLoading, error, sendMessage, clearMessages } = useChatStream()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
@@ -16,12 +24,12 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (!input.trim()) return
-    sendMessage(input)
+    sendMessage(input, provider === 'auto' ? undefined : provider)
     setInput('')
   }
 
   const handleSuggestedQuestion = (question: string) => {
-    sendMessage(question)
+    sendMessage(question, provider === 'auto' ? undefined : provider)
   }
 
   return (
@@ -33,6 +41,18 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
           <span className="text-sm font-semibold">Ask about Kane</span>
         </div>
         <div className="flex items-center gap-1">
+          <div className="relative">
+            <select
+              value={provider}
+              onChange={(e) => setProvider(e.target.value)}
+              className="appearance-none rounded-md border-0 bg-muted py-1 pl-2 pr-6 text-xs text-muted-foreground outline-none hover:text-foreground"
+            >
+              {MODEL_OPTIONS.map((m) => (
+                <option key={m.value} value={m.value}>{m.label}</option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-1 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+          </div>
           <button
             onClick={clearMessages}
             className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

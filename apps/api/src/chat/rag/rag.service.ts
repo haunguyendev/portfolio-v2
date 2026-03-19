@@ -18,6 +18,7 @@ export class RagService {
   async *query(
     message: string,
     chatHistory: ChatMessage[] = [],
+    provider?: string,
   ): AsyncGenerator<string> {
     try {
       // 1. Embed user question
@@ -33,7 +34,7 @@ export class RagService {
       const prompt = buildPrompt(chunks, chatHistory, message);
 
       // 4. Stream LLM response
-      yield* this.llmProvider.stream(prompt);
+      yield* this.llmProvider.stream(prompt, provider);
     } catch (error) {
       this.logger.error(`RAG query failed: ${(error as Error).message}`);
       yield "I'm having trouble processing your question. Please try again later.";
