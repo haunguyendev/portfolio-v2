@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.4.0...v1.5.0) (2026-03-19)
+
+
+### Features
+
+* **api,web:** add GLM provider and model selector for AI chat ([f078d28](https://github.com/haunguyendev/portfolio-v2/commit/f078d2842ec38824845a6b2c1d820cf21e406aa5))
+* **web:** add bouncing dots typing indicator for AI chat ([4bdff61](https://github.com/haunguyendev/portfolio-v2/commit/4bdff616f17f9b06df7e79430340417babf8bbb5))
+
+
+### Bug Fixes
+
+* **auth:** configure Better Auth for production behind Cloudflare Tunnel ([05b61eb](https://github.com/haunguyendev/portfolio-v2/commit/05b61eb00ba1ff7e54471e7335d85806a263eb69))
+* **web:** add ISR revalidation to home and about pages for production API data ([d929d3c](https://github.com/haunguyendev/portfolio-v2/commit/d929d3c585a970467d7bbf99b46ba9a2f46df35a))
+* **web:** proxy chat API through Next.js rewrite for production ([cc0f212](https://github.com/haunguyendev/portfolio-v2/commit/cc0f212876ac8cc0712172cbc41b4f5e0f74c587))
+* **web:** remove hardcoded baseURL from Better Auth client ([af8b7ac](https://github.com/haunguyendev/portfolio-v2/commit/af8b7ac5a20dfbb43cff86fa682f22f62ed29389))
+* **web:** replace NEXT_PUBLIC_API_URL with proxy rewrites for production ([41b494c](https://github.com/haunguyendev/portfolio-v2/commit/41b494c73f388648b8c2e1cdf62a15eef6406269))
+* **web:** simplify admin middleware to cookie-only check ([94ca1c8](https://github.com/haunguyendev/portfolio-v2/commit/94ca1c8e096a199257c48bf675e684b48c4cb646))
+* **web:** use absolute URL for client-side GraphQL to fix graphql-request v7 ([4428486](https://github.com/haunguyendev/portfolio-v2/commit/44284862de89252f0b2e24da69ecf5f34989ebe7))
+* **web:** use clone() instead of new URL() in middleware for Edge runtime ([08a95a4](https://github.com/haunguyendev/portfolio-v2/commit/08a95a4efe6da22a126852a373dcabb3f7e8a265))
+* **web:** use localhost for internal session verification in middleware ([1d1e658](https://github.com/haunguyendev/portfolio-v2/commit/1d1e6582bbecf48a6ffe0ff16ca8ad35b7a4da48))
+* **web:** use window.location.origin for Better Auth client baseURL ([efb97ff](https://github.com/haunguyendev/portfolio-v2/commit/efb97ff52e6f0989a7ae0be53061c428db1da464))
+
 ## [1.4.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.3.0...v1.4.0) (2026-03-18)
 
 
