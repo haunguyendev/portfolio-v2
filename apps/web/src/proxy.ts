@@ -20,8 +20,9 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(loginUrl)
     }
 
-    // Verify session with Better Auth API
-    const verifyUrl = new URL('/api/auth/get-session', request.url)
+    // Verify session internally (avoid HTTPS self-call in Docker)
+    const internalOrigin = `http://localhost:${process.env.PORT ?? 3000}`
+    const verifyUrl = new URL('/api/auth/get-session', internalOrigin)
     const res = await fetch(verifyUrl.toString(), {
       headers: {
         cookie: request.headers.get('cookie') ?? '',
