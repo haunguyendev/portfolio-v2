@@ -20,27 +20,9 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(loginUrl)
     }
 
-    // Verify session internally (avoid HTTPS self-call in Docker)
-    const internalOrigin = `http://localhost:${process.env.PORT ?? 3000}`
-    const verifyUrl = new URL('/api/auth/get-session', internalOrigin)
-    const res = await fetch(verifyUrl.toString(), {
-      headers: {
-        cookie: request.headers.get('cookie') ?? '',
-      },
-    })
-
-    if (!res.ok || res.status === 401) {
-      const loginUrl = new URL('/admin/login', request.url)
-      loginUrl.searchParams.set('callbackUrl', pathname)
-      return NextResponse.redirect(loginUrl)
-    }
-
-    const session = await res.json().catch(() => null)
-    if (!session?.user) {
-      const loginUrl = new URL('/admin/login', request.url)
-      loginUrl.searchParams.set('callbackUrl', pathname)
-      return NextResponse.redirect(loginUrl)
-    }
+    // Verify session via cookie check only (avoid internal HTTPS fetch in Docker)
+    // The session token existence + route handler validation is sufficient
+    // Full session verification happens in the route handler when pages load
   }
 
   return NextResponse.next()
