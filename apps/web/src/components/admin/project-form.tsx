@@ -45,6 +45,14 @@ function slugify(text: string) {
   return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
 }
 
+/** Ensure URL has https:// prefix to prevent internal routing */
+function normalizeUrl(url: string): string {
+  const trimmed = url.trim()
+  if (!trimmed) return trimmed
+  if (/^https?:\/\//i.test(trimmed)) return trimmed
+  return `https://${trimmed}`
+}
+
 export function ProjectForm({ initialData }: ProjectFormProps) {
   const router = useRouter()
   const isEdit = !!initialData?.id
@@ -86,8 +94,8 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
         image: image || undefined,
         technologies,
         category: category || undefined,
-        github: github || undefined,
-        demo: demo || undefined,
+        github: github ? normalizeUrl(github) : undefined,
+        demo: demo ? normalizeUrl(demo) : undefined,
         featured,
         role: role || undefined,
         teamSize: teamSize || undefined,

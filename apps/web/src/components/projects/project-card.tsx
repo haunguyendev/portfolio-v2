@@ -3,6 +3,12 @@ import { Github, ExternalLink, User, Users, TrendingUp, Calendar, Briefcase, Hea
 import { Badge } from '@/components/ui/badge'
 import type { Project } from '@/types'
 
+/** Ensure URL has https:// prefix to prevent internal routing */
+function ensureAbsoluteUrl(url: string): string {
+  if (/^https?:\/\//i.test(url)) return url
+  return `https://${url}`
+}
+
 interface ProjectCardProps {
   project: Project
 }
@@ -95,7 +101,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <div className="flex gap-3 pt-1">
             {project.links.github && (
               <a
-                href={project.links.github}
+                href={ensureAbsoluteUrl(project.links.github)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -106,7 +112,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             )}
             {project.links.demo && (
               <a
-                href={project.links.demo}
+                href={ensureAbsoluteUrl(project.links.demo)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
