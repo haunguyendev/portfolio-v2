@@ -11,7 +11,7 @@ import { Timeline } from '@/components/about/timeline'
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'Learn more about Kane Nguyen — a Software Engineer with experience building modern web applications.',
+    'Learn more about Kane Nguyen — a backend-focused full-stack engineer building AI-integrated platforms and production systems.',
 }
 
 export default function AboutPage() {

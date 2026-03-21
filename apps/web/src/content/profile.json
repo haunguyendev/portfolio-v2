@@ -1,26 +1,26 @@
 {
   "name": "Kane Nguyen",
   "fullName": "Trung Hau Nguyen",
-  "title": "Software Engineer",
+  "title": "Backend-Focused Full-stack Engineer",
   "location": "Ho Chi Minh City, Vietnam",
   "timezone": "GMT+7",
   "avatar": "/images/hero/kane-avatar.jpg",
   "heroPhoto": "/images/hero/kane-photo.jpg",
   "resumePath": "/resume.pdf",
-  "titles": ["Software Engineer", "Fullstack Developer", "AI-Augmented Builder"],
+  "titles": ["Backend-Focused Full-stack Engineer", "AI-Integrated Platform Builder", "Production Systems Engineer"],
   "bio": {
-    "hero": "Fullstack developer specializing in AI chatbot platforms — integrated multiple social channels for enterprise clients. I leverage AI tools to ship faster and deliver end-to-end, from backend APIs to mobile apps.",
+    "hero": "I build production-grade backend systems, AI-integrated chatbot platforms, and full-stack products that actually ship. My work spans backend APIs, multi-channel enterprise integrations, and the frontend/mobile surfaces teams use every day.",
     "aboutPreview": [
-      "I build production systems end-to-end — from NestJS + GraphQL backends to React frontends and React Native mobile apps. At my current role, I develop AI chatbot platforms with multi-channel social integrations for enterprise clients.",
-      "I'm a fast learner who dives deep into new tech when the project needs it — from setting up Kubernetes staging environments to picking up React Native for mobile. Open to freelance and remote collaboration."
+      "I build production systems end-to-end — from NestJS + GraphQL backends to React frontends and React Native mobile apps. At my current role, I work on AI chatbot platforms with multi-channel social integrations for enterprise clients.",
+      "I learn fast when the project demands it, but I care more about shipping reliable systems than collecting buzzwords. Comfortable across backend APIs, product delivery, Docker-based deployment, and the glue work that makes software useful in production."
     ],
-    "full": "Fullstack developer with 1+ year building AI chatbot platforms — NestJS + GraphQL backends, React/Next.js dashboards, React Native mobile apps. Integrated multiple social channels for enterprise clients. Previously led a 10-member intern team at FPT Software. Open to freelance, remote, and full-time opportunities.",
-    "contact": "Open to collaboration — freelance, remote, or full-time opportunities. Let's build something together."
+    "full": "Backend-focused full-stack engineer building AI-integrated platforms and production systems. I work across NestJS + GraphQL backends, React/Next.js dashboards, React Native mobile apps, and deployment workflows — with a strong bias toward shipping software that solves real operational problems. Previously led a 10-member intern team at FPT Software. Open to freelance, remote, and full-time opportunities.",
+    "contact": "Available for backend-focused full-stack roles, freelance product work, and remote collaboration across GMT+7."
   },
   "stats": [
-    { "value": "1yr", "label": "Shipping Production Code" },
-    { "value": "9", "label": "Production Apps" },
-    { "value": "10+", "label": "Tools in My Stack" }
+    { "value": "9", "label": "Production Apps Shipped" },
+    { "value": "3+", "label": "Social Channels Integrated" },
+    { "value": "46+", "label": "APIs Built in Smart Farm Manager" }
   ],
   "contact": {
     "email": "haunt150603@gmail.com",

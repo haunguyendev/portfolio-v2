@@ -58,11 +58,11 @@ export function AnimatedCtaCard() {
 
         <div className="text-center">
           <h3 className="mb-2 text-xl font-bold text-foreground">
-            Grab My Resume
+            See the Work, Then Read the Resume
           </h3>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Download my CV to learn more about my experience, skills, and
-            projects.
+            Download my resume for the condensed version — backend systems,
+            full-stack delivery, production projects, and the context behind the build decisions.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export function AnimatedCtaCard() {
             transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
           />
           <Download className="relative size-4 transition-transform group-hover:translate-y-0.5" />
-          <span className="relative">Download CV</span>
+          <span className="relative">Download Resume</span>
           <Sparkles className="relative size-4 text-yellow-400" />
         </motion.a>
       </div>

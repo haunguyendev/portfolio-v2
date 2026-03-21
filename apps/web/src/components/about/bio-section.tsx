@@ -41,7 +41,7 @@ export function BioSection() {
             {profile.name}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            {profile.title} — Vietnam
+            {profile.title} — Ho Chi Minh City, Vietnam
           </p>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">

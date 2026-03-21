@@ -45,7 +45,7 @@ export function ContactSection() {
     <section className="section-spacing">
       <div className="container-main">
         <h2 className="mb-10 text-center text-2xl font-bold text-foreground md:text-3xl">
-          Let&apos;s Work Together
+          Available for Backend-Focused Full-stack Work
         </h2>
 
         {/* Grid 1:1 */}
