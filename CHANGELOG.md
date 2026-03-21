@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/haunguyendev/portfolio-v2/compare/v1.5.0...v1.5.1) (2026-03-21)
+
+
+### Bug Fixes
+
+* **web:** normalize project URLs with https:// prefix to prevent internal routing ([473771b](https://github.com/haunguyendev/portfolio-v2/commit/473771be161f784f6e6cd06bbbfa63450daab4ed))
+
 ## [1.5.0](https://github.com/haunguyendev/portfolio-v2/compare/v1.4.0...v1.5.0) (2026-03-19)
 
 
