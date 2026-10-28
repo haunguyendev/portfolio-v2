@@ -1,3 +1,5 @@
-import AdminNotFound from '../../not-found'
+import { notFound } from 'next/navigation'
 
-export default AdminNotFound
+export default function AdminUnknownPage() {
+  notFound()
+}

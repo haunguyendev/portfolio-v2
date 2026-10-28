@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/layout/theme-provider'
+import { SecretPortal } from '@/components/shared/secret-portal'
 import { ChatWidget } from '@/components/chat/chat-widget'
 import { Toaster } from 'sonner'
 import { SITE_URL } from '@/lib/constants'
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex min-h-screen flex-col`}>
         <ThemeProvider>
           {children}
+          <SecretPortal />
           <ChatWidget />
           <Toaster position="top-right" />
         </ThemeProvider>
