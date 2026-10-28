@@ -50,6 +50,9 @@ jobs:
       - name: Typecheck api
         run: corepack pnpm --filter api typecheck
 
+      - name: Size selection test
+        run: node --test apps/web/scripts/initial-js-size.test.mjs
+
       - name: Velite
         working-directory: apps/web
         run: npx velite build
@@ -136,3 +139,11 @@ jobs:
               echo "_Lighthouse step did not run._"
             fi
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: apps/web/.lighthouseci
+          if-no-files-found: warn
