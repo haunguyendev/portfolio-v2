@@ -12,7 +12,7 @@ export function MdxContent({ code }: { code: string }) {
   }, [code])
 
   return (
-    <div className="prose prose-neutral max-w-none dark:prose-invert prose-headings:scroll-mt-20 prose-a:underline-offset-4 prose-pre:p-0">
+    <div className="prose prose-neutral max-w-none prose-headings:scroll-mt-20 prose-a:underline-offset-4 prose-pre:p-0">
       <Component components={mdxComponents} />
     </div>
   )

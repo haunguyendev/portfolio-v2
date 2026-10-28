@@ -153,7 +153,7 @@ export function TiptapRenderer({ content, className }: TiptapRendererProps) {
   const doc = content as TiptapNode
 
   return (
-    <div className={className ?? 'prose prose-sm dark:prose-invert max-w-none'}>
+    <div className={className ?? 'prose prose-sm max-w-none'}>
       {doc.type === 'doc' && doc.content ? renderNodes(doc.content) : renderNode(doc, 0)}
     </div>
   )

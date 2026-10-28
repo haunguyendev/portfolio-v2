@@ -1,0 +1,170 @@
+
+> @portfolio/web@0.1.0 test:contrast /workspace/apps/web
+> node --test scripts/contrast.test.mjs scripts/design-route.test.mjs scripts/polaroid-frame.test.mjs scripts/theme-scope.test.mjs scripts/initial-js-size.test.mjs scripts/rendered-theme.test.mjs
+
+TAP version 13
+# Subtest: polaroid palette hex values match the spec
+ok 1 - polaroid palette hex values match the spec
+  ---
+  duration_ms: 1.064681
+  type: 'test'
+  ...
+# Subtest: tailwind theme points at the polaroid variables
+ok 2 - tailwind theme points at the polaroid variables
+  ---
+  duration_ms: 1.292551
+  type: 'test'
+  ...
+# Subtest: public semantic colors use the polaroid background and text
+ok 3 - public semantic colors use the polaroid background and text
+  ---
+  duration_ms: 0.193378
+  type: 'test'
+  ...
+# Subtest: text, muted, link, and accent clear 4.5:1 on the background
+ok 4 - text, muted, link, and accent clear 4.5:1 on the background
+  ---
+  duration_ms: 0.237779
+  type: 'test'
+  ...
+# Subtest: caption ink clears 4.5:1 on polaroid paper
+ok 5 - caption ink clears 4.5:1 on polaroid paper
+  ---
+  duration_ms: 0.223195
+  type: 'test'
+  ...
+# Subtest: dim clears 3:1 on the background for large text
+ok 6 - dim clears 3:1 on the background for large text
+  ---
+  duration_ms: 0.119044
+  type: 'test'
+  ...
+# Subtest: the design demo is noindex and absent from the sitemap
+ok 7 - the design demo is noindex and absent from the sitemap
+  ---
+  duration_ms: 0.749054
+  type: 'test'
+  ...
+# Subtest: page loadable chunks count when the homepage script tags omit them
+ok 8 - page loadable chunks count when the homepage script tags omit them
+  ---
+  duration_ms: 1.359382
+  type: 'test'
+  ...
+# Subtest: a layout dynamic chunk is counted only when the page list includes it
+ok 9 - a layout dynamic chunk is counted only when the page list includes it
+  ---
+  duration_ms: 0.247101
+  type: 'test'
+  ...
+# Subtest: pageLoadableFiles returns only the files the page manifest lists
+ok 10 - pageLoadableFiles returns only the files the page manifest lists
+  ---
+  duration_ms: 0.180715
+  type: 'test'
+  ...
+# Subtest: a homepage module script missing from the measured set throws
+ok 11 - a homepage module script missing from the measured set throws
+  ---
+  duration_ms: 0.372099
+  type: 'test'
+  ...
+# Subtest: an empty size-limit glob says the glob matched no files
+ok 12 - an empty size-limit glob says the glob matched no files
+  ---
+  duration_ms: 0.107126
+  type: 'test'
+  ...
+# Subtest: a real 130000 byte limit is left for size-limit to fail
+ok 13 - a real 130000 byte limit is left for size-limit to fail
+  ---
+  duration_ms: 0.077158
+  type: 'test'
+  ...
+# Subtest: a parsed limit other than 130000 is still named as that number
+ok 14 - a parsed limit other than 130000 is still named as that number
+  ---
+  duration_ms: 0.189595
+  type: 'test'
+  ...
+# Subtest: the five frames use distinct fills and rings
+ok 15 - the five frames use distinct fills and rings
+  ---
+  duration_ms: 0.840215
+  type: 'test'
+  ...
+# Subtest: the caption mark is 4px by 40px
+ok 16 - the caption mark is 4px by 40px
+  ---
+  duration_ms: 0.146939
+  type: 'test'
+  ...
+# Subtest: a blurred photo dims and restores on hover and focus
+ok 17 - a blurred photo dims and restores on hover and focus
+  ---
+  duration_ms: 0.13255
+  type: 'test'
+  ...
+# Subtest: admin light renders its own colors and no public chrome
+ok 18 - admin light renders its own colors and no public chrome
+  ---
+  duration_ms: 7412.068914
+  type: 'test'
+  ...
+# Subtest: a public page with no dark class keeps the polaroid palette
+ok 19 - a public page with no dark class keeps the polaroid palette
+  ---
+  duration_ms: 1683.383017
+  type: 'test'
+  ...
+# Subtest: dark variants and prose-invert do not restyle a page with no dark class
+ok 20 - dark variants and prose-invert do not restyle a page with no dark class
+  ---
+  duration_ms: 278.434488
+  type: 'test'
+  ...
+# Subtest: admin light theme paints its own text and background
+ok 21 - admin light theme paints its own text and background
+  ---
+  duration_ms: 1.219671
+  type: 'test'
+  ...
+# Subtest: admin dark theme overrides text and background
+ok 22 - admin dark theme overrides text and background
+  ---
+  duration_ms: 1.953984
+  type: 'test'
+  ...
+# Subtest: the public logo is the dark mark with no dark: switch
+ok 23 - the public logo is the dark mark with no dark: switch
+  ---
+  duration_ms: 0.35916
+  type: 'test'
+  ...
+# Subtest: public sections do not swap background with the dark class
+ok 24 - public sections do not swap background with the dark class
+  ---
+  duration_ms: 0.273611
+  type: 'test'
+  ...
+# Subtest: the login page sits in the admin theme
+ok 25 - the login page sits in the admin theme
+  ---
+  duration_ms: 0.234591
+  type: 'test'
+  ...
+# Subtest: the theme menu portals into the admin theme when that node exists
+ok 26 - the theme menu portals into the admin theme when that node exists
+  ---
+  duration_ms: 0.205043
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 10311.435601

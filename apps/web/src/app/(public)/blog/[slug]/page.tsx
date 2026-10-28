@@ -113,7 +113,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </header>
 
             {/* TipTap content */}
-            <TiptapRenderer content={post.content} className="prose prose-neutral dark:prose-invert max-w-none" />
+            <TiptapRenderer content={post.content} className="prose prose-neutral max-w-none" />
           </article>
 
           {/* Sidebar placeholder (no TOC for API-driven content) */}

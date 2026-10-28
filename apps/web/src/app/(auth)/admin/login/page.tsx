@@ -61,7 +61,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="admin-theme flex min-h-screen items-center justify-center bg-background px-4">
       <Suspense>
         <LoginForm />
       </Suspense>

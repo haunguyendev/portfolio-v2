@@ -10,14 +10,11 @@ import { NextRequest, NextResponse } from 'next/server'
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Allow login page through
   if (pathname === '/admin/login') {
     return NextResponse.next()
   }
 
-  // Protect all /admin/* routes
   if (pathname.startsWith('/admin')) {
-    // Check for session token cookie (supports both secure and non-secure variants)
     const sessionToken =
       request.cookies.get('better-auth.session_token')?.value ??
       request.cookies.get('__Secure-better-auth.session_token')?.value
@@ -28,9 +25,6 @@ export function middleware(request: NextRequest) {
       loginUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(loginUrl)
     }
-
-    // Cookie exists - let request through
-    // Full session validation happens server-side in page components
   }
 
   return NextResponse.next()

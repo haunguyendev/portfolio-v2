@@ -33,5 +33,42 @@
       "text": "Existing lint and build still pass.",
       "pass": true
     }
-  ]
+  ],
+  "m1": {
+    "task": "M1",
+    "issue": 13,
+    "passes": true,
+    "criteria": [
+      {
+        "id": "tokens",
+        "text": "Tokens exist as CSS vars and Tailwind theme values with the exact hex values. Public pages render dark by default.",
+        "pass": true
+      },
+      {
+        "id": "polaroid-demo",
+        "text": "The Polaroid component has 5 variants x 2 states, all visible on the internal demo page. The demo page is noindex and not in the sitemap.",
+        "pass": true
+      },
+      {
+        "id": "contrast",
+        "text": "pnpm --filter @portfolio/web test:contrast passes and runs in CI as a blocking step. A low-contrast text value fails the test.",
+        "pass": true
+      },
+      {
+        "id": "fonts",
+        "text": "Fonts are loaded via next/font with the vietnamese subset. Vietnamese text with diacritics renders on the demo page.",
+        "pass": true
+      },
+      {
+        "id": "size",
+        "text": "Lint, typecheck, and build pass. Initial JS on / does not grow by more than 5 KB versus polaroid.",
+        "pass": true
+      },
+      {
+        "id": "screenshots",
+        "text": "Screenshots of the demo page and / at 375/768/1280 are embedded in the PR.",
+        "pass": true
+      }
+    ]
+  }
 }

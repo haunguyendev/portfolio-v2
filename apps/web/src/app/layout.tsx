@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { ThemeProvider } from '@/components/layout/theme-provider'
 import { SecretPortal } from '@/components/shared/secret-portal'
 import { ChatWidget } from '@/components/chat/chat-widget'
@@ -9,7 +7,7 @@ import { Toaster } from 'sonner'
 import { SITE_URL } from '@/lib/constants'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin', 'vietnamese'] })
 
 export const metadata: Metadata = {
   title: {
@@ -17,7 +15,7 @@ export const metadata: Metadata = {
     template: '%s | Kane Nguyen',
   },
   description:
-    "Software Engineer portfolio — projects, blog, and diary by Kane Nguyen.",
+    'Software Engineer portfolio — projects, blog, and diary by Kane Nguyen.',
   metadataBase: new URL(SITE_URL),
   openGraph: {
     type: 'website',
@@ -51,14 +49,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} flex min-h-screen flex-col`}>
         <ThemeProvider>
-          {/* Gradient accent bar */}
-          <div className="h-1 gradient-accent" aria-hidden="true" />
-
-          <Header />
-
-          <main className="flex-1">{children}</main>
-
-          <Footer />
+          {children}
           <SecretPortal />
           <ChatWidget />
           <Toaster richColors position="top-right" />

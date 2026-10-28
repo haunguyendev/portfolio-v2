@@ -10,12 +10,12 @@ const expectedSizeLimit = 130000
 const homepageHtml = path.join(webRoot, '.next/server/app/index.html')
 const clientManifestPath = path.join(
   webRoot,
-  '.next/server/app/page_client-reference-manifest.js',
+  '.next/server/app/(public)/page_client-reference-manifest.js',
 )
 const buildManifestPath = path.join(webRoot, '.next/build-manifest.json')
 const pageLoadableManifestPath = path.join(
   webRoot,
-  '.next/server/app/page/react-loadable-manifest.json',
+  '.next/server/app/(public)/page/react-loadable-manifest.json',
 )
 
 function fail(message) {
@@ -55,20 +55,20 @@ function scanJsonObject(source, openAt) {
 }
 
 function parseClientReferenceManifest(source) {
-  const marker = 'globalThis.__RSC_MANIFEST["/page"]'
+  const marker = 'globalThis.__RSC_MANIFEST["/(public)/page"]'
   const markerAt = source.indexOf(marker)
   if (markerAt < 0) {
-    throw new Error('client-reference manifest has no "/page" assignment')
+    throw new Error('client-reference manifest has no "/(public)/page" assignment')
   }
   const equalsAt = source.indexOf('=', markerAt + marker.length)
   if (equalsAt < 0) {
-    throw new Error('client-reference manifest "/page" assignment is missing')
+    throw new Error('client-reference manifest "/(public)/page" assignment is missing')
   }
   let cursor = equalsAt + 1
   while (cursor < source.length && /\s/.test(source[cursor])) cursor += 1
   if (source[cursor] !== '{') {
     throw new Error(
-      'client-reference manifest "/page" assignment is not an object',
+      'client-reference manifest "/(public)/page" assignment is not an object',
     )
   }
   return JSON.parse(scanJsonObject(source, cursor))
@@ -151,9 +151,9 @@ function assertHomeRoute() {
   const keys = Object.entries(routes)
     .filter(([, route]) => route === '/')
     .map(([key]) => key)
-  if (keys.length !== 1 || keys[0] !== '/page') {
+  if (keys.length !== 1 || keys[0] !== '/(public)/page') {
     throw new Error(
-      `route / must map to exactly /page, got ${JSON.stringify(keys)}`,
+      `route / must map to exactly /(public)/page, got ${JSON.stringify(keys)}`,
     )
   }
 }
@@ -305,6 +305,14 @@ function runSizeLimit(configPath) {
   })
 }
 
+export function explainSizeCheck(check) {
+  if (check && check.sizeLimit === undefined) return 'glob matched no files'
+  if (!check || check.sizeLimit !== expectedSizeLimit) {
+    return `size-limit parsed the limit string as ${String(check?.sizeLimit)}, which is something other than 130000 metric bytes`
+  }
+  return null
+}
+
 function reportedCheck(stdout) {
   let parsed
   try {
@@ -344,13 +352,11 @@ async function main() {
     process.stdout.write(result.stdout)
     process.stderr.write(result.stderr)
     const check = reportedCheck(result.stdout)
-    const sizeLimit = check?.sizeLimit
-    if (sizeLimit !== expectedSizeLimit) {
-      console.error(
-        `size-limit parsed the limit string as ${String(sizeLimit)}, which is something other than 130000 metric bytes`,
-      )
+    const explanation = explainSizeCheck(check)
+    if (explanation) {
+      console.error(explanation)
       status = 1
-    } else if (check?.size !== gzipTotal) {
+    } else if (check.size !== gzipTotal) {
       console.error(
         `size-limit reported ${String(check?.size)} gzip bytes, gzip9 sum is ${gzipTotal}`,
       )

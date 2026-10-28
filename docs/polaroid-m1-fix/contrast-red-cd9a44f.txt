@@ -1,0 +1,23 @@
+Replay of cd9a44fa32563cd57c8b8145fa84a278f286e798
+node --test apps/web/scripts/contrast.test.mjs apps/web/scripts/polaroid-frame.test.mjs
+exit 1
+tests 9, pass 2, fail 7
+
+polaroid palette hex values match the spec
+  actual #161311
+  expected #16130F
+
+caption ink clears 4.5:1 on polaroid paper
+  --polaroid-ink-memory is missing a 6-digit hex value in globals.css
+
+dim clears 3:1 on the background for large text
+  --polaroid-dim is missing a 6-digit hex value in globals.css
+
+the five frames use distinct fills and rings
+  memory class string has no bg-polaroid-frame-memory
+
+the caption mark is 4px by 40px
+  class string has no h-1 w-10
+
+a blurred photo dims and restores on hover and focus
+  class string has no blur-[3px]
