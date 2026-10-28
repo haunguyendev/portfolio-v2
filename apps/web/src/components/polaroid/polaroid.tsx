@@ -31,7 +31,7 @@ const captionMark: Record<PolaroidVariant, string> = {
 }
 
 const blurredPhoto =
-  'blur-[3px] saturate-50 brightness-75 opacity-70 group-hover:blur-0 group-hover:saturate-100 group-hover:brightness-100 group-hover:opacity-100 group-focus-within:blur-0 group-focus-within:saturate-100 group-focus-within:brightness-100 group-focus-within:opacity-100'
+  'blur-[3px] saturate-50 brightness-75 opacity-70 group-hover:blur-[0px] group-hover:saturate-100 group-hover:brightness-100 group-hover:opacity-100 group-focus-within:blur-[0px] group-focus-within:saturate-100 group-focus-within:brightness-100 group-focus-within:opacity-100'
 
 type PolaroidProps = VariantProps<typeof polaroidFrame> & {
   variant: PolaroidVariant
