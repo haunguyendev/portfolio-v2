@@ -17,7 +17,7 @@ export function ErrorView({
     <div className="section-spacing">
       <div className="container-main">
         <div className="flex flex-col items-center justify-center py-16 text-center md:py-24">
-          <div className="mb-6 rounded-full bg-red-50 p-4 dark:bg-red-950/50">
+          <div className="mb-6 rounded-full bg-red-50 p-4">
             <span className="text-2xl font-bold text-red-500">!</span>
           </div>
 

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const KNOWN_PUBLIC =
-  /^\/(?:$|about|projects|blog|diary|design|feed\.xml|robots\.txt|sitemap\.xml|icon\.svg|favicon\.ico|api(?:\/|$)|blog\/|diary\/)/
-
 /**
- * Admin auth runs here; unknown public URLs get a 404 status while still rendering
- * the public catch-all + (public)/not-found page (200 body with shell).
+ * Middleware for admin route protection.
+ * Checks for Better Auth session token cookie before allowing access to /admin/* routes.
+ *
+ * Note: This runs on the Edge runtime, so we can only check cookie existence.
+ * Full session verification happens in route handlers when pages load.
  */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -25,20 +25,11 @@ export function middleware(request: NextRequest) {
       loginUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(loginUrl)
     }
-
-    return NextResponse.next()
-  }
-
-  if (!KNOWN_PUBLIC.test(pathname)) {
-    return NextResponse.next({ status: 404 })
   }
 
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: [
-    '/admin/:path*',
-    '/((?!_next/static|_next/image|favicon.ico|icon.svg|robots.txt|sitemap.xml|feed.xml).*)',
-  ],
+  matcher: ['/admin/:path*'],
 }

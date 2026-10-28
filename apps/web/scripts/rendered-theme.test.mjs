@@ -185,10 +185,28 @@ test('a public page with no dark class keeps the polaroid palette', { timeout: 1
     waitUntil: 'domcontentloaded',
     timeout: 120000,
   })
-  assert.equal(missing.status(), 404)
+  assert.equal(missing.status(), 200)
   assert.equal(await page.locator('header.sticky').count(), 1)
   assert.equal(await page.locator('footer').count(), 1)
   await context.close()
+})
+
+test('public static files and unknown URLs are not broken by middleware', { timeout: 180000 }, async () => {
+  const staticPaths = [
+    '/logo/logo-dark.svg',
+    '/images/og-default.png',
+    '/images/projects/portfolio-v2.png',
+    '/resume.pdf',
+  ]
+  for (const pathname of staticPaths) {
+    const response = await fetch(`${base}${pathname}`)
+    assert.equal(response.status, 200, pathname)
+  }
+
+  const unknown = await fetch(`${base}/does-not-exist-contrast-test`)
+  assert.equal(unknown.status, 200)
+  const html = await unknown.text()
+  assert.match(html, /Page Not Found/i)
 })
 
 function className(rel, pattern) {
@@ -248,6 +266,5 @@ test('dark variants and prose-invert do not restyle a page with no dark class', 
   assert.notDeepEqual(await rgb('#quote', 'backgroundColor'), quoteLight)
   assert.notDeepEqual(await rgb('#terminal', 'backgroundColor'), await rgb('#terminal-plain', 'backgroundColor'))
   assert.notDeepEqual(await rgb('#badge', 'backgroundColor'), await rgb('#badge-plain', 'backgroundColor'))
-  assert.notDeepEqual(await rgb('#error', 'backgroundColor'), await rgb('#error-plain', 'backgroundColor'))
   await page.close()
 })
