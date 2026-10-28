@@ -10,24 +10,36 @@ const source = fs.readFileSync(
   'utf8',
 )
 
+function variantClasses(name) {
+  const match = source.match(new RegExp(`${name}:\\s*'([^']*)'`))
+  assert.ok(match, `${name} is missing its class string`)
+  return match[1]
+}
+
 test('the five frames use distinct fills and rings', () => {
-  assert.match(source, /memory:[^}]*bg-polaroid-frame-memory/)
-  assert.match(source, /memory:[^}]*text-polaroid-ink-memory/)
-  assert.match(source, /memory:[^}]*border-0/)
-  assert.match(source, /project:[^}]*bg-polaroid-paper/)
-  assert.match(source, /project:[^}]*text-polaroid-ink/)
-  assert.match(source, /project:[^}]*ring-2/)
-  assert.match(source, /project:[^}]*ring-polaroid-accent/)
-  assert.match(source, /project:[^}]*ring-offset-2/)
-  assert.match(source, /project:[^}]*ring-offset-polaroid-bg/)
-  assert.match(source, /work:[^}]*ring-2/)
-  assert.match(source, /work:[^}]*ring-polaroid-link/)
-  assert.match(source, /work:[^}]*ring-offset-polaroid-bg/)
-  assert.match(source, /lab:[^}]*outline-dashed/)
-  assert.match(source, /lab:[^}]*outline-polaroid-muted/)
-  assert.match(source, /post:[^}]*ring-2/)
-  assert.match(source, /post:[^}]*ring-polaroid-text/)
-  assert.match(source, /post:[^}]*ring-offset-polaroid-bg/)
+  const memory = variantClasses('memory')
+  const project = variantClasses('project')
+  const work = variantClasses('work')
+  const lab = variantClasses('lab')
+  const post = variantClasses('post')
+
+  assert.match(memory, /bg-polaroid-frame-memory/)
+  assert.match(memory, /text-polaroid-ink-memory/)
+  assert.match(memory, /border-0/)
+  assert.match(project, /bg-polaroid-paper/)
+  assert.match(project, /text-polaroid-ink/)
+  assert.match(project, /ring-2/)
+  assert.match(project, /ring-polaroid-accent/)
+  assert.match(project, /ring-offset-2/)
+  assert.match(project, /ring-offset-polaroid-bg/)
+  assert.match(work, /ring-2/)
+  assert.match(work, /ring-polaroid-link/)
+  assert.match(work, /ring-offset-polaroid-bg/)
+  assert.match(lab, /outline-dashed/)
+  assert.match(lab, /outline-polaroid-muted/)
+  assert.match(post, /ring-2/)
+  assert.match(post, /ring-polaroid-text/)
+  assert.match(post, /ring-offset-polaroid-bg/)
 })
 
 test('the caption mark is 4px by 40px', () => {

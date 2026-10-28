@@ -18,6 +18,10 @@
   --color-polaroid-border: var(--polaroid-border);
   --color-polaroid-paper: var(--polaroid-paper);
   --color-polaroid-ink: var(--polaroid-ink);
+  --color-polaroid-dim: var(--polaroid-dim);
+  --color-polaroid-lamp: var(--polaroid-lamp);
+  --color-polaroid-frame-memory: var(--polaroid-frame-memory);
+  --color-polaroid-ink-memory: var(--polaroid-ink-memory);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -62,10 +66,14 @@
   --polaroid-muted: #A39A8C;
   --polaroid-accent: #F2C14E;
   --polaroid-link: #9CC3D5;
-  --polaroid-surface: #161311;
+  --polaroid-surface: #16130F;
   --polaroid-border: #3F372F;
-  --polaroid-paper: #F4EFE6;
-  --polaroid-ink: #1C1814;
+  --polaroid-paper: #F4EEE3;
+  --polaroid-ink: #1A1612;
+  --polaroid-dim: #7A7164;
+  --polaroid-lamp: #E8A75A;
+  --polaroid-frame-memory: #C9C1B4;
+  --polaroid-ink-memory: #2A251F;
 
   --background: var(--polaroid-bg);
   --foreground: var(--polaroid-text);
