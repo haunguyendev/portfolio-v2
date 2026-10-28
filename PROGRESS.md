@@ -28,3 +28,28 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 
 - Should M2 treat the hero photo as the LCP problem, or the 318 KB of initial JavaScript, or both? On the slowest local homepage run, image load time was 87% of a 4374 ms LCP. The median LCP after that was still about 3468 ms. `/projects` LCP also fails the 2500 ms cap.
 - `/projects` accessibility is 0.94 on every run. The failing audits are `color-contrast` and `heading-order`. Fixing them is UI work, so it is out of scope here.
+
+## M1
+
+### Done
+
+- Public pages use the Polaroid palette on `:root`. Background `#0B0A09`, text `#E8E1D6`, muted `#A39A8C`, accent `#F2C14E`, link `#9CC3D5`. Tailwind theme colors read those variables.
+- Surface `#161311`, border `#3F372F`, paper `#F4EFE6`, and ink `#1C1814` are local choices. `plan-v4.md` is not in this checkout.
+- Admin keeps the previous light and dark shadcn tokens on `.admin-theme`.
+- `Polaroid` has variants `memory`, `project`, `work`, `lab`, and `post`, each with `clear` and `blurred`. The demo is `/design`. It sends `noindex, nofollow`. `sitemap.ts` does not list it. `robots.ts` disallows `/design`.
+- `Inter` loads `latin` and `vietnamese` through `next/font`. The demo prints Vietnamese diacritics.
+- `pnpm --filter @portfolio/web test:contrast` reads the hex values from `globals.css` and computes WCAG ratios. It is a blocking step in `pr-ci.yml`. That workflow also runs on pull requests to `polaroid`.
+- A temporary text color `#2A2622` failed the contrast test at 1.32:1. The file was restored. See `decisions.tsv`.
+- Local baseline initial JS on `/` is 317813 gzip9 bytes. After this change it is 317813. Delta 0.
+
+### Not done
+
+- GitHub Actions on the pushed head, and the Vercel preview screenshots, are recorded in the pull request after this commit.
+
+### Next step
+
+Open the draft pull request into `polaroid`. Do not merge. Do not push `main`.
+
+### Open questions
+
+- M2 should confirm the surface, border, paper, and ink hex values against plan-v4 §0 if that file is available. The five specified colors are already exact.

@@ -9,6 +9,15 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --color-polaroid-bg: var(--polaroid-bg);
+  --color-polaroid-text: var(--polaroid-text);
+  --color-polaroid-muted: var(--polaroid-muted);
+  --color-polaroid-accent: var(--polaroid-accent);
+  --color-polaroid-link: var(--polaroid-link);
+  --color-polaroid-surface: var(--polaroid-surface);
+  --color-polaroid-border: var(--polaroid-border);
+  --color-polaroid-paper: var(--polaroid-paper);
+  --color-polaroid-ink: var(--polaroid-ink);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,6 +57,51 @@
 }
 
 :root {
+  --polaroid-bg: #0B0A09;
+  --polaroid-text: #E8E1D6;
+  --polaroid-muted: #A39A8C;
+  --polaroid-accent: #F2C14E;
+  --polaroid-link: #9CC3D5;
+  --polaroid-surface: #161311;
+  --polaroid-border: #3F372F;
+  --polaroid-paper: #F4EFE6;
+  --polaroid-ink: #1C1814;
+
+  --background: var(--polaroid-bg);
+  --foreground: var(--polaroid-text);
+  --card: var(--polaroid-surface);
+  --card-foreground: var(--polaroid-text);
+  --popover: var(--polaroid-surface);
+  --popover-foreground: var(--polaroid-text);
+  --primary: var(--polaroid-text);
+  --primary-foreground: var(--polaroid-bg);
+  --secondary: var(--polaroid-surface);
+  --secondary-foreground: var(--polaroid-text);
+  --muted: var(--polaroid-surface);
+  --muted-foreground: var(--polaroid-muted);
+  --accent: var(--polaroid-surface);
+  --accent-foreground: var(--polaroid-text);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: var(--polaroid-border);
+  --input: var(--polaroid-border);
+  --ring: var(--polaroid-link);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --radius: 0.625rem;
+  --sidebar: var(--polaroid-surface);
+  --sidebar-foreground: var(--polaroid-text);
+  --sidebar-primary: var(--polaroid-accent);
+  --sidebar-primary-foreground: var(--polaroid-bg);
+  --sidebar-accent: var(--polaroid-border);
+  --sidebar-accent-foreground: var(--polaroid-text);
+  --sidebar-border: var(--polaroid-border);
+  --sidebar-ring: var(--polaroid-link);
+}
+
+.admin-theme {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -71,7 +125,6 @@
   --chart-3: oklch(0.546 0.245 262.881);
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
-  --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -82,7 +135,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark {
+.dark .admin-theme {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

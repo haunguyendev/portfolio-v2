@@ -9,7 +9,7 @@ import { Toaster } from 'sonner'
 import { SITE_URL } from '@/lib/constants'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin', 'vietnamese'] })
 
 export const metadata: Metadata = {
   title: {
