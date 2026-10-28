@@ -44,11 +44,19 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 
 ### Not done
 
-- GitHub Actions on the pushed head, and the Vercel preview screenshots, are recorded in the pull request after this commit.
+- `acceptance.json` `m1.passes` stays false until the GitHub Actions run on the head SHA is green.
+- The Vercel preview URL answers with a login redirect, so the screenshots in the pull request are from `next start` of this branch, not from the protected preview.
 
 ### Next step
 
-Open the draft pull request into `polaroid`. Do not merge. Do not push `main`.
+Keep the pull request as a draft into `polaroid`. Do not merge. Do not push `main`. M2 restyles the homepage on these tokens.
+
+### Preview
+
+- Draft PR: https://github.com/haunguyendev/portfolio-v2/pull/20
+- Preview host: https://portfolio-v2-git-feat-polaroid-m1-design-haunguyendevs-projects.vercel.app
+- Demo path: `/design`
+- Anonymous requests to that host receive `302` to `vercel.com/sso-api`.
 
 ### Open questions
 
