@@ -52,7 +52,7 @@ export default function RootLayout({
           {children}
           <SecretPortal />
           <ChatWidget />
-          <Toaster position="top-right" />
+          <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
     </html>
