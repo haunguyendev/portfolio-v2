@@ -170,6 +170,14 @@ test('a public page with no dark class keeps the polaroid palette', { timeout: 1
   assert.deepEqual([foreground.r, foreground.g, foreground.b], [232, 225, 214])
   const ratio = contrast(foreground, background)
   assert.ok(ratio >= 4.5, `public text is ${ratio.toFixed(2)}:1`)
+
+  const missing = await page.goto(`${base}/does-not-exist`, {
+    waitUntil: 'domcontentloaded',
+    timeout: 120000,
+  })
+  assert.equal(missing.status(), 404)
+  assert.equal(await page.locator('header.sticky').count(), 1)
+  assert.equal(await page.locator('footer').count(), 1)
   await context.close()
 })
 

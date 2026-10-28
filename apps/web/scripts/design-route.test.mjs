@@ -8,7 +8,7 @@ const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 test('the design demo is noindex and absent from the sitemap', () => {
   const page = fs.readFileSync(
-    path.join(webRoot, 'src/app/(internal)/design/page.tsx'),
+    path.join(webRoot, 'src/app/(public)/(internal)/design/page.tsx'),
     'utf8',
   )
   const sitemap = fs.readFileSync(path.join(webRoot, 'src/app/sitemap.ts'), 'utf8')
