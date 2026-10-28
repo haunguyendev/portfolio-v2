@@ -7,6 +7,7 @@
     "dev": "dotenv -e .env -- nest start --watch",
     "start": "dotenv -e .env -- node dist/main",
     "lint": "eslint src",
+    "pretypecheck": "pnpm --filter @portfolio/prisma build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

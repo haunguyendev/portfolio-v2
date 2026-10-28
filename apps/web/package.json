@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "dotenv -e ../../.env -- next dev",
+    "prebuild": "pnpm --filter @portfolio/prisma build",
     "build": "dotenv -e ../../.env -- next build",
     "start": "next start",
     "lint": "eslint",
+    "pretypecheck": "pnpm --filter @portfolio/prisma build",
     "typecheck": "tsc --noEmit",
     "size": "node scripts/initial-js-size.mjs",
     "lhci": "lhci autorun --config=./lighthouserc.json"
