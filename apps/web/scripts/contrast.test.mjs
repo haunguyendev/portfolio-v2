@@ -16,8 +16,6 @@ const requiredHex = {
   '--polaroid-surface': '#16130F',
   '--polaroid-paper': '#F4EEE3',
   '--polaroid-ink': '#1A1612',
-  '--polaroid-dim': '#7A7164',
-  '--polaroid-lamp': '#E8A75A',
   '--polaroid-frame-memory': '#C9C1B4',
   '--polaroid-ink-memory': '#2A251F',
 }
@@ -60,8 +58,6 @@ test('tailwind theme points at the polaroid variables', () => {
   }
   for (const name of [
     '--polaroid-border',
-    '--polaroid-dim',
-    '--polaroid-lamp',
     '--polaroid-frame-memory',
     '--polaroid-ink-memory',
   ]) {
@@ -110,14 +106,4 @@ test('caption ink clears 4.5:1 on polaroid paper', () => {
       `${name} ${foreground} on ${background} is ${ratio.toFixed(2)}:1, below 4.5:1`,
     )
   }
-})
-
-test('dim clears 3:1 on the background for large text', () => {
-  const foreground = token('--polaroid-dim')
-  const background = token('--polaroid-bg')
-  const ratio = contrast(foreground, background)
-  assert.ok(
-    ratio >= 3,
-    `dim ${foreground} on ${background} is ${ratio.toFixed(2)}:1, below 3:1 for text at 24px or larger`,
-  )
 })

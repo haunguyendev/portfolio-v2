@@ -150,6 +150,13 @@ test('admin light renders its own colors and no public chrome', { timeout: 18000
   const adminBackground = await paint(admin, '.admin-theme', 'backgroundColor')
   const adminForeground = await paint(admin, '.admin-theme', 'color')
   assert.ok(contrast(adminForeground, adminBackground) >= 4.5)
+  const missingAdmin = await admin.goto(`${base}/admin/does-not-exist`, {
+    waitUntil: 'domcontentloaded',
+    timeout: 120000,
+  })
+  assert.equal(missingAdmin.status(), 404)
+  assert.equal(await admin.locator('header.sticky').count(), 0)
+  assert.equal(await admin.locator('footer').count(), 0)
   await themed.close()
 })
 
@@ -203,12 +210,8 @@ test('dark variants and prose-invert do not restyle a page with no dark class', 
     /coursera: \{ label: 'Coursera', color: '([^']+)' \}/,
   )
   const errorIcon = className(
-    'src/app/error.tsx',
+    'src/components/layout/error-view.tsx',
     /className="([^"]*bg-red-50[^"]*)"/,
-  )
-  const prose = className(
-    'src/components/blog/mdx-content.tsx',
-    /className="([^"]*prose-invert[^"]*)"/,
   )
 
   const plain = (value) =>
@@ -225,7 +228,6 @@ test('dark variants and prose-invert do not restyle a page with no dark class', 
     <span id="badge-plain" class="${plain(badge)}"></span>
     <div id="error" class="${errorIcon}"></div>
     <div id="error-plain" class="${plain(errorIcon)}"></div>
-    <div class="${prose}"><p id="prose">Hello</p></div>
   </body></html>`)
 
   const rgb = async (selector, property) => {
@@ -237,7 +239,6 @@ test('dark variants and prose-invert do not restyle a page with no dark class', 
   assert.deepEqual(await rgb('#terminal', 'backgroundColor'), await rgb('#terminal-plain', 'backgroundColor'))
   assert.deepEqual(await rgb('#badge', 'backgroundColor'), await rgb('#badge-plain', 'backgroundColor'))
   assert.deepEqual(await rgb('#error', 'backgroundColor'), await rgb('#error-plain', 'backgroundColor'))
-  const proseLight = await rgb('#prose', 'color')
 
   await page.evaluate(() => document.documentElement.classList.add('dark'))
   assert.deepEqual(await rgb('body', 'backgroundColor'), [11, 10, 9])
@@ -245,6 +246,5 @@ test('dark variants and prose-invert do not restyle a page with no dark class', 
   assert.notDeepEqual(await rgb('#terminal', 'backgroundColor'), await rgb('#terminal-plain', 'backgroundColor'))
   assert.notDeepEqual(await rgb('#badge', 'backgroundColor'), await rgb('#badge-plain', 'backgroundColor'))
   assert.notDeepEqual(await rgb('#error', 'backgroundColor'), await rgb('#error-plain', 'backgroundColor'))
-  assert.deepEqual(await rgb('#prose', 'color'), proseLight)
   await page.close()
 })

@@ -34,7 +34,7 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 ### Done
 
 - Public pages use the Polaroid palette on `:root`. Background `#0B0A09`, text `#E8E1D6`, muted `#A39A8C`, accent `#F2C14E`, link `#9CC3D5`. Tailwind theme colors read those variables.
-- Surface `#16130F`, paper `#F4EEE3`, and ink `#1A1612` match the M1 review. Dim `#7A7164` is for text at 24px or larger and clears 3:1 on the background. Lamp `#E8A75A`, memory frame `#C9C1B4`, and memory ink `#2A251F` are theme tokens too. Border stays `#3F372F`.
+- Surface `#16130F`, paper `#F4EEE3`, and ink `#1A1612` match the M1 review. Memory frame `#C9C1B4` and memory ink `#2A251F` are theme tokens. Border stays `#3F372F`. `--polaroid-dim` and `--polaroid-lamp` were removed. Nothing in the pages used them, and painting headings with dim would replace `#E8E1D6`.
 - Admin keeps the previous light and dark shadcn tokens on `.admin-theme`. The light rule sets `color` and `background-color` itself. `.dark .admin-theme` overrides both. Light mode and a page with no script no longer inherit cream `#E8E1D6` onto the white panel.
 - `Polaroid` has variants `memory`, `project`, `work`, `lab`, and `post`, each with `clear` and `blurred`. The demo is `/design`. It sends `noindex, nofollow`. `sitemap.ts` does not list it. `robots.ts` disallows `/design`.
 - `Inter` loads `latin` and `vietnamese` through `next/font`. The demo prints Vietnamese diacritics.
@@ -48,6 +48,7 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 - The public header and footer render from the `(public)` route group. `/admin` and `/admin/login` do not render that chrome. A missing public URL still has one header and one footer.
 - The stored red contrast log is `cd9a44f`. That run is 9 tests, and 7 failed on missing strings. It is not `48be60e`. The summary is `docs/polaroid-m1-fix/contrast-red-cd9a44f.txt`.
 - An empty size-limit glob reports `glob matched no files`. A measured total over 130000 still exits 1 with `sizeLimit` 130000. The fix-round build before this route group was 317791 gzip9 bytes. The recorded `polaroid` baseline is 317813. Delta was -22. The route-group build measures 327574 gzip9 bytes. That is 9783 above the 317791 figure. The `(public)` error boundary adds one chunk of 2230 gzip9 bytes. The other 7553 bytes are not isolated to one file. `sizeLimit` is still 130000 and `pnpm size` still exits 1. The empty-glob message is unchanged.
+- The shared error view brings the same measurement to 317410 gzip9 bytes. Chunk `6952b997ba23ca75.js` (9426) and chunk `192a52ad15e0ce08.js` (2230) are gone. The root error entry is `3b9e8815210bd47c.js` (724) and the public error entry is `9ab21aea1328c9b5.js` (723). Root `not-found` reuses the public layout chunks, including header chunk `1c405d219fd23795.js`. The 130000 limit still fails. The cap for this fix is 322663, and 317410 is under it. `pnpm --filter @portfolio/web test:contrast` is 25 passed. The dim ratio test is gone with the token. `/admin/does-not-exist` with a session cookie is a 404 inside the admin layout, with no sticky header and no footer. `/does-not-exist` is still a 404 with one sticky header and one footer.
 
 ### Not done
 

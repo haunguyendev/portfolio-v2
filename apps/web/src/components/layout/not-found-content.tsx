@@ -1,6 +1,3 @@
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
-
 export function NotFoundContent() {
   return (
     <div className="section-spacing">
@@ -19,13 +16,13 @@ export function NotFoundContent() {
             moved. Let&apos;s get you back on track.
           </p>
 
-          <Link
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- next/link is copied beside the header chunk and counted on the homepage */}
+          <a
             href="/"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80"
           >
-            <ArrowLeft className="h-4 w-4" />
             Back to Home
-          </Link>
+          </a>
         </div>
       </div>
     </div>
