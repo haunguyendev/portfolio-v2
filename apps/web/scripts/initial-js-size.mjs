@@ -153,23 +153,23 @@ function assertHomeRoute() {
   }
 }
 
-function initialClientJsFiles() {
-  assertHomeRoute();
-  const manifest = parseClientReferenceManifest(
-    fs.readFileSync(clientManifestPath, "utf8"),
-  );
-  const entryJSFiles = manifest.entryJSFiles;
+export function collectInitialClientJs({
+  entryJSFiles,
+  rootMainFiles,
+  rootMainFilesTree,
+  loadableFiles,
+  html,
+}) {
   if (!entryJSFiles || typeof entryJSFiles !== "object") {
     throw new Error("client-reference manifest has no entryJSFiles");
   }
+  assertRootMainFilesTree(rootMainFilesTree);
   const files = new Set();
   for (const value of Object.values(entryJSFiles)) addJsFiles(files, value);
-  const build = JSON.parse(fs.readFileSync(buildManifestPath, "utf8"));
-  assertRootMainFilesTree(build.rootMainFilesTree);
-  addJsFiles(files, build.rootMainFiles);
-  const htmlFiles = htmlModuleScripts(fs.readFileSync(homepageHtml, "utf8"));
+  addJsFiles(files, rootMainFiles);
+  addJsFiles(files, loadableFiles);
   const manifestList = [...files].sort();
-  const htmlList = [...htmlFiles].sort();
+  const htmlList = [...htmlModuleScripts(html)].sort();
   if (!sameMembers(manifestList, htmlList)) {
     const message = [
       "initial JS file lists differ",
@@ -182,6 +182,21 @@ function initialClientJsFiles() {
     throw new Error(message);
   }
   return manifestList;
+}
+
+function initialClientJsFiles() {
+  assertHomeRoute();
+  const manifest = parseClientReferenceManifest(
+    fs.readFileSync(clientManifestPath, "utf8"),
+  );
+  const build = JSON.parse(fs.readFileSync(buildManifestPath, "utf8"));
+  return collectInitialClientJs({
+    entryJSFiles: manifest.entryJSFiles,
+    rootMainFiles: build.rootMainFiles,
+    rootMainFilesTree: build.rootMainFilesTree,
+    loadableFiles: [],
+    html: fs.readFileSync(homepageHtml, "utf8"),
+  });
 }
 
 function readBudget() {
@@ -273,6 +288,9 @@ async function main() {
   process.exit(status);
 }
 
-main().catch((error) => {
-  fail(error instanceof Error ? error.message : String(error));
-});
+const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : "";
+if (invokedPath === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    fail(error instanceof Error ? error.message : String(error));
+  });
+}
