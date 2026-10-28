@@ -13,6 +13,13 @@ const requiredHex = {
   '--polaroid-muted': '#A39A8C',
   '--polaroid-accent': '#F2C14E',
   '--polaroid-link': '#9CC3D5',
+  '--polaroid-surface': '#16130F',
+  '--polaroid-paper': '#F4EEE3',
+  '--polaroid-ink': '#1A1612',
+  '--polaroid-dim': '#7A7164',
+  '--polaroid-lamp': '#E8A75A',
+  '--polaroid-frame-memory': '#C9C1B4',
+  '--polaroid-ink-memory': '#2A251F',
 }
 
 function token(name) {
@@ -52,10 +59,11 @@ test('tailwind theme points at the polaroid variables', () => {
     assert.match(css, new RegExp(`${colorName}:\\s*var\\(${name}\\)`))
   }
   for (const name of [
-    '--polaroid-surface',
     '--polaroid-border',
-    '--polaroid-paper',
-    '--polaroid-ink',
+    '--polaroid-dim',
+    '--polaroid-lamp',
+    '--polaroid-frame-memory',
+    '--polaroid-ink-memory',
   ]) {
     const colorName = name.replace('--polaroid-', '--color-polaroid-')
     assert.match(css, new RegExp(`${colorName}:\\s*var\\(${name}\\)`))
@@ -87,9 +95,29 @@ test('text, muted, link, and accent clear 4.5:1 on the background', () => {
 })
 
 test('caption ink clears 4.5:1 on polaroid paper', () => {
-  const ratio = contrast(token('--polaroid-ink'), token('--polaroid-paper'))
+  const pairs = [
+    ['ink', token('--polaroid-ink'), token('--polaroid-paper')],
+    [
+      'memory ink',
+      token('--polaroid-ink-memory'),
+      token('--polaroid-frame-memory'),
+    ],
+  ]
+  for (const [name, foreground, background] of pairs) {
+    const ratio = contrast(foreground, background)
+    assert.ok(
+      ratio >= 4.5,
+      `${name} ${foreground} on ${background} is ${ratio.toFixed(2)}:1, below 4.5:1`,
+    )
+  }
+})
+
+test('dim clears 3:1 on the background for large text', () => {
+  const foreground = token('--polaroid-dim')
+  const background = token('--polaroid-bg')
+  const ratio = contrast(foreground, background)
   assert.ok(
-    ratio >= 4.5,
-    `ink ${token('--polaroid-ink')} on paper ${token('--polaroid-paper')} is ${ratio.toFixed(2)}:1, below 4.5:1`,
+    ratio >= 3,
+    `dim ${foreground} on ${background} is ${ratio.toFixed(2)}:1, below 3:1 for text at 24px or larger`,
   )
 })
