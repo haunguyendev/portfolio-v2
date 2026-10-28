@@ -1,37 +1,37 @@
 {
   "task": "M0",
   "issue": 12,
-  "passes": false,
+  "passes": true,
   "criteria": [
     {
       "id": "pr-ci-steps",
       "text": ".github/workflows/pr-ci.yml runs on a PR to main, with steps: install (frozen lockfile), lint, typecheck (web + api), build web, size-limit, lhci autorun.",
-      "pass": false
+      "pass": true
     },
     {
       "id": "lhci-config",
       "text": "LHCI config uses mobile default emulation, numberOfRuns 3, and error assertions for performance >= 0.9, LCP <= 2500, TBT <= 200, CLS <= 0.05, and accessibility >= 0.95. URLs include / and /projects.",
-      "pass": false
+      "pass": true
     },
     {
       "id": "size-limit",
       "text": "size-limit checks initial JS on / against 130 KB gzip. A violation makes the job fail.",
-      "pass": false
+      "pass": true
     },
     {
       "id": "deploy-untouched",
       "text": "git diff origin/main for deploy.yml and release-please.yml is empty, and the new workflow has no push trigger on main.",
-      "pass": false
+      "pass": true
     },
     {
       "id": "ci-ran",
       "text": "On the draft PR, the CI job ran and the result is reported honestly, including the numbers Lighthouse measured.",
-      "pass": false
+      "pass": true
     },
     {
       "id": "lint-build",
       "text": "Existing lint and build still pass.",
-      "pass": false
+      "pass": true
     }
   ]
 }
