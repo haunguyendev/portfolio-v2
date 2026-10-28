@@ -34,18 +34,19 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 ### Done
 
 - Public pages use the Polaroid palette on `:root`. Background `#0B0A09`, text `#E8E1D6`, muted `#A39A8C`, accent `#F2C14E`, link `#9CC3D5`. Tailwind theme colors read those variables.
-- Surface `#161311`, border `#3F372F`, paper `#F4EFE6`, and ink `#1C1814` are local choices. `plan-v4.md` is not in this checkout.
+- Surface `#16130F`, paper `#F4EEE3`, and ink `#1A1612` match the M1 review. Dim `#7A7164` is for text at 24px or larger and clears 3:1 on the background. Lamp `#E8A75A`, memory frame `#C9C1B4`, and memory ink `#2A251F` are theme tokens too. Border stays `#3F372F`.
 - Admin keeps the previous light and dark shadcn tokens on `.admin-theme`.
 - `Polaroid` has variants `memory`, `project`, `work`, `lab`, and `post`, each with `clear` and `blurred`. The demo is `/design`. It sends `noindex, nofollow`. `sitemap.ts` does not list it. `robots.ts` disallows `/design`.
 - `Inter` loads `latin` and `vietnamese` through `next/font`. The demo prints Vietnamese diacritics.
 - `pnpm --filter @portfolio/web test:contrast` reads the hex values from `globals.css` and computes WCAG ratios. It is a blocking step in `pr-ci.yml`. That workflow also runs on pull requests to `polaroid`.
 - A temporary text color `#2A2622` failed the contrast test at 1.32:1. The file was restored. See `decisions.tsv`.
-- Local baseline initial JS on `/` is 317813 gzip9 bytes. After this change it is 317813. Delta 0.
+- Local baseline initial JS on `/` was 317813 gzip9 bytes before the review fix. The fix-round build measures 317759 gzip9 bytes. Delta -54. The Polaroid module is not in those chunks. The 130 KB limit still fails and stays report-only.
+- The review fix gives memory a taupe card with no border. Project, work, and post use a 2px ring with a 2px page-background offset. Lab uses a 2px dashed outline in the muted color, offset by 2px, because a shadow ring cannot be dashed. A blurred photo uses a 3px blur, 50% saturation, 75% brightness, and 70% opacity, and returns on hover or keyboard focus. `prefers-reduced-motion` sets the transition duration to 0s and leaves the dim in place.
+- Featured project placeholders are `#16130F` with the label in `#A39A8C`. The same bitmap is used on the projects page.
 
 ### Not done
 
 - The Vercel preview URL answers with a login redirect, so the screenshots in the pull request are from `next start` of this branch, not from the protected preview.
-- Surface, border, paper, and ink still need a check against plan-v4 §0 when that file is available.
 
 ### Next step
 
@@ -60,4 +61,4 @@ Keep the pull request as a draft into `polaroid`. Do not merge. Do not push `mai
 
 ### Open questions
 
-- M2 should confirm the surface, border, paper, and ink hex values against plan-v4 §0 if that file is available. The five specified colors are already exact.
+- Border `#3F372F` was not in the review. M2 can confirm it against plan-v4 §0 if that file is available.
