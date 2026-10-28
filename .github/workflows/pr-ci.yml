@@ -146,4 +146,5 @@ jobs:
         with:
           name: lighthouse-reports
           path: apps/web/.lighthouseci
-          if-no-files-found: warn
+          include-hidden-files: true
+          if-no-files-found: error
