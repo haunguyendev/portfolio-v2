@@ -35,7 +35,7 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 
 - Public pages use the Polaroid palette on `:root`. Background `#0B0A09`, text `#E8E1D6`, muted `#A39A8C`, accent `#F2C14E`, link `#9CC3D5`. Tailwind theme colors read those variables.
 - Surface `#16130F`, paper `#F4EEE3`, and ink `#1A1612` match the M1 review. Dim `#7A7164` is for text at 24px or larger and clears 3:1 on the background. Lamp `#E8A75A`, memory frame `#C9C1B4`, and memory ink `#2A251F` are theme tokens too. Border stays `#3F372F`.
-- Admin keeps the previous light and dark shadcn tokens on `.admin-theme`.
+- Admin keeps the previous light and dark shadcn tokens on `.admin-theme`. The light rule sets `color` and `background-color` itself. `.dark .admin-theme` overrides both. Light mode and a page with no script no longer inherit cream `#E8E1D6` onto the white panel.
 - `Polaroid` has variants `memory`, `project`, `work`, `lab`, and `post`, each with `clear` and `blurred`. The demo is `/design`. It sends `noindex, nofollow`. `sitemap.ts` does not list it. `robots.ts` disallows `/design`.
 - `Inter` loads `latin` and `vietnamese` through `next/font`. The demo prints Vietnamese diacritics.
 - `pnpm --filter @portfolio/web test:contrast` reads the hex values from `globals.css` and computes WCAG ratios. It is a blocking step in `pr-ci.yml`. That workflow also runs on pull requests to `polaroid`.
@@ -43,6 +43,9 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 - Local baseline initial JS on `/` was 317813 gzip9 bytes before the review fix. The fix-round build measures 317759 gzip9 bytes. Delta -54. The Polaroid module is not in those chunks. The 130 KB limit still fails and stays report-only.
 - The review fix gives memory a taupe card with no border. Project, work, and post use a 2px ring with a 2px page-background offset. Lab uses a 2px dashed outline in the muted color, offset by 2px, because a shadow ring cannot be dashed. A blurred photo uses a 3px blur, 50% saturation, 75% brightness, and 70% opacity, and returns on hover or keyboard focus. `prefers-reduced-motion` sets the transition duration to 0s and leaves the dim in place.
 - Featured project placeholders are `#16130F` with the label in `#A39A8C`. The same bitmap is used on the projects page.
+- The public logo is always `logo-dark.svg`. The footer, Featured Projects, and Latest Blog use `bg-background` and do not depend on the `dark` class. With the stored theme `light`, and with JavaScript disabled, those surfaces stay `#0B0A09`.
+- The login wrapper has `admin-theme`, so the card follows the admin tokens. The theme menu stays portaled to `body` and adds `admin-theme` on that node when the page has an admin scope, which keeps it above the public header.
+- An empty size-limit glob reports `glob matched no files`. A measured total over 130000 still exits 1 with `sizeLimit` 130000. This build is 317791 gzip9 bytes. The recorded `polaroid` baseline is 317813. Delta is -22.
 
 ### Not done
 

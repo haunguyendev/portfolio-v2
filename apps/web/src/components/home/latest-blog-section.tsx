@@ -7,7 +7,7 @@ export async function LatestBlogSection() {
   const posts = (await apiGetBlogs()).slice(0, 3)
 
   return (
-    <section className="section-spacing bg-muted dark:bg-background">
+    <section className="section-spacing bg-background">
       <div className="container-main">
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-foreground md:text-3xl">

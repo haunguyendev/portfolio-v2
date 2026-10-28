@@ -121,5 +121,5 @@ test('the login page sits in the admin theme', () => {
 test('the theme menu portals into the admin theme when that node exists', () => {
   const menu = read('src/components/ui/dropdown-menu.tsx')
   assert.match(menu, /querySelector\(\s*['"]\.admin-theme['"]\s*\)/)
-  assert.match(menu, /container=\{/)
+  assert.match(menu, /Portal className=\{[^}]*admin-theme/)
 })

@@ -305,6 +305,14 @@ function runSizeLimit(configPath) {
   })
 }
 
+export function explainSizeCheck(check) {
+  if (check && check.sizeLimit === undefined) return 'glob matched no files'
+  if (!check || check.sizeLimit !== expectedSizeLimit) {
+    return `size-limit parsed the limit string as ${String(check?.sizeLimit)}, which is something other than 130000 metric bytes`
+  }
+  return null
+}
+
 function reportedCheck(stdout) {
   let parsed
   try {
@@ -344,13 +352,11 @@ async function main() {
     process.stdout.write(result.stdout)
     process.stderr.write(result.stderr)
     const check = reportedCheck(result.stdout)
-    const sizeLimit = check?.sizeLimit
-    if (sizeLimit !== expectedSizeLimit) {
-      console.error(
-        `size-limit parsed the limit string as ${String(sizeLimit)}, which is something other than 130000 metric bytes`,
-      )
+    const explanation = explainSizeCheck(check)
+    if (explanation) {
+      console.error(explanation)
       status = 1
-    } else if (check?.size !== gzipTotal) {
+    } else if (check.size !== gzipTotal) {
       console.error(
         `size-limit reported ${String(check?.size)} gzip bytes, gzip9 sum is ${gzipTotal}`,
       )

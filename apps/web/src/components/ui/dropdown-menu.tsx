@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { usePathname } from "next/navigation"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 
 import { cn } from "@/lib/utils"
@@ -30,8 +31,14 @@ function DropdownMenuContent({
     MenuPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset"
   >) {
+  const pathname = usePathname()
+  const [adminTheme, setAdminTheme] = React.useState(false)
+  React.useEffect(() => {
+    setAdminTheme(document.querySelector(".admin-theme") !== null)
+  }, [pathname])
+
   return (
-    <MenuPrimitive.Portal>
+    <MenuPrimitive.Portal className={adminTheme ? "admin-theme" : undefined}>
       <MenuPrimitive.Positioner
         className="isolate z-50 outline-none"
         align={align}
