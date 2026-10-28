@@ -46,7 +46,9 @@ jobs:
         run: corepack pnpm --filter @portfolio/web lint
 
       - name: Contrast
-        run: corepack pnpm --filter @portfolio/web test:contrast
+        run: |
+          corepack pnpm --filter @portfolio/web exec playwright install --with-deps chromium
+          corepack pnpm --filter @portfolio/web test:contrast
 
       - name: Typecheck web
         run: corepack pnpm --filter @portfolio/web typecheck
