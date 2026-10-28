@@ -47,7 +47,7 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 - The login wrapper has `admin-theme`, so the card follows the admin tokens. The theme menu stays portaled to `body` and adds `admin-theme` on that node when the page has an admin scope, which keeps it above the public header.
 - The public header and footer render from the `(public)` route group. `/admin` and `/admin/login` do not render that chrome. A missing public URL still has one header and one footer.
 - The stored red contrast log is `cd9a44f`. That run is 9 tests, and 7 failed on missing strings. It is not `48be60e`. The summary is `docs/polaroid-m1-fix/contrast-red-cd9a44f.txt`.
-- An empty size-limit glob reports `glob matched no files`. A measured total over 130000 still exits 1 with `sizeLimit` 130000. The fix-round build before this route group was 317791 gzip9 bytes. The recorded `polaroid` baseline is 317813. Delta was -22. The route-group build measures 327574 gzip9 bytes. `sizeLimit` is still 130000 and `pnpm size` still exits 1. The empty-glob message is unchanged.
+- An empty size-limit glob reports `glob matched no files`. A measured total over 130000 still exits 1 with `sizeLimit` 130000. The fix-round build before this route group was 317791 gzip9 bytes. The recorded `polaroid` baseline is 317813. Delta was -22. The route-group build measures 327574 gzip9 bytes. That is 9783 above the 317791 figure. The `(public)` error boundary adds one chunk of 2230 gzip9 bytes. The other 7553 bytes are not isolated to one file. `sizeLimit` is still 130000 and `pnpm size` still exits 1. The empty-glob message is unchanged.
 
 ### Not done
 
