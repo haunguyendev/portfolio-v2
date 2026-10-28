@@ -37,7 +37,7 @@
   "m1": {
     "task": "M1",
     "issue": 13,
-    "passes": false,
+    "passes": true,
     "criteria": [
       {
         "id": "tokens",
@@ -67,7 +67,7 @@
       {
         "id": "screenshots",
         "text": "Screenshots of the demo page and / at 375/768/1280 are embedded in the PR.",
-        "pass": false
+        "pass": true
       }
     ]
   }

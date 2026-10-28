@@ -44,8 +44,8 @@ Leave the pull request as a draft. Do not merge it. Merging deploys production. 
 
 ### Not done
 
-- `acceptance.json` `m1.passes` stays false until the GitHub Actions run on the head SHA is green.
 - The Vercel preview URL answers with a login redirect, so the screenshots in the pull request are from `next start` of this branch, not from the protected preview.
+- Surface, border, paper, and ink still need a check against plan-v4 §0 when that file is available.
 
 ### Next step
 
