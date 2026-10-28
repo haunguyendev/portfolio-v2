@@ -11,7 +11,7 @@
     "pretypecheck": "pnpm --filter @portfolio/prisma build",
     "typecheck": "tsc --noEmit",
     "size": "node scripts/initial-js-size.mjs",
-    "test:contrast": "node --test scripts/contrast.test.mjs scripts/design-route.test.mjs scripts/polaroid-frame.test.mjs",
+    "test:contrast": "node --test scripts/contrast.test.mjs scripts/design-route.test.mjs scripts/polaroid-frame.test.mjs scripts/theme-scope.test.mjs scripts/initial-js-size.test.mjs",
     "lhci": "lhci autorun --config=./lighthouserc.json"
   },
   "dependencies": {
