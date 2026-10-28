@@ -1,0 +1,150 @@
+name: PR CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# TODO(M2): set PERF_GATE_BLOCKING to 'true' when homepage meets size and Lighthouse budgets.
+env:
+  PERF_GATE_BLOCKING: "false"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: corepack pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: corepack pnpm --filter @portfolio/prisma build
+
+      - name: Lint web
+        run: corepack pnpm --filter @portfolio/web lint
+
+      - name: Typecheck web
+        run: corepack pnpm --filter @portfolio/web typecheck
+
+      - name: Typecheck api
+        run: corepack pnpm --filter api typecheck
+
+      - name: Size selection test
+        run: node --test apps/web/scripts/initial-js-size.test.mjs
+
+      - name: Velite
+        working-directory: apps/web
+        run: npx velite build
+
+      - name: Build web
+        run: corepack pnpm --filter @portfolio/web build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          VELITE_STARTED: 1
+
+      - name: Initial JS size
+        continue-on-error: ${{ env.PERF_GATE_BLOCKING != 'true' }}
+        run: |
+          set -o pipefail
+          corepack pnpm --filter @portfolio/web size 2>&1 | tee size-output.log
+
+      - name: Size gate summary
+        if: always()
+        run: |
+          {
+            echo "### Initial JS size"
+            echo ""
+            if [ -f size-output.log ]; then
+              echo '```'
+              cat size-output.log
+              echo '```'
+            else
+              echo "_Size step did not run._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: corepack pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: corepack pnpm --filter @portfolio/prisma build
+
+      - name: Velite
+        working-directory: apps/web
+        run: npx velite build
+
+      - name: Build web
+        run: corepack pnpm --filter @portfolio/web build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          VELITE_STARTED: 1
+
+      - name: Lighthouse
+        working-directory: apps/web
+        continue-on-error: ${{ env.PERF_GATE_BLOCKING != 'true' }}
+        run: |
+          set -o pipefail
+          npx lhci autorun --config=./lighthouserc.json 2>&1 | tee lhci-output.log
+
+      - name: Lighthouse gate summary
+        if: always()
+        working-directory: apps/web
+        run: |
+          {
+            echo "### Lighthouse CI (median of 3 runs)"
+            echo ""
+            if [ -f lhci-output.log ]; then
+              echo '```'
+              cat lhci-output.log
+              echo '```'
+            else
+              echo "_Lighthouse step did not run._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: apps/web/.lighthouseci
+          include-hidden-files: true
+          if-no-files-found: error
