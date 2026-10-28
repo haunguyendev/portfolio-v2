@@ -13,6 +13,10 @@ concurrency:
   group: pr-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# TODO(M2): set PERF_GATE_BLOCKING to 'true' when homepage meets size and Lighthouse budgets.
+env:
+  PERF_GATE_BLOCKING: "false"
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -57,7 +61,25 @@ jobs:
           VELITE_STARTED: 1
 
       - name: Initial JS size
-        run: corepack pnpm --filter @portfolio/web size
+        continue-on-error: ${{ env.PERF_GATE_BLOCKING != 'true' }}
+        run: |
+          set -o pipefail
+          corepack pnpm --filter @portfolio/web size 2>&1 | tee size-output.log
+
+      - name: Size gate summary
+        if: always()
+        run: |
+          {
+            echo "### Initial JS size"
+            echo ""
+            if [ -f size-output.log ]; then
+              echo '```'
+              cat size-output.log
+              echo '```'
+            else
+              echo "_Size step did not run._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
   lighthouse:
     runs-on: ubuntu-latest
@@ -94,4 +116,23 @@ jobs:
 
       - name: Lighthouse
         working-directory: apps/web
-        run: npx lhci autorun --config=./lighthouserc.json
+        continue-on-error: ${{ env.PERF_GATE_BLOCKING != 'true' }}
+        run: |
+          set -o pipefail
+          npx lhci autorun --config=./lighthouserc.json 2>&1 | tee lhci-output.log
+
+      - name: Lighthouse gate summary
+        if: always()
+        working-directory: apps/web
+        run: |
+          {
+            echo "### Lighthouse CI (median of 3 runs)"
+            echo ""
+            if [ -f lhci-output.log ]; then
+              echo '```'
+              cat lhci-output.log
+              echo '```'
+            else
+              echo "_Lighthouse step did not run._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

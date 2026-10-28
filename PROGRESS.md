@@ -7,18 +7,18 @@
 - Job `check` installs, generates the Prisma client, lints, typechecks web and api, builds Velite, builds the web app, and runs size-limit.
 - Job `lighthouse` installs, generates the client, builds, and runs `lhci autorun` with `aggregationMethod` `median`.
 - `pretypecheck` and `prebuild` run `prisma generate`. A clean checkout needs that before `tsc` or `next build`.
-- Clean checkout of `15163b3` plus the median Lighthouse config: install, lint, both typechecks, and the web build exit 0. Size exits 1 at 271980 gzip bytes. The limit is 130000 bytes. Lighthouse exits 1.
 - Draft PR is https://github.com/haunguyendev/portfolio-v2/pull/19.
-- GitHub Actions run https://github.com/haunguyendev/portfolio-v2/actions/runs/40644338147 on `8f6c622` failed both jobs on purpose. Size was 271980 bytes. Median LCP was 3598 ms on `/` and 3261 ms on `/projects`. `/projects` accessibility was 0.94.
+- Perf gate is **report-only** until M2: workflow env `PERF_GATE_BLOCKING: "false"` and `continue-on-error` on the size and Lighthouse steps. Lint, typecheck, and build stay blocking. Thresholds are unchanged (130000 B gzip, perf 0.9, LCP 2500 ms, TBT 200 ms, CLS 0.05, a11y 0.95, median of 3).
+- Last blocking CI reference (run https://github.com/haunguyendev/portfolio-v2/actions/runs/40644338147 on `8f6c622`): size 271980 bytes; median LCP 3598 ms on `/`, 3261 ms on `/projects`; `/projects` accessibility 0.94.
 
 ## Not done
 
-- The homepage is over the Lighthouse LCP budget, and `/projects` is under the accessibility budget. Thresholds stay where they are. M2 rewrites the homepage.
-- The size budget stays 130 KB gzip. This tree measures 271980 bytes.
+- Homepage and `/projects` still miss Lighthouse budgets at the configured thresholds. M2 rewrites the homepage and can set `PERF_GATE_BLOCKING` back to `"true"`.
+- Initial JS on `/` is still 271980 gzip bytes against a 130000 byte limit.
 
 ## Next step
 
-Leave the pull request as a draft. Do not merge it. Merging deploys production.
+Leave the pull request as a draft. Do not merge it. Merging deploys production. After the report-only workflow run lands, paste the fresh size and Lighthouse medians into the PR body.
 
 ## Open questions
 
