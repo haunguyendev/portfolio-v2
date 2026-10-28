@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/layout/theme-provider'
-import { SecretPortal } from '@/components/shared/secret-portal'
 import { ChatWidget } from '@/components/chat/chat-widget'
 import { Toaster } from 'sonner'
 import { SITE_URL } from '@/lib/constants'
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
     template: '%s | Kane Nguyen',
   },
   description:
-    "Software Engineer portfolio — projects, blog, and diary by Kane Nguyen.",
+    'Software Engineer portfolio — projects, blog, and diary by Kane Nguyen.',
   metadataBase: new URL(SITE_URL),
   openGraph: {
     type: 'website',
@@ -50,9 +49,8 @@ export default function RootLayout({
       <body className={`${inter.className} flex min-h-screen flex-col`}>
         <ThemeProvider>
           {children}
-          <SecretPortal />
           <ChatWidget />
-          <Toaster richColors position="top-right" />
+          <Toaster position="top-right" />
         </ThemeProvider>
       </body>
     </html>

@@ -157,6 +157,9 @@ test('admin light renders its own colors and no public chrome', { timeout: 18000
   assert.equal(missingAdmin.status(), 404)
   assert.equal(await admin.locator('header.sticky').count(), 0)
   assert.equal(await admin.locator('footer').count(), 0)
+  assert.equal(await admin.locator('main .section-spacing').count(), 0)
+  assert.match(await admin.locator('.admin-theme main').textContent(), /That admin page does not exist/)
+  assert.equal(await admin.locator('h1:text-is("Page Not Found")').count(), 0)
   await themed.close()
 })
 
